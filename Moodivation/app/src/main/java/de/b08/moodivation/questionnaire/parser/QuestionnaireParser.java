@@ -124,7 +124,7 @@ public class QuestionnaireParser {
         } else if (questionnaireElement.getTagName().equalsIgnoreCase(FREE_TEXT_QUESTION_TAG_NAME)) {
             return parseFreetextQuestion(questionnaireElement);
         } else if (questionnaireElement.getTagName().equalsIgnoreCase(NUMBER_QUESTION_TAG_NAME)) {
-            return parseSliderQuestion(questionnaireElement);
+            return parseNumberQuestion(questionnaireElement);
         } else {
             throw new QuestionnaireParsingException(questionnaireElement, UNKNOWN_ELEMENT);
         }
@@ -211,7 +211,7 @@ public class QuestionnaireParser {
         return new FreeTextQuestion(title, id, multiLineAllowed);
     }
 
-    private static NumberQuestion parseSliderQuestion(Element questionnaireElement)
+    private static NumberQuestion parseNumberQuestion(Element questionnaireElement)
             throws QuestionnaireParsingException {
 
         String title = parseTitle(questionnaireElement)
