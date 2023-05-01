@@ -25,12 +25,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import static de.b08.moodivation.questionnaire.parser.QuestionnaireParsingException.Reason.*;
 
-import de.b08.moodivation.questionnaire.ChoiceQuestion;
-import de.b08.moodivation.questionnaire.ChoiceQuestionItem;
-import de.b08.moodivation.questionnaire.FreeTextQuestion;
-import de.b08.moodivation.questionnaire.Question;
+import de.b08.moodivation.questionnaire.question.ChoiceQuestion;
+import de.b08.moodivation.questionnaire.question.ChoiceQuestionItem;
+import de.b08.moodivation.questionnaire.question.FreeTextQuestion;
+import de.b08.moodivation.questionnaire.question.Question;
 import de.b08.moodivation.questionnaire.Questionnaire;
-import de.b08.moodivation.questionnaire.NumberQuestion;
+import de.b08.moodivation.questionnaire.question.NumberQuestion;
 
 /**
  * 

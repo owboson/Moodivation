@@ -1,4 +1,4 @@
-package de.b08.moodivation.questionnaire;
+package de.b08.moodivation.questionnaire.question;
 
 import java.util.Collections;
 import java.util.List;

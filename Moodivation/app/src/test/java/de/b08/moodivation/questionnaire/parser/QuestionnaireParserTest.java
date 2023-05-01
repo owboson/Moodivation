@@ -13,11 +13,11 @@ import static org.junit.Assert.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import de.b08.moodivation.questionnaire.ChoiceQuestion;
-import de.b08.moodivation.questionnaire.ChoiceQuestionItem;
-import de.b08.moodivation.questionnaire.FreeTextQuestion;
+import de.b08.moodivation.questionnaire.question.ChoiceQuestion;
+import de.b08.moodivation.questionnaire.question.ChoiceQuestionItem;
+import de.b08.moodivation.questionnaire.question.FreeTextQuestion;
 import de.b08.moodivation.questionnaire.Questionnaire;
-import de.b08.moodivation.questionnaire.NumberQuestion;
+import de.b08.moodivation.questionnaire.question.NumberQuestion;
 
 /**
  * 
