@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import de.b08.moodivation.questionnaire.QuestionnaireElement;
+
 /**
  * 
  */
-public class ChoiceQuestion extends Question {
+public class ChoiceQuestion extends QuestionnaireElement {
 
     private final boolean multiSelectionAllowed;
     private final List<ChoiceQuestionItem> items;

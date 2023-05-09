@@ -2,10 +2,12 @@ package de.b08.moodivation.questionnaire.question;
 
 import java.util.Objects;
 
+import de.b08.moodivation.questionnaire.QuestionnaireElement;
+
 /**
  * 
  */
-public class FreeTextQuestion extends Question {
+public class FreeTextQuestion extends QuestionnaireElement {
 
     private final boolean multiLineAllowed;
 

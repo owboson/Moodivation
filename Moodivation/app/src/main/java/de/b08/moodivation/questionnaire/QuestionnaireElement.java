@@ -1,16 +1,16 @@
-package de.b08.moodivation.questionnaire.question;
+package de.b08.moodivation.questionnaire;
 
 import java.util.Objects;
 
 /**
  * 
  */
-public class Question {
+public class QuestionnaireElement {
 
     private final String title;
     private final String id;
 
-    public Question(String title, String id) {
+    public QuestionnaireElement(String title, String id) {
         this.title = title;
         this.id = id;
     }
@@ -26,8 +26,8 @@ public class Question {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Question)) return false;
-        Question question = (Question) o;
+        if (!(o instanceof QuestionnaireElement)) return false;
+        QuestionnaireElement question = (QuestionnaireElement) o;
         return Objects.equals(title, question.title) && Objects.equals(id, question.id);
     }
 

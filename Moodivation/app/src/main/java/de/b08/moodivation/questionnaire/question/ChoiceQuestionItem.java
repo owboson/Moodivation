@@ -9,10 +9,16 @@ public class ChoiceQuestionItem {
 
     private final String value;
     private final String id;
+    private final boolean modifiable;
 
-    public ChoiceQuestionItem(String value, String id) {
+    public ChoiceQuestionItem(String value, String id, boolean modifiable) {
         this.value = value;
         this.id = id;
+        this.modifiable = modifiable;
+    }
+
+    public ChoiceQuestionItem(String value, String id) {
+        this(value, id, false);
     }
 
     public String getValue() {
@@ -21,6 +27,10 @@ public class ChoiceQuestionItem {
 
     public String getId() {
         return id;
+    }
+
+    public boolean isModifiable() {
+        return modifiable;
     }
 
     @Override
