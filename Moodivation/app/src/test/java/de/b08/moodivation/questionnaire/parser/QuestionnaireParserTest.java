@@ -13,6 +13,8 @@ import static org.junit.Assert.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.b08.moodivation.questionnaire.Category;
+import de.b08.moodivation.questionnaire.constraints.EnabledIfSelectedConstraint;
 import de.b08.moodivation.questionnaire.question.ChoiceQuestion;
 import de.b08.moodivation.questionnaire.question.ChoiceQuestionItem;
 import de.b08.moodivation.questionnaire.question.FreeTextQuestion;
@@ -159,7 +161,7 @@ public class QuestionnaireParserTest {
         FreeTextQuestion f2 = new FreeTextQuestion("", "2", false);
         FreeTextQuestion f3 = new FreeTextQuestion("", "3", false);
 
-        assertEquals(Arrays.asList(f1, f2, f3), questionnaire.getQuestions());
+        assertEquals(Arrays.asList(f1, f2, f3), questionnaire.getQuestionnaireElements());
     }
 
     @Test
@@ -175,7 +177,7 @@ public class QuestionnaireParserTest {
 
         NumberQuestion s1 = new NumberQuestion("", "4", NumberQuestion.Type.SLIDER,2, 3, 1);
 
-        assertEquals(Collections.singletonList(s1), questionnaire.getQuestions());
+        assertEquals(Collections.singletonList(s1), questionnaire.getQuestionnaireElements());
     }
 
     @Test
@@ -218,6 +220,41 @@ public class QuestionnaireParserTest {
                 () -> QuestionnaireParser.parse(questionnaireString));
         assertEquals(QuestionnaireParsingException.Reason.NUMBER_QUESTION_INVALID_TYPE, ex.getReason());
         assertEquals("A", ex.getNode().getAttributes().getNamedItem("type").getTextContent());
+    }
+
+    @Test
+    public void testCategory() throws QuestionnaireParsingException, IOException,
+            ParserConfigurationException, SAXException {
+        String questionnaireString ="<Questionnaire id=\"1\">\n" +
+                "  <Category id=\"1\">\n" +
+                "    <Title>X</Title>\n" +
+                "  </Category>" +
+                "  <NumberQuestion id=\"4\" stepSize=\"1\" fromValue=\"2\" toValue=\"3\" type=\"SLIDER\">\n" +
+                "    <Title/>\n" +
+                "  </NumberQuestion>\n" +
+                "</Questionnaire>";
+
+        Questionnaire questionnaire = QuestionnaireParser.parse(questionnaireString);
+        Category category = new Category("X", "1");
+        NumberQuestion numberQuestion = new NumberQuestion("", "4", NumberQuestion.Type.SLIDER, 2,3,1);
+        assertEquals(Arrays.asList(category, numberQuestion), questionnaire.getQuestionnaireElements());
+    }
+
+    @Test
+    public void testEnabledIfSelectedConstraint() throws QuestionnaireParsingException, IOException,
+            ParserConfigurationException, SAXException {
+        String questionnaireString ="<Questionnaire id=\"1\">\n" +
+                "  <Constraints>\n" +
+                "    <EnabledIfSelectedConstraint constrainedQuestionId=\"4\" observedQuestionId=\"5\">\n" +
+                "      <AllowedItem>0</AllowedItem>\n" +
+                "    </EnabledIfSelectedConstraint>\n" +
+                "  </Constraints>\n" +
+                "</Questionnaire>";
+
+        Questionnaire questionnaire = QuestionnaireParser.parse(questionnaireString);
+
+        EnabledIfSelectedConstraint constraint = new EnabledIfSelectedConstraint("4", "5", Collections.singletonList("0"));
+        assertEquals(Collections.singletonList(constraint), questionnaire.getConstraints());
     }
 
 }
