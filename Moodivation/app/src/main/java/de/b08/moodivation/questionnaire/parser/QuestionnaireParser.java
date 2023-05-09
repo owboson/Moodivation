@@ -25,10 +25,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import static de.b08.moodivation.questionnaire.parser.QuestionnaireParsingException.Reason.*;
 
+import de.b08.moodivation.questionnaire.constraints.Constraint;
+import de.b08.moodivation.questionnaire.constraints.EnabledIfSelectedConstraint;
+import de.b08.moodivation.questionnaire.Category;
 import de.b08.moodivation.questionnaire.question.ChoiceQuestion;
 import de.b08.moodivation.questionnaire.question.ChoiceQuestionItem;
 import de.b08.moodivation.questionnaire.question.FreeTextQuestion;
-import de.b08.moodivation.questionnaire.question.Question;
+import de.b08.moodivation.questionnaire.QuestionnaireElement;
 import de.b08.moodivation.questionnaire.Questionnaire;
 import de.b08.moodivation.questionnaire.question.NumberQuestion;
 
@@ -47,12 +50,19 @@ public class QuestionnaireParser {
     private static final String CHOICE_ITEMS_TAG_NAME = "Items";
     private static final String CHOICE_QUESTION_DEFAULT_ITEM_ID_ATTR = "defaultItemId";
     private static final String CHOICE_QUESTION_TAG_NAME = "ChoiceQuestion";
+    private static final String CHOICE_ITEM_IS_MODIFIABLE_ATTR = "isModifiable";
     private static final String CHOICE_QUESTION_ALLOWS_MULTI_SELECTION_ATTR = "multiSelectionAllowed";
     private static final String NUMBER_QUESTION_TAG_NAME = "NumberQuestion";
     private static final String NUMBER_QUESTION_STEP_SIZE_ATTR = "stepSize";
     private static final String NUMBER_QUESTION_FROM_VALUE_ATTR = "fromValue";
     private static final String NUMBER_QUESTION_TO_VALUE_ATTR = "toValue";
     private static final String NUMBER_QUESTION_TYPE_ATTR = "type";
+    private static final String CATEGORY_TAG_NAME = "Category";
+    private static final String CONSTRAINTS_TAG_NAME = "Constraints";
+    private static final String ENABLED_IF_SELECTED_CONSTRAINT_TAG_NAME = "EnabledIfSelectedConstraint";
+    private static final String CONSTRAINED_QUESTION_ID_ATTR = "constrainedQuestionId";
+    private static final String OBSERVED_QUESTION_ID_ATTR = "observedQuestionId";
+    private static final String ALLOWED_SELECTION_ITEM_TAG_NAME = "AllowedItem";
 
     public static Questionnaire parse(String s) throws QuestionnaireParsingException,
             IOException, ParserConfigurationException, SAXException {
@@ -96,7 +106,8 @@ public class QuestionnaireParser {
     }
 
     private static Questionnaire parseQuestionnaire(Element questionnaire) throws QuestionnaireParsingException {
-        List<Question> questionnaireElements = new ArrayList<>();
+        List<QuestionnaireElement> questionnaireElements = new ArrayList<>();
+        List<Constraint> constraints = new ArrayList<>();
 
         Optional<String> title = parseTitle(questionnaire);
         String id = parseAttributeOrElseThrow(questionnaire, ID_ATTR, Function.identity(),
@@ -105,7 +116,12 @@ public class QuestionnaireParser {
         for (int i = 0; i < questionnaire.getChildNodes().getLength(); i++) {
             Node childNode = questionnaire.getChildNodes().item(i);
             if (childNode.getNodeType() == Node.ELEMENT_NODE && !childNode.getNodeName().equalsIgnoreCase(TITLE_TAG_NAME)) {
-                Question q = parseQuestion((Element) childNode);
+                if (childNode.getNodeName().equalsIgnoreCase(CONSTRAINTS_TAG_NAME)) {
+                    constraints.addAll(parseConstraints((Element) childNode));
+                    continue;
+                }
+
+                QuestionnaireElement q = parseQuestionnaireElement((Element) childNode);
                 if (questionnaireElements.stream().anyMatch(x -> Objects.equals(x.getId(), q.getId())))
                     throw new QuestionnaireParsingException(questionnaire, ID_NOT_UNIQUE);
 
@@ -113,10 +129,10 @@ public class QuestionnaireParser {
             }
         }
 
-        return new Questionnaire(title.orElse(null), id, questionnaireElements);
+        return new Questionnaire(title.orElse(null), id, questionnaireElements, constraints);
     }
 
-    private static Question parseQuestion(Element questionnaireElement)
+    private static QuestionnaireElement parseQuestionnaireElement(Element questionnaireElement)
             throws QuestionnaireParsingException {
 
         if (questionnaireElement.getTagName().equalsIgnoreCase(CHOICE_QUESTION_TAG_NAME)) {
@@ -125,9 +141,66 @@ public class QuestionnaireParser {
             return parseFreetextQuestion(questionnaireElement);
         } else if (questionnaireElement.getTagName().equalsIgnoreCase(NUMBER_QUESTION_TAG_NAME)) {
             return parseNumberQuestion(questionnaireElement);
+        } else if (questionnaireElement.getTagName().equalsIgnoreCase(CATEGORY_TAG_NAME)){
+            return parseCategory(questionnaireElement);
         } else {
             throw new QuestionnaireParsingException(questionnaireElement, UNKNOWN_ELEMENT);
         }
+    }
+
+    private static List<Constraint> parseConstraints(Element constraintsElement)
+            throws QuestionnaireParsingException {
+
+        List<Constraint> constraints = new ArrayList<>();
+
+        for (int i = 0; i < constraintsElement.getChildNodes().getLength(); i++) {
+            Node childNode = constraintsElement.getChildNodes().item(i);
+            if (childNode.getNodeType() != Node.ELEMENT_NODE)
+                continue;
+
+            Element childElement = (Element) childNode;
+            if (childElement.getTagName().equalsIgnoreCase(ENABLED_IF_SELECTED_CONSTRAINT_TAG_NAME))
+                constraints.add(parseEnabledIfSelectedConstraint(childElement));
+        }
+
+        return constraints;
+    }
+
+    private static EnabledIfSelectedConstraint parseEnabledIfSelectedConstraint(Element constraintElement)
+            throws QuestionnaireParsingException {
+
+        String constrainedQuestionId = parseAttributeOrElseThrow(constraintElement, CONSTRAINED_QUESTION_ID_ATTR, Function.identity(),
+                () -> new QuestionnaireParsingException(constraintElement, CONSTRAINT_NO_CONSTRAINED_ID));
+
+        String observedQuestionId = parseAttributeOrElseThrow(constraintElement, OBSERVED_QUESTION_ID_ATTR, Function.identity(),
+                () -> new QuestionnaireParsingException(constraintElement, CONSTRAINT_NO_OBSERVED_ID));
+
+        List<String> allowedIds = new ArrayList<>();
+
+        for (int i = 0; i < constraintElement.getChildNodes().getLength(); i++) {
+            Node childNode = constraintElement.getChildNodes().item(i);
+            if (childNode.getNodeType() != Node.ELEMENT_NODE)
+                continue;
+            Element childElement = (Element) childNode;
+
+            if (childElement.getTagName().equalsIgnoreCase(ALLOWED_SELECTION_ITEM_TAG_NAME)) {
+                allowedIds.add(childElement.getTextContent());
+            }
+        }
+
+        return new EnabledIfSelectedConstraint(constrainedQuestionId, observedQuestionId, allowedIds);
+    }
+
+    private static Category parseCategory(Element questionnaireElement)
+            throws QuestionnaireParsingException {
+
+        String title = parseTitle(questionnaireElement)
+                .orElseThrow(() -> new QuestionnaireParsingException(questionnaireElement, NO_TITLE));
+
+        String id = parseAttributeOrElseThrow(questionnaireElement, ID_ATTR, Function.identity(),
+                () -> new QuestionnaireParsingException(questionnaireElement, NO_ID));
+
+        return new Category(title, id);
     }
 
     private static ChoiceQuestion parseChoiceQuestion(Element questionnaireElement)
@@ -193,7 +266,10 @@ public class QuestionnaireParser {
         String id = parseAttributeOrElseThrow(el, ID_ATTR, Function.identity(),
                 () -> new QuestionnaireParsingException(itemNode, NO_ID));
 
-        return Optional.of(new ChoiceQuestionItem(el.getTextContent().trim(), id));
+        boolean modifiable = parseAttribute(el, CHOICE_ITEM_IS_MODIFIABLE_ATTR,
+                Boolean::valueOf, false);
+
+        return Optional.of(new ChoiceQuestionItem(el.getTextContent().trim(), id, modifiable));
     }
 
     private static FreeTextQuestion parseFreetextQuestion(Element questionnaireElement)

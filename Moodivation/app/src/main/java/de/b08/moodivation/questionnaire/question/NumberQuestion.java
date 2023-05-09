@@ -2,10 +2,12 @@ package de.b08.moodivation.questionnaire.question;
 
 import java.util.Objects;
 
+import de.b08.moodivation.questionnaire.QuestionnaireElement;
+
 /**
  * 
  */
-public class NumberQuestion extends Question {
+public class NumberQuestion extends QuestionnaireElement {
 
     public enum Type {
         /** Displayed using a slider */

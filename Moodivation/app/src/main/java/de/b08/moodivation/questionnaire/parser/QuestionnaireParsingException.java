@@ -21,7 +21,9 @@ public class QuestionnaireParsingException extends Exception {
         NO_ROOT_ELEMENT,
         TO_VALUE_LESS_THAN_OR_EQUAL_TO_FROM_VALUE,
         NUMBER_QUESTION_INVALID_TYPE,
-        NUMBER_FORMAT_EXCEPTION
+        NUMBER_FORMAT_EXCEPTION,
+        CONSTRAINT_NO_CONSTRAINED_ID,
+        CONSTRAINT_NO_OBSERVED_ID
     }
 
     private final Node node;
