@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import de.b08.moodivation.questionnaire.constraints.Constraint;
 
@@ -57,6 +58,11 @@ public class Questionnaire {
 
     public List<Constraint> getConstraints() {
         return constraints;
+    }
+
+    public List<Constraint> getConstraintsForObservedId(String observedId) {
+        return constraints.stream().filter(c -> c.getObservedQuestionId().equals(observedId))
+                .collect(Collectors.toList());
     }
 
 }
