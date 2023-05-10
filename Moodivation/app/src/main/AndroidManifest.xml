@@ -13,21 +13,17 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".QuestionnaireActivity"
+            android:exported="true"
+            android:label="Questionnaire"/>
+        <activity
             android:name=".DigitSpanTask"
-            android:exported="true">
-
-        </activity>
-
+            android:exported="true"
+            android:label="Digit Span Task"/>
         <activity
             android:name=".SettingsPage"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+            android:exported="true"
+            android:label="Settings"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
