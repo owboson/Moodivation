@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,8 @@ public class QuestionnaireView extends LinearLayout {
 
     private boolean answered = false;
 
+    private final List<Runnable> updateHandlers;
+
     public QuestionnaireView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -38,6 +41,12 @@ public class QuestionnaireView extends LinearLayout {
 
         questionnaireLinearLayout = findViewById(R.id.questionnaireLinearLayout);
         questionViewMap = new HashMap<>();
+
+        updateHandlers = new ArrayList<>();
+    }
+
+    public void addUpdateHandler(Runnable r) {
+        this.updateHandlers.add(r);
     }
 
     public void setQuestionnaire(Questionnaire questionnaire) {
@@ -66,6 +75,7 @@ public class QuestionnaireView extends LinearLayout {
                 questionView.registerUpdateHandler(view -> {
                     checkQuestionnaireAnswered();
                     checkConstraints(view.getQuestion().getId(), view);
+                    updateHandlers.forEach(Runnable::run);
                 });
             }
         }
@@ -76,6 +86,7 @@ public class QuestionnaireView extends LinearLayout {
         });
 
         checkQuestionnaireAnswered();
+        updateHandlers.forEach(Runnable::run);
     }
 
     private void checkQuestionnaireAnswered() {
