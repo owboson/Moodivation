@@ -11,6 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moodivation"
         tools:targetApi="31">
+
+        <activity
+            android:name=".QuestionnaireActivity"
+            android:exported="true"
+            android:label="Questionnaire"/>
+        <activity
+            android:name=".DigitSpanTask"
+            android:exported="true"
+            android:label="Digit Span Task"/>
+        <activity
+            android:name=".SettingsPage"
+            android:exported="true"
+            android:label="Settings"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
