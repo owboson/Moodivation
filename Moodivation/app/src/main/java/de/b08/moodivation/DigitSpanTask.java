@@ -2,19 +2,19 @@ package de.b08.moodivation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
+
+import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
+import de.b08.moodivation.database.questionnaire.entities.DigitSpanTaskResEntity;
 
 public class DigitSpanTask extends AppCompatActivity {
 //   text field that shows the number on the screnn
@@ -116,11 +116,25 @@ public class DigitSpanTask extends AppCompatActivity {
             } else {
                 // Show message that user made a mistake
                 instructionField.setText("Wrong number! Your maximum is " + userMax);
+
+                // store in database
+                saveResult();
+
                 disableButtons();
                 startBtn.setEnabled(false);
             }
         }
     };
+
+    private void saveResult() {
+
+        boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") ?
+                getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false) : false;
+        AsyncTask.execute(() -> {
+            QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
+                    .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax));
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
