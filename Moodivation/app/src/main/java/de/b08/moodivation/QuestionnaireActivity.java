@@ -1,5 +1,6 @@
 package de.b08.moodivation;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,8 +40,8 @@ public class QuestionnaireActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(v -> {
             saveAnswers(questionnaireView.getAllAnswers());
 
-            String day_from = sharedPreferences.getString("day_from", "13:30");
-            String day_to = sharedPreferences.getString("day_to", "14:30");
+            String day_from = sharedPreferences.getString("day_from", "12:0");
+            String day_to = sharedPreferences.getString("day_to", "14:0");
             if (isNoonQuestionnaire(new Date(), day_from, day_to)) {
                 Intent digitSpanTask = new Intent(this, DigitSpanTask.class);
                 digitSpanTask.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -59,7 +60,6 @@ public class QuestionnaireActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
     private void saveAnswers(List<Answer<?>> answers) {
         Date now = new Date();
         List<AnswerEntity> answerEntities = answers.stream()
