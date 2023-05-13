@@ -91,6 +91,8 @@ public class SettingsPage extends AppCompatActivity {
 
 
 
+
+
         this.morning_from_hour_picker.setValue(Integer.parseInt(morning_from.split(":")[0]));
         this.morning_from_minute_picker.setValue(Integer.parseInt(morning_from.split(":")[1]));
 
