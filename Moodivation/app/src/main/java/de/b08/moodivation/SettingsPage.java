@@ -3,6 +3,7 @@ package de.b08.moodivation;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -224,9 +225,10 @@ public class SettingsPage extends AppCompatActivity {
 
         periodicityPicker = findViewById(R.id.periodicity_picker);
         CustomPickerAdapter formatter = new CustomPickerAdapter(2);
-        periodicityPicker.setFormatter(formatter);
+
         periodicityPicker.setMinValue(0);
         periodicityPicker.setMaxValue(2);
+        periodicityPicker.setFormatter(formatter);
 
 
         if (sharedPreferences.getInt("questionnaire_periodicity", 3) == 1){
@@ -523,6 +525,10 @@ public class SettingsPage extends AppCompatActivity {
                     editor.putInt("questionnaire_periodicity_details", periodicityPicker.getValue());
                     editor.putInt("allow_digit_span_collection", digitSpanSwitch.isChecked() ? 1: 0);
                     editor.commit();
+
+                    MainActivity act_ = new MainActivity();
+                    act_.unset_notification_intents();
+                    act_.set_notifs(sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
 
                     changeIntervalsSwitch.setChecked(false);
                     intervalsLayout.setVisibility(View.GONE);

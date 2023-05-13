@@ -21,9 +21,10 @@ public class RandomTimeGenerator {
         this.lastGeneratedDateMorning = null;
         this.cachedTimestampMorning = null;
         this.random = new Random();
+
     }
 
-        public LocalTime generateMorningTimestamp(SharedPreferences sharedPreferences) {
+    public LocalTime generateMorningTimestamp(SharedPreferences sharedPreferences) {
         String start = sharedPreferences.getString("morning_from", "9:0");
         String end = sharedPreferences.getString("morning_to", "10:30");
         LocalDate currentDate = LocalDate.now();

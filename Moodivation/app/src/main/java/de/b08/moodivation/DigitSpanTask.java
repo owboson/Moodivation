@@ -2,6 +2,11 @@ package de.b08.moodivation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +53,8 @@ public class DigitSpanTask extends AppCompatActivity {
 
     // array of those buttons
     ArrayList buttons = new ArrayList<Button>();
+
+    protected SharedPreferences sharedPreferences;
 
     private Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {
@@ -128,20 +135,35 @@ public class DigitSpanTask extends AppCompatActivity {
 
     private void saveResult() {
 
-        boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") ?
-                getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false) : false;
-        AsyncTask.execute(() -> {
-            QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
-                    .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax));
-        });
+        if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 1) {
+            boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") ?
+                    getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false) : false;
+            AsyncTask.execute(() -> {
+                QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
+                        .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax));
+            });
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_digit_span_task);
+        sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
-        // fields setup
+        if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 0) {
+            new AlertDialog.Builder(DigitSpanTask.this)
+                    .setTitle("Settings")
+                    .setMessage("Allow data collection in the settings to save results.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // Perform action when "Discard" button is clicked
+                        }
+                    })
+                    .show();
+        }
+            // fields setup
         this.numberField = findViewById(R.id.numberField);
         this.startBtn = findViewById(R.id.start);
         this.instructionField = findViewById(R.id.instructionField);
