@@ -78,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
+
             android:text="Make sure the intervals are correct and don't overlap"
             android:textColor="#FF0000"
             android:textSize="20dp" />
@@ -86,11 +87,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            android:id="@+id/morning_interval_textview"
             android:padding="10dp"
             android:textColor="#000000"
             android:text="Morning interval" />
 
         <LinearLayout
+            android:id="@+id/morning_interval_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -163,9 +166,12 @@
             android:textSize="20dp"
             android:textColor="#000000"
             android:padding="10dp"
+            android:id="@+id/day_interval_textview"
             android:text="Day interval" />
 
         <LinearLayout
+
+            android:id="@+id/day_interval_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -238,11 +244,14 @@
             android:textSize="20dp"
             android:padding="10dp"
             android:textColor="#000000"
+            android:id="@+id/evening_interval_textview"
+
             android:text="Evening interval" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/evening_interval_layout"
             android:orientation="horizontal">
 
             <TextView
@@ -331,13 +340,18 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/data_collection_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -352,10 +366,119 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="16dp"
-            />
+            android:layout_marginStart="16dp" />
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text="Questionnaire"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <Switch
+                android:id="@+id/questionnaire_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:id="@+id/questionnaire_layout"
+            android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:text="Times per day"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <NumberPicker
+                android:id="@+id/times_per_day_picker"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/periodicity_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:text="Periodicity"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <NumberPicker
+                android:id="@+id/periodicity_picker"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1" />
+
+        </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="Digit Span Task"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <Switch
+            android:id="@+id/digit_span_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp" />
+
+    </RelativeLayout>
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/save_button"
