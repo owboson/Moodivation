@@ -9,10 +9,11 @@
         <entry key="app/src/main/res/layout/activity_digit_span_task.xml" value="0.3021881103515625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16185150146484376" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.10572916666666667" />
-        <entry key="app/src/main/res/layout/activity_settings_page.xml" value="0.2553756713867188" />
+        <entry key="app/src/main/res/layout/activity_settings_page.xml" value="0.17880401611328126" />
         <entry key="app/src/main/res/layout/content_settings_page.xml" value="0.10572916666666667" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.10075531005859373" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.15463968912760417" />
+        <entry key="app/src/main/res/layout/free_text_question_view.xml" value="0.17980072463768115" />
       </map>
     </option>
   </component>

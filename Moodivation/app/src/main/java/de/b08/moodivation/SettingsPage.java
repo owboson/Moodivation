@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import java.util.Map;
 
+import de.b08.moodivation.ui.CustomPickerAdapter;
+
 public class SettingsPage extends AppCompatActivity {
 
     // Find the switch and the LinearLayout in your activity or fragment
@@ -46,17 +48,32 @@ public class SettingsPage extends AppCompatActivity {
     NumberPicker minute_pickers[];
 
     LinearLayout intervalsLayout;
-    RelativeLayout dataCollectionLayout;
+    LinearLayout dataCollectionLayout;
     RelativeLayout intervalsSwitchLayout;
+
+    TextView morningIntervalTextview;
+    TextView dayIntervalTextview;
+    TextView eveningIntervalTextview;
+
+    LinearLayout morningInterval_layout;
+    LinearLayout dayInterval_layout;
+    LinearLayout evenigInterval_layout;
+
 
     Switch aSwitch;
     Switch changeIntervalsSwitch;
     Switch dataCollectSwitch;
     Switch googleApiSwitch;
 
+    Switch questionnaireSwitch;
+    Switch digitSpanSwitch;
+
+    LinearLayout questionnaireLayout;
+    RelativeLayout periodicityLayout;
+    NumberPicker timesPerDayPicker;
+    NumberPicker periodicityPicker;
+
     TextView errorText;
-
-
     Button saveButton;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -71,6 +88,8 @@ public class SettingsPage extends AppCompatActivity {
 
         String evening_from = sharedPreferences.getString("evening_from", "17:0");
         String evening_to = sharedPreferences.getString("evening_to", "19:0");
+
+
 
         this.morning_from_hour_picker.setValue(Integer.parseInt(morning_from.split(":")[0]));
         this.morning_from_minute_picker.setValue(Integer.parseInt(morning_from.split(":")[1]));
@@ -155,27 +174,72 @@ public class SettingsPage extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_page);
 
+        sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
+
         aSwitch = findViewById(R.id.notifications_switch);
         intervalsLayout = findViewById(R.id.intervals_layout);
         intervalsSwitchLayout = findViewById(R.id.intervals_switch);
+
+        morningIntervalTextview = findViewById(R.id.morning_interval_textview);
+        dayIntervalTextview = findViewById(R.id.day_interval_textview);
+        eveningIntervalTextview = findViewById(R.id.evening_interval_textview);
+
+        morningInterval_layout = findViewById(R.id.morning_interval_layout);
+        dayInterval_layout = findViewById(R.id.day_interval_layout);
+        evenigInterval_layout = findViewById(R.id.evening_interval_layout);
 
         dataCollectSwitch = findViewById(R.id.allow_data_collect_switch);
         changeIntervalsSwitch = findViewById(R.id.change_intervals_switch);
         dataCollectionLayout = findViewById(R.id.data_collection_view);
 
         googleApiSwitch = findViewById(R.id.google_api_switch);
+        questionnaireSwitch = findViewById(R.id.questionnaire_switch);
+        questionnaireSwitch.setChecked(sharedPreferences.getInt("allow_questionnaire_data_collection", 0)==1);
+
+        digitSpanSwitch = findViewById(R.id.digit_span_switch);
+
+        questionnaireLayout = findViewById(R.id.questionnaire_layout);
+
+        questionnaireLayout.setVisibility(sharedPreferences.getInt("allow_questionnaire_data_collection", 0)==1 ? View.VISIBLE : View.GONE);
+        periodicityLayout = findViewById(R.id.periodicity_layout);
 
         saveButton = findViewById(R.id.save_button);
 
         errorText = findViewById(R.id.error_text);
         errorText.setVisibility(View.GONE);
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
+        timesPerDayPicker = findViewById(R.id.times_per_day_picker);
+        timesPerDayPicker.setMinValue(1);
+        timesPerDayPicker.setMaxValue(3);
+        timesPerDayPicker.setValue(sharedPreferences.getInt("questionnaire_periodicity", 3));
+
+
+        periodicityPicker = findViewById(R.id.periodicity_picker);
+        CustomPickerAdapter formatter = new CustomPickerAdapter(2);
+        periodicityPicker.setFormatter(formatter);
+        periodicityPicker.setMinValue(0);
+        periodicityPicker.setMaxValue(2);
+
+
+        if (sharedPreferences.getInt("questionnaire_periodicity", 3) == 1){
+            periodicityPicker.setFormatter(new CustomPickerAdapter(1));
+            periodicityPicker.setValue(sharedPreferences.getInt("questionnaire_periodicity_details", 0));
+        } else if (sharedPreferences.getInt("questionnaire_periodicity", 3) == 2){
+            periodicityPicker.setValue(sharedPreferences.getInt("questionnaire_periodicity_details", 0));
+            periodicityPicker.setFormatter(new CustomPickerAdapter(2));
+        } else if (sharedPreferences.getInt("questionnaire_periodicity", 3) == 3) {
+            periodicityLayout.setVisibility(View.GONE);
+        }
+
+        if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 1) {
+            digitSpanSwitch.setChecked(true);
+        }
 
         aSwitch.setChecked(sharedPreferences.getInt("allow_notifs", 0) == 1);
         intervalsSwitchLayout.setVisibility(aSwitch.isChecked() ? View.VISIBLE : View.GONE);
@@ -275,9 +339,39 @@ public class SettingsPage extends AppCompatActivity {
                 } else {
                     dataCollectionLayout.setVisibility(View.GONE);
                     googleApiSwitch.setChecked(false);
+                    questionnaireSwitch.setChecked(false);
+                    questionnaireLayout.setVisibility(View.GONE);
+
+                    digitSpanSwitch.setChecked(false);
+
                 }
             }
         });
+
+        questionnaireSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Set the visibility of the LinearLayout based on the state of the switch
+                if (isChecked) {
+                    questionnaireLayout.setVisibility(View.VISIBLE);
+                } else {
+                    questionnaireLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        timesPerDayPicker.setOnValueChangedListener((_v, _vv, newVal) -> {
+            if(newVal < 3){
+                periodicityPicker.setValue(0);
+                periodicityPicker.setFormatter(new CustomPickerAdapter(newVal));
+                periodicityLayout.setVisibility(View.VISIBLE);
+                periodicityPicker.invalidate();
+            } else {
+                periodicityLayout.setVisibility(View.GONE);
+                periodicityPicker.invalidate();
+            }
+        });
+
 
 
         morning_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
@@ -375,6 +469,7 @@ public class SettingsPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 editor = sharedPreferences.edit();
+                System.out.println(periodicityPicker.getValue());
                 int morning_from_hour_picker_val = morning_from_hour_picker.getValue();
                 int morning_from_minute_picker_val = morning_from_minute_picker.getValue();
                 int morning_to_hour_picker_val = morning_to_hour_picker.getValue();
@@ -421,6 +516,10 @@ public class SettingsPage extends AppCompatActivity {
                     editor.putInt("allow_data_collection", dataCollectSwitch.isChecked() ? 1 : 0);
                     editor.putInt("google_fit_collection", googleApiSwitch.isChecked() ? 1 : 0);
 
+                    editor.putInt("allow_questionnaire_data_collection", questionnaireSwitch.isChecked() ? 1: 0);
+                    editor.putInt("questionnaire_periodicity", timesPerDayPicker.getValue());
+                    editor.putInt("questionnaire_periodicity_details", periodicityPicker.getValue());
+                    editor.putInt("allow_digit_span_collection", digitSpanSwitch.isChecked() ? 1: 0);
                     editor.commit();
 
                     changeIntervalsSwitch.setChecked(false);
@@ -438,16 +537,6 @@ public class SettingsPage extends AppCompatActivity {
                         .show();
 
                 }
-
-                Map<String, ?> allValues = sharedPreferences.getAll();
-
-// Iterate over the map and print out the key-value pairs
-                for (Map.Entry<String, ?> entry : allValues.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    Log.d("TAG", key + ": " + value.toString());
-                }
-
             }
         });
     }
