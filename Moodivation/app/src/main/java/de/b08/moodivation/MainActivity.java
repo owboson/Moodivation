@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent1 = new Intent(context, NotificationReceiver.class);
         intent1.setAction("morningId");
-        pendingIntent1 = PendingIntent.getBroadcast(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent1 = PendingIntent.getBroadcast(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar1 = Calendar.getInstance(zone);
         calendar1.set(Calendar.HOUR_OF_DAY, morningNotif.getHour());
         calendar1.set(Calendar.MINUTE, morningNotif.getMinute());
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent2 = new Intent(context, NotificationReceiver.class);
         intent2.setAction("dayId");
-        pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar2 = Calendar.getInstance(zone);
         calendar2.set(Calendar.HOUR_OF_DAY, dayNotif.getHour());
         calendar2.set(Calendar.MINUTE, dayNotif.getMinute());
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent3 = new Intent(context, NotificationReceiver.class);
         intent3.setAction("eveningId");
-        pendingIntent3 = PendingIntent.getBroadcast(context, 2, intent3, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent3 = PendingIntent.getBroadcast(context, 2, intent3, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar3 = Calendar.getInstance(zone);
         calendar3.set(Calendar.HOUR_OF_DAY, eveningNotif.getHour());
         calendar3.set(Calendar.MINUTE, eveningNotif.getMinute());
