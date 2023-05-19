@@ -78,7 +78,7 @@ public class ChoiceQuestionView extends QuestionView<ChoiceQuestion, ChoiceAnswe
     @Override
     public ChoiceAnswer getAnswer() {
         if (!isEnabled()) {
-            return new ChoiceAnswer(getQuestionnaireId(), getQuestion().getId(), Collections.emptyList());
+            return new ChoiceAnswer(getQuestion().getId(), getQuestionnaireId(), Collections.emptyList());
         }
 
         if (getQuestion().isMultiSelectionAllowed()) {
