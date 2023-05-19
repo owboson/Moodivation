@@ -9,4 +9,15 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="sensorServiceDescription">This service is used to collect sensor data.</string>
+    <string name="locationServiceDescription">This service is used to collect location data.</string>
+    <string name="accuracyLabelText">Accuracy</string>
+    <string name="frequencyLabelText">Frequency</string>
+    <string name="stepDetectorSensorSettingsTitle">Step Detector</string>
+    <string name="accelerometerSensorSettingsTitle">Accelerometer</string>
+    <string name="locationSettingsTitle">Location Sensors</string>
+
+    <string name="locationPermissionDialogTitle">Location Permissions</string>
+    <string name="locationPermissionDialogText">Please allow us to access your location :)</string>
+    <string name="locationPermissionEnableInSettingsDialogText">Please allow us to access your location :) Go to settings.</string>
 </resources>

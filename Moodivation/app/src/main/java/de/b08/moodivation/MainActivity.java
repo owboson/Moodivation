@@ -26,6 +26,9 @@ import java.util.TimeZone;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.notifications.NotificationReceiver;
 import de.b08.moodivation.notifications.RandomTimeGenerator;
+import de.b08.moodivation.sensors.SensorConstants;
+import de.b08.moodivation.services.LocationService;
+import de.b08.moodivation.services.SensorService;
 
 public class MainActivity extends AppCompatActivity {
     protected SharedPreferences sharedPreferences;
@@ -58,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.startActivity(new Intent(this, DigitSpanTask.class));
         });
         /////////////////        Notifications logic
+
+        SensorConstants.presetSensorSharedPreferencesIfRequired(getApplicationContext());
+        startService(new Intent(getApplicationContext(), SensorService.class));
+
+        startForegroundService(new Intent(getApplicationContext(), LocationService.class));
 
         System.out.println(sharedPreferences.getInt("allow_notifs", 1));
         set_notifs(this.sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));

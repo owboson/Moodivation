@@ -1,5 +1,6 @@
 package de.b08.moodivation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -8,6 +9,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,11 +24,18 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.util.Map;
+import java.util.Arrays;
 
+import de.b08.moodivation.sensors.SensorConstants;
+import de.b08.moodivation.sensors.SensorDelay;
+import de.b08.moodivation.services.LocationService;
+import de.b08.moodivation.services.SensorService;
 import de.b08.moodivation.ui.CustomPickerAdapter;
+import de.b08.moodivation.ui.SensorSettingsView;
 
 public class SettingsPage extends AppCompatActivity {
+
+    private final int LOCATION_PERMISSION_REQUEST_ID = 13;
 
     // Find the switch and the LinearLayout in your activity or fragment
     boolean correctIntervals_morning = true;
@@ -78,6 +89,10 @@ public class SettingsPage extends AppCompatActivity {
     Button saveButton;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+    SensorSettingsView<Void, Void> stepDetectorSettingsView;
+    SensorSettingsView<Void, SensorDelay> accelerometerSettingsView;
+    SensorSettingsView<LocationService.Accuracy, LocationService.Frequency> locationSettingsView;
 
     private void reset_pickers() {
 
@@ -304,6 +319,9 @@ public class SettingsPage extends AppCompatActivity {
 
         reset_pickers();
 
+        addSensorSettingViews(dataCollectionLayout);
+        addLocationSettingsView(dataCollectionLayout);
+
 
 //        // Set the initial visibility of the time-intervals-layout and data-collection-layout based on the state of the switch
         intervalsLayout.setVisibility(changeIntervalsSwitch.isChecked() ? View.VISIBLE : View.GONE);
@@ -524,6 +542,10 @@ public class SettingsPage extends AppCompatActivity {
                     editor.putInt("questionnaire_periodicity", timesPerDayPicker.getValue());
                     editor.putInt("questionnaire_periodicity_details", periodicityPicker.getValue());
                     editor.putInt("allow_digit_span_collection", digitSpanSwitch.isChecked() ? 1: 0);
+
+                    saveSensorSettings(editor);
+                    saveLocationSettings(editor);
+
                     editor.commit();
 
                     MainActivity act_ = new MainActivity();
@@ -549,5 +571,135 @@ public class SettingsPage extends AppCompatActivity {
         });
     }
 
+    private void addSensorSettingViews(LinearLayout dataCollectionLayout) {
+        if (SensorService.isSensorAvailable(Sensor.TYPE_STEP_DETECTOR, getApplicationContext())) {
+            stepDetectorSettingsView = new SensorSettingsView<>(getApplicationContext(), null);
+            stepDetectorSettingsView.setSensorEnabled(sharedPreferences.getBoolean(SensorConstants.STEP_DETECTOR_ENABLED_SETTING,
+                    SensorConstants.STEP_DETECTOR_DEFAULT_ENABLED_VALUE));
+            stepDetectorSettingsView.setFrequencyViewVisible(false);
+            stepDetectorSettingsView.setAccuracyViewVisible(false);
+            stepDetectorSettingsView.setSensorTitle(R.string.stepDetectorSensorSettingsTitle);
+            dataCollectionLayout.addView(stepDetectorSettingsView);
+        }
+        if (SensorService.isSensorAvailable(Sensor.TYPE_ACCELEROMETER, getApplicationContext())) {
+            accelerometerSettingsView = new SensorSettingsView<>(getApplicationContext(), null);
+            accelerometerSettingsView.setFrequencyViewVisible(true);
+            accelerometerSettingsView.setAccuracyViewVisible(false);
+            accelerometerSettingsView.setSensorTitle(R.string.accelerometerSensorSettingsTitle);
+            accelerometerSettingsView.setSensorEnabled(sharedPreferences.getBoolean(SensorConstants.ACCELEROMETER_ENABLED_SETTING,
+                    SensorConstants.ACCELEROMETER_DEFAULT_ENABLED_VALUE));
+            accelerometerSettingsView.setFrequencyValues(Arrays.asList(SensorDelay.values()));
+            accelerometerSettingsView.setFrequencyItemTitleProvider(SensorDelay::name);
 
+            SensorDelay currentSensorDelay = SensorDelay.getDelayFor(sharedPreferences.getInt(SensorConstants.ACCELEROMETER_FREQUENCY_SETTING,
+                    SensorConstants.ACCELEROMETER_DEFAULT_FREQUENCY_VALUE));
+            accelerometerSettingsView.setSelectedFrequency(currentSensorDelay);
+            dataCollectionLayout.addView(accelerometerSettingsView);
+        }
+    }
+
+    private void saveSensorSettings(SharedPreferences.Editor editor) {
+        if (stepDetectorSettingsView != null) {
+            editor.putBoolean(SensorConstants.STEP_DETECTOR_ENABLED_SETTING, stepDetectorSettingsView.isSensorEnabled());
+        }
+        if (accelerometerSettingsView != null) {
+            editor.putBoolean(SensorConstants.ACCELEROMETER_ENABLED_SETTING, accelerometerSettingsView.isSensorEnabled());
+
+            if (accelerometerSettingsView.isSensorEnabled()) {
+                SensorDelay newFrequency = accelerometerSettingsView.getSelectedFrequency();
+                assert newFrequency != null;
+                editor.putInt(SensorConstants.ACCELEROMETER_FREQUENCY_SETTING, newFrequency.getValue());
+            }
+        }
+    }
+
+    public void addLocationSettingsView(LinearLayout dataCollectionLayout) {
+        locationSettingsView = new SensorSettingsView<>(getApplicationContext(), null);
+        locationSettingsView.setFrequencyViewVisible(true);
+        locationSettingsView.setAccuracyViewVisible(true);
+        locationSettingsView.setSensorTitle(R.string.locationSettingsTitle);
+        locationSettingsView.setOnSensorEnabledChangeListener(isEnabled -> {
+            if (isEnabled)
+                checkLocationPermissions();
+        });
+
+        locationSettingsView.setFrequencyValues(Arrays.asList(LocationService.Frequency.values()));
+        locationSettingsView.setAccuracyValues(Arrays.asList(LocationService.Accuracy.values()));
+        locationSettingsView.setFrequencyItemTitleProvider(Enum::name);
+        locationSettingsView.setAccuracyItemTitleProvider(Enum::name);
+
+        dataCollectionLayout.addView(locationSettingsView);
+
+        boolean permissionGranted = checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)  == PackageManager.PERMISSION_GRANTED;
+        boolean enabled = sharedPreferences.getBoolean(LocationService.Constants.LOCATION_SERVICE_ENABLED_SETTING,
+                LocationService.Constants.LOCATION_SERVICE_ENABLED_DEFAULT_VALUE) && permissionGranted;
+
+        locationSettingsView.setSensorEnabledAndBlockEvent(enabled);
+
+        locationSettingsView.setSelectedFrequency(LocationService.Frequency.getFrequencyFor(
+                sharedPreferences.getLong(LocationService.Constants.LOCATION_SERVICE_MIN_DISTANCE_M_SETTING,
+                        LocationService.Constants.LOCATION_SERVICE_MIN_TIME_MS_DEFAULT_VALUE.getValue())));
+
+        locationSettingsView.setSelectedAccuracy(LocationService.Accuracy.getAccuracyFor(
+                sharedPreferences.getString(LocationService.Constants.LOCATION_SERVICE_ACCURACY_SETTING,
+                        LocationService.Constants.LOCATION_SERVICE_ACCURACY_DEFAULT_VALUE.getValue())));
+    }
+
+    private void saveLocationSettings(SharedPreferences.Editor editor) {
+        if (locationSettingsView == null)
+            return;
+
+        editor.putBoolean(LocationService.Constants.LOCATION_SERVICE_ENABLED_SETTING, locationSettingsView.isSensorEnabled());
+        if (locationSettingsView.getSelectedFrequency() != null)
+            editor.putLong(LocationService.Constants.LOCATION_SERVICE_MIN_TIME_MS_SETTING, locationSettingsView.getSelectedFrequency().getValue());
+        if (locationSettingsView.getSelectedAccuracy() != null)
+            editor.putString(LocationService.Constants.LOCATION_SERVICE_ACCURACY_SETTING, locationSettingsView.getSelectedAccuracy().getValue());
+    }
+
+    public void checkLocationPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)  == PackageManager.PERMISSION_GRANTED) {
+            // no action
+        } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                || shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.locationPermissionDialogTitle);
+            builder.setMessage(R.string.locationPermissionDialogText);
+
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                requestLocationPermission();
+            });
+
+            builder.create().show();
+        } else {
+            requestLocationPermission();
+        }
+    }
+
+    private void requestLocationPermission() {
+        // see https://developer.android.com/training/location/permissions#background-dialog-target-sdk-version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            requestPermissions(new String[] {
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+            }, LOCATION_PERMISSION_REQUEST_ID);
+        } else{
+            requestPermissions(new String[] {
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            }, LOCATION_PERMISSION_REQUEST_ID);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_ID) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED && grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                locationSettingsView.setSensorEnabledAndBlockEvent(false);
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
