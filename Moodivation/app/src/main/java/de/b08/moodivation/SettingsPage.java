@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -36,6 +37,7 @@ import de.b08.moodivation.ui.SensorSettingsView;
 public class SettingsPage extends AppCompatActivity {
 
     private final int LOCATION_PERMISSION_REQUEST_ID = 13;
+    private final int BACKGROUND_LOCATION_PERMISSION_REQUEST_ID = 14;
 
     // Find the switch and the LinearLayout in your activity or fragment
     boolean correctIntervals_morning = true;
@@ -660,7 +662,7 @@ public class SettingsPage extends AppCompatActivity {
     public void checkLocationPermissions() {
         if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)  == PackageManager.PERMISSION_GRANTED) {
-            // no action
+            requestBackgroundLocationPermission();
         } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 || shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -698,8 +700,26 @@ public class SettingsPage extends AppCompatActivity {
         if (requestCode == LOCATION_PERMISSION_REQUEST_ID) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED && grantResults[1] == PackageManager.PERMISSION_DENIED) {
                 locationSettingsView.setSensorEnabledAndBlockEvent(false);
+            } else {
+                requestBackgroundLocationPermission();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void requestBackgroundLocationPermission() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.locationBackgroundPermissionDialogTitle);
+        builder.setMessage(R.string.locationBackgroundPermissionDialogText);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_REQUEST_ID);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> {});
+
+        builder.create().show();
     }
 }

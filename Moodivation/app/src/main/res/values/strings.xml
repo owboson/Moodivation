@@ -19,5 +19,9 @@
 
     <string name="locationPermissionDialogTitle">Location Permissions</string>
     <string name="locationPermissionDialogText">Please allow us to access your location :)</string>
+    <string name="locationBackgroundPermissionDialogTitle">Location Permissions</string>
+    <string name="locationBackgroundPermissionDialogText">Please allow us to access your location in the background :)</string>
     <string name="locationPermissionEnableInSettingsDialogText">Please allow us to access your location :) Go to settings.</string>
+    <string name="locationServiceForegroundNotificationTitle">Location Service</string>
+    <string name="locationServiceForegroundNotificationText">We are collecting location data.</string>
 </resources>

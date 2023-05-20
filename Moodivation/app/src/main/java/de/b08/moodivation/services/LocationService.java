@@ -1,6 +1,9 @@
 package de.b08.moodivation.services;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +18,13 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 
+import de.b08.moodivation.R;
 import de.b08.moodivation.database.location.LocationDatabase;
 import de.b08.moodivation.database.location.entities.LocationHistoryEntity;
 
@@ -112,6 +117,7 @@ public class LocationService extends Service implements LocationListener,
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        notifyUser();
         registerListener();
 
         return START_STICKY;
@@ -175,6 +181,24 @@ public class LocationService extends Service implements LocationListener,
 
         locationManager.removeUpdates(this);
         registerListener();
+    }
+
+    private void notifyUser() {
+        String channelId = "LOC_SERVICE_NOTIFICATION_CHANNEL";
+        NotificationChannel notificationChannel = new NotificationChannel(channelId,
+                "Notification channel for location service", NotificationManager.IMPORTANCE_HIGH);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                .setContentTitle(getString(R.string.locationServiceForegroundNotificationTitle))
+                .setContentText(getString(R.string.locationServiceForegroundNotificationText))
+                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+                .setAutoCancel(false)
+                .build();
+
+        startForeground(1, notification);
     }
 
 }
