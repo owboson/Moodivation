@@ -1,5 +1,6 @@
 package de.b08.moodivation;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,31 +14,39 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.AnswerEntity;
+import de.b08.moodivation.database.questionnaire.entities.QuestionNotesEntity;
+import de.b08.moodivation.database.questionnaire.entities.QuestionnaireNotesEntity;
+import de.b08.moodivation.questionnaire.Note;
 import de.b08.moodivation.questionnaire.QuestionnaireBundle;
 import de.b08.moodivation.questionnaire.QuestionnaireLoader;
 import de.b08.moodivation.questionnaire.answer.Answer;
+import de.b08.moodivation.questionnaire.view.QuestionnaireNotesView;
 import de.b08.moodivation.questionnaire.view.QuestionnaireView;
 
 public class QuestionnaireActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
+    private String note;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
 
+        note = null;
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
         QuestionnaireView questionnaireView = findViewById(R.id.questionnaireView);
         Button saveBtn = findViewById(R.id.saveBtn);
 
         saveBtn.setOnClickListener(v -> {
-            saveAnswers(questionnaireView.getAllAnswers());
+            saveAnswers(questionnaireView.getQuestionnaireId(), questionnaireView.getAllAnswers(), questionnaireView.getAllNotes());
 
             String day_from = sharedPreferences.getString("day_from", "13:30");
             String day_to = sharedPreferences.getString("day_to", "14:30");
@@ -48,6 +57,9 @@ public class QuestionnaireActivity extends AppCompatActivity {
                 startActivity(digitSpanTask);
             }
         });
+
+        Button addNoteBtn = findViewById(R.id.addNoteBtn);
+        addNoteBtn.setOnClickListener(v -> showAddNoteAlert());
 
         questionnaireView.addUpdateHandler(() -> saveBtn.setEnabled(questionnaireView.isAnswered()));
 
@@ -60,13 +72,24 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
-    private void saveAnswers(List<Answer<?>> answers) {
+    private void saveAnswers(String questionnaireId, List<Answer<?>> answers, List<Note> notes) {
         Date now = new Date();
         List<AnswerEntity> answerEntities = answers.stream()
                 .map(a -> AnswerEntity.from(a, now))
                 .collect(Collectors.toList());
 
-        AsyncTask.execute(() -> QuestionnaireDatabase.getInstance(getApplicationContext()).answerDao().insertAll(answerEntities));
+        List<QuestionNotesEntity> questionNotesEntities = notes.stream()
+                .map(n -> QuestionNotesEntity.from(n, now))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        AsyncTask.execute(() -> {
+            QuestionnaireDatabase.getInstance(getApplicationContext()).answerDao().insertAll(answerEntities);
+            QuestionnaireDatabase.getInstance(getApplicationContext()).questionNotesDao().insertAll(questionNotesEntities);
+            if (note != null)
+                QuestionnaireDatabase.getInstance(getApplicationContext()).questionnaireNotesDao()
+                        .insert(new QuestionnaireNotesEntity(questionnaireId, now, note));
+        });
     }
 
     private boolean isNoonQuestionnaire(Date now, String from, String to) {
@@ -80,5 +103,25 @@ public class QuestionnaireActivity extends AppCompatActivity {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void showAddNoteAlert() {
+        QuestionnaireNotesView questionnaireNotesView = new QuestionnaireNotesView(this, null);
+        if (note != null)
+            questionnaireNotesView.setText(note);
+
+        questionnaireNotesView.getQuestionnaireNotesTextBox().setMinimumHeight(450);
+        questionnaireNotesView.setTitleVisible(false);
+
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
+                .setView(questionnaireNotesView)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    note = questionnaireNotesView.getText().toString();
+                    if (note.trim().isEmpty())
+                        note = null;
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {})
+                .show();
     }
 }
