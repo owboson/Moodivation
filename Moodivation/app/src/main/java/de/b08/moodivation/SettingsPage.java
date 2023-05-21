@@ -63,14 +63,14 @@ public class SettingsPage extends AppCompatActivity {
 
     private void reset_pickers() {
 
-        String morning_from = sharedPreferences.getString("morning_from", "9:0");
-        String morning_to = sharedPreferences.getString("morning_to", "10:30");
+        String morning_from = sharedPreferences.getString("morning_from", "7:0");
+        String morning_to = sharedPreferences.getString("morning_to", "11:0");
 
-        String day_from = sharedPreferences.getString("day_from", "13:30");
-        String day_to = sharedPreferences.getString("day_to", "14:30");
+        String day_from = sharedPreferences.getString("day_from", "12:0");
+        String day_to = sharedPreferences.getString("day_to", "14:0");
 
-        String evening_from = sharedPreferences.getString("evening_from", "18:0");
-        String evening_to = sharedPreferences.getString("evening_to", "19:30");
+        String evening_from = sharedPreferences.getString("evening_from", "17:0");
+        String evening_to = sharedPreferences.getString("evening_to", "19:0");
 
         this.morning_from_hour_picker.setValue(Integer.parseInt(morning_from.split(":")[0]));
         this.morning_from_minute_picker.setValue(Integer.parseInt(morning_from.split(":")[1]));
