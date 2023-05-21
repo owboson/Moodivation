@@ -24,4 +24,7 @@
     <string name="locationPermissionEnableInSettingsDialogText">Please allow us to access your location :) Go to settings.</string>
     <string name="locationServiceForegroundNotificationTitle">Location Service</string>
     <string name="locationServiceForegroundNotificationText">We are collecting location data.</string>
+
+    <string name="addQuestionNoteAlertTitle">Add Note</string>
+    <string name="questionnaireNoteViewEditTextHint">Add your notes here.</string>
 </resources>

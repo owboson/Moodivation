@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.google.android.material.divider.MaterialDivider;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import de.b08.moodivation.R;
+import de.b08.moodivation.questionnaire.Note;
 import de.b08.moodivation.questionnaire.Questionnaire;
 import de.b08.moodivation.questionnaire.answer.Answer;
 import de.b08.moodivation.questionnaire.constraints.Constraint;
@@ -52,6 +55,7 @@ public class QuestionnaireView extends LinearLayout {
     public void setQuestionnaire(Questionnaire questionnaire) {
         this.questionnaire = questionnaire;
 
+        MaterialDivider lastDivider = null;
         for (QuestionnaireElement e : questionnaire.getQuestionnaireElements()) {
             QuestionView<?,?> questionView = null;
             if (e instanceof NumberQuestion) {
@@ -72,6 +76,10 @@ public class QuestionnaireView extends LinearLayout {
                 questionView.setQuestionnaireId(questionnaire.getId());
                 questionnaireLinearLayout.addView(questionView);
                 questionViewMap.put(e.getId(), questionView);
+
+                lastDivider = new MaterialDivider(getContext());
+                questionnaireLinearLayout.addView(lastDivider);
+
                 questionView.registerUpdateHandler(view -> {
                     checkQuestionnaireAnswered();
                     checkConstraints(view.getQuestion().getId(), view);
@@ -79,6 +87,9 @@ public class QuestionnaireView extends LinearLayout {
                 });
             }
         }
+
+        if (lastDivider != null)
+            questionnaireLinearLayout.removeView(lastDivider);
 
         questionnaire.getConstraints().forEach(constraint -> {
             if (questionViewMap.containsKey(constraint.getObservedQuestionId()))
@@ -130,6 +141,20 @@ public class QuestionnaireView extends LinearLayout {
         return questionViewMap.values().stream()
                 .map(QuestionView::getAnswer)
                 .collect(Collectors.toList());
+    }
+
+    public List<Note> getAllNotes() {
+        if (!isAnswered())
+            return Collections.emptyList();
+
+        return questionViewMap.values().stream()
+                .map(QuestionView::getNote)
+                .filter(n -> n.getValue() != null)
+                .collect(Collectors.toList());
+    }
+
+    public String getQuestionnaireId() {
+        return questionnaire.getId();
     }
 
 }
