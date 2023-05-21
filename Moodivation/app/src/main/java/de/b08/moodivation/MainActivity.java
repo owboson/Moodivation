@@ -26,6 +26,9 @@ import java.util.TimeZone;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.notifications.NotificationReceiver;
 import de.b08.moodivation.notifications.RandomTimeGenerator;
+import de.b08.moodivation.sensors.SensorConstants;
+import de.b08.moodivation.services.LocationService;
+import de.b08.moodivation.services.SensorService;
 
 public class MainActivity extends AppCompatActivity {
     protected SharedPreferences sharedPreferences;
@@ -58,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.startActivity(new Intent(this, DigitSpanTask.class));
         });
         /////////////////        Notifications logic
+
+        SensorConstants.presetSensorSharedPreferencesIfRequired(getApplicationContext());
+        startService(new Intent(getApplicationContext(), SensorService.class));
+
+        startForegroundService(new Intent(getApplicationContext(), LocationService.class));
 
         System.out.println(sharedPreferences.getInt("allow_notifs", 1));
         set_notifs(this.sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
@@ -144,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent1 = new Intent(context, NotificationReceiver.class);
         intent1.setAction("morningId");
-        pendingIntent1 = PendingIntent.getBroadcast(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent1 = PendingIntent.getBroadcast(context, 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar1 = Calendar.getInstance(zone);
         calendar1.set(Calendar.HOUR_OF_DAY, morningNotif.getHour());
         calendar1.set(Calendar.MINUTE, morningNotif.getMinute());
@@ -160,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent2 = new Intent(context, NotificationReceiver.class);
         intent2.setAction("dayId");
-        pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar2 = Calendar.getInstance(zone);
         calendar2.set(Calendar.HOUR_OF_DAY, dayNotif.getHour());
         calendar2.set(Calendar.MINUTE, dayNotif.getMinute());
@@ -175,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent3 = new Intent(context, NotificationReceiver.class);
         intent3.setAction("eveningId");
-        pendingIntent3 = PendingIntent.getBroadcast(context, 2, intent3, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent3 = PendingIntent.getBroadcast(context, 2, intent3, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar3 = Calendar.getInstance(zone);
         calendar3.set(Calendar.HOUR_OF_DAY, eveningNotif.getHour());
         calendar3.set(Calendar.MINUTE, eveningNotif.getMinute());

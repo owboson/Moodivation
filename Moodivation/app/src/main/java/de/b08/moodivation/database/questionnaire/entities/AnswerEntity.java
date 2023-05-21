@@ -66,6 +66,7 @@ public class AnswerEntity {
                 try {
                     obj.put("id", choiceQuestionItem.getId());
                     obj.put("value", choiceQuestionItem.getValue());
+                    array.put(obj);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }

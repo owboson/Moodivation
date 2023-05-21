@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="questionViewBgColor" format="reference" />
+    <declare-styleable name="SensorSettingsView">
+        <attr name="showAccuracy" format="boolean" />
+        <attr name="sensorTitle" format="string" />
+    </declare-styleable>
 </resources>
