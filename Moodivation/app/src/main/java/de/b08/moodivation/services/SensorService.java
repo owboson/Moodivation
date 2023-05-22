@@ -42,7 +42,7 @@ public class SensorService extends Service implements SharedPreferences.OnShared
         accelerometerSensorObserver = new SingleSensorObserver(Sensor.TYPE_ACCELEROMETER, getApplicationContext());
         accelerometerSensorObserver.setBatchStoreFunc(observations -> {
             sensorDatabase.accelerometerDataDao().insertAll(observations.stream()
-                    .map(o -> new AccelerometerDataEntity(new Date(o.getTimestamp()), o.getValues()[0],o.getValues()[0],o.getValues()[0], (byte) o.getAccuracy()))
+                    .map(o -> new AccelerometerDataEntity(new Date(o.getTimestamp()), o.getValues()[0],o.getValues()[1],o.getValues()[2], (byte) o.getAccuracy()))
                     .collect(Collectors.toList())
             );
             return true;
