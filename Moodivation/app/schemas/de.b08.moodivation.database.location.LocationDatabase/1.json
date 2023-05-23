@@ -1,0 +1,94 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "de09c41017c640a06433c780ca3dc1b2",
+    "entities": [
+      {
+        "tableName": "LocationHistoryEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `speed` REAL NOT NULL, `speedAccuracyMetersPerSecond` REAL NOT NULL, `altitude` REAL NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `bearing` REAL NOT NULL, `bearingAccuracyDegrees` REAL NOT NULL, `accuracy` REAL NOT NULL, `verticalAccuracyMeters` REAL NOT NULL, `provider` TEXT, PRIMARY KEY(`timestamp`))",
+        "fields": [
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speed",
+            "columnName": "speed",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speedAccuracyMetersPerSecond",
+            "columnName": "speedAccuracyMetersPerSecond",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "altitude",
+            "columnName": "altitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bearing",
+            "columnName": "bearing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bearingAccuracyDegrees",
+            "columnName": "bearingAccuracyDegrees",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accuracy",
+            "columnName": "accuracy",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "verticalAccuracyMeters",
+            "columnName": "verticalAccuracyMeters",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "timestamp"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'de09c41017c640a06433c780ca3dc1b2')"
+    ]
+  }
+}

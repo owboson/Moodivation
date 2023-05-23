@@ -11,11 +11,32 @@
         android:id="@+id/questionnaireView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1" >
 
-    <Button
-        android:id="@+id/saveBtn"
+    </de.b08.moodivation.questionnaire.view.QuestionnaireView>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/addNoteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="Add Note"
+            app:icon="@android:drawable/stat_notify_chat" />
+
+    </LinearLayout>
+
 </LinearLayout>

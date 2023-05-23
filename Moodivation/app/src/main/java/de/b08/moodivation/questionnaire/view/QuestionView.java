@@ -1,18 +1,22 @@
 package de.b08.moodivation.questionnaire.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.b08.moodivation.R;
-import de.b08.moodivation.questionnaire.answer.Answer;
+import de.b08.moodivation.questionnaire.Note;
 import de.b08.moodivation.questionnaire.QuestionnaireElement;
+import de.b08.moodivation.questionnaire.answer.Answer;
 
 public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answer<?>> extends LinearLayout {
 
@@ -21,6 +25,9 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
 
     private final TextView questionTextView;
     private final LinearLayout questionContentView;
+    private final ImageButton addNoteButton;
+
+    private String note;
 
     private List<QuestionUpdateEventHandler<Q,A>> updateHandlers;
 
@@ -29,7 +36,29 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
         inflate(context, R.layout.question_view, this);
         questionTextView = (TextView) findViewById(R.id.questionTextView);
         questionContentView = (LinearLayout) findViewById(R.id.questionContentView);
+        addNoteButton = (ImageButton) findViewById(R.id.addNoteButton);
         updateHandlers = new ArrayList<>();
+
+        note = null;
+        addNoteButton.setOnClickListener(v -> showAddNoteAlert());
+    }
+
+    private void showAddNoteAlert() {
+        QuestionnaireNotesView questionnaireNotesView = new QuestionnaireNotesView(getContext(), null);
+        if (note != null)
+            questionnaireNotesView.setText(note);
+
+        questionnaireNotesView.getQuestionnaireNotesTextBox().setMinimumHeight(450);
+        questionnaireNotesView.setTitleVisible(false);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
+                .setView(questionnaireNotesView)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    note = questionnaireNotesView.getText().toString();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {})
+                .show();
     }
 
     public void registerUpdateHandler(QuestionUpdateEventHandler<Q,A> handler) {
@@ -78,5 +107,12 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
 
     public void notifyUpdateHandlers() {
         updateHandlers.forEach(a -> a.handleQuestionAnswerUpdate(this));
+    }
+
+    @NonNull
+    public Note getNote() {
+        // TODO: add proper isBlank
+        String val = note == null ? null : note.trim().isEmpty() ? null : note;
+        return new Note(questionnaireId, question.getId(), val);
     }
 }
