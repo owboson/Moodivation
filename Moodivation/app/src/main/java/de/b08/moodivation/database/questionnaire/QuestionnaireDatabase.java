@@ -37,7 +37,8 @@ public abstract class QuestionnaireDatabase extends RoomDatabase {
         if (instance == null) {
             synchronized (QuestionnaireDatabase.class) {
                 instance = Room.databaseBuilder(context, QuestionnaireDatabase.class,
-                        "QuestionnaireDatabase").build();
+                        "QuestionnaireDatabase").fallbackToDestructiveMigration()
+                        .build();
                 return instance;
             }
         }
