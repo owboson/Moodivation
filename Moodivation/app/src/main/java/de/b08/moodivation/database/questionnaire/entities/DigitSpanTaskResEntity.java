@@ -1,6 +1,7 @@
 package de.b08.moodivation.database.questionnaire.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 
 import java.util.Date;
@@ -17,11 +18,15 @@ public class DigitSpanTaskResEntity {
     @NonNull
     public Integer result;
 
+    @Nullable
+    public Date questionnaireAnswerId;
+
     public DigitSpanTaskResEntity(@NonNull Date timestamp, @NonNull Boolean afterNoonQuestionnaire,
-                                  @NonNull Integer result) {
+                                  @NonNull Integer result, @Nullable Date questionnaireAnswerId) {
         this.timestamp = timestamp;
         this.afterNoonQuestionnaire = afterNoonQuestionnaire;
         this.result = result;
+        this.questionnaireAnswerId = questionnaireAnswerId;
     }
 
 }

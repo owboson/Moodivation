@@ -61,6 +61,7 @@ public class SensorService extends Service implements SharedPreferences.OnShared
             );
             return true;
         });
+        stepTriggerSensorObserver.setObservationLiveData(StepLiveData.getInstance());
 
         stepTriggerSensorObserver.setEnabled(sharedPreferences.getBoolean(SensorConstants.STEP_DETECTOR_ENABLED_SETTING,
                 SensorConstants.STEP_DETECTOR_DEFAULT_ENABLED_VALUE));

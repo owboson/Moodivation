@@ -1,0 +1,69 @@
+package de.b08.moodivation.intervention;
+
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+
+import androidx.annotation.Nullable;
+import androidx.media3.common.MediaItem;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+public class InterventionMedia implements Serializable {
+
+    /**
+     * Internal interventions are stored in assets and loaded differently.
+     */
+    private boolean internalIntervention;
+
+    private List<String> imagePaths;
+
+    private String videoPath;
+
+    public InterventionMedia(@Nullable String videoPath, @Nullable List<String> imagePaths, boolean internalIntervention) {
+        this.imagePaths = imagePaths == null ? null : Collections.unmodifiableList(imagePaths);
+        this.videoPath = videoPath;
+        this.internalIntervention = internalIntervention;
+    }
+
+    public boolean isInternalIntervention() {
+        return internalIntervention;
+    }
+
+    public @Nullable List<Drawable> getDrawableImages(Context context) {
+        if (imagePaths == null)
+            return null;
+
+        if (internalIntervention) {
+            return imagePaths.stream().map(p -> {
+                try (InputStream in = context.getAssets().open(p)) {
+                    return new BitmapDrawable(context.getResources(), in);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }).filter(Objects::nonNull).collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    public @Nullable MediaItem getVideoMediaItem() {
+        if (videoPath == null)
+            return null;
+
+        if (internalIntervention) {
+            return MediaItem.fromUri(Uri.parse(String.format("asset:///%s", videoPath)));
+        } else {
+            return null;
+        }
+    }
+
+}

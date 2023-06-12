@@ -1,0 +1,9 @@
+{
+  "description":"How about going for a run?",
+  "displayedDataTypes":["ELAPSED_TIME","TRAVELLED_DISTANCE", "SPEED"],
+  "interventionOptionsData": {
+    "showOptionalImages":false,
+    "showOptionalVideo":false
+  },
+  "title":"Running"
+}
