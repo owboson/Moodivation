@@ -8,8 +8,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import de.b08.moodivation.database.interventions.dao.InterventionRecordEntity;
-import de.b08.moodivation.database.interventions.entities.InterventionRecordDao;
+import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
+import de.b08.moodivation.database.interventions.dao.InterventionRecordDao;
 import de.b08.moodivation.database.typeconverter.DateConverter;
 
 

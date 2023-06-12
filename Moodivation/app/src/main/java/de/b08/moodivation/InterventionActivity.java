@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Date;
 
 import de.b08.moodivation.database.interventions.InterventionDatabase;
-import de.b08.moodivation.database.interventions.dao.InterventionRecordEntity;
+import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.view.InterventionView;
 import de.b08.moodivation.services.LocationLiveData;

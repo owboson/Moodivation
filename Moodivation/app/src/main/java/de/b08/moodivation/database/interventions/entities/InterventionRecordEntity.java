@@ -1,4 +1,4 @@
-package de.b08.moodivation.database.interventions.dao;
+package de.b08.moodivation.database.interventions.entities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

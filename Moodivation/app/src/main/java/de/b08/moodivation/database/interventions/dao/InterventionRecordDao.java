@@ -1,4 +1,4 @@
-package de.b08.moodivation.database.interventions.entities;
+package de.b08.moodivation.database.interventions.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.b08.moodivation.database.interventions.dao.InterventionRecordEntity;
+import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 
 @Dao
 public interface InterventionRecordDao {
