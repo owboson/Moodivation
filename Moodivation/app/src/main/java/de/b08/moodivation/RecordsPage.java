@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +26,7 @@ import de.b08.moodivation.database.interventions.InterventionDatabase;
 import de.b08.moodivation.database.interventions.dao.InterventionRecordDao;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
+import de.b08.moodivation.database.questionnaire.entities.QuestionnaireEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionnaireNotesEntity;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.InterventionBundle;
@@ -59,6 +61,7 @@ public class RecordsPage extends AppCompatActivity {
             @Override
             public void run() {
                 final List<InterventionRecordEntity> records = interventionDatabase.interventionRecordDao().getAllRecords();
+                Collections.reverse(records);
                 for (final InterventionRecordEntity record : records) {
                     final Optional<InterventionBundle> interventionBundle = interventionLoader.getInterventionWithId(record.interventionId, getApplicationContext());
 
@@ -108,8 +111,6 @@ public class RecordsPage extends AppCompatActivity {
                                 from.setText(fromLabelText);
                                 to.setText(toLabelText);
 
-
-
                                 parentView.addView(view);
                             } catch (ParseException e) {
                                 e.printStackTrace();
@@ -121,59 +122,5 @@ public class RecordsPage extends AppCompatActivity {
             }
         });
 
-//        AsyncTask.execute(() -> {
-//            List<InterventionRecordEntity> records = interventionDatabase.interventionRecordDao().getAllRecords();
-//            for( InterventionRecordEntity record : records) {
-//                Optional<InterventionBundle> interventionBundle = interventionLoader.getInterventionWithId(record.interventionId, getApplicationContext());
-//                System.out.println(interventionBundle);
-//                View view = inflater.inflate(R.layout.loop_item, parentView, false);
-//                TextView textViewTitle = view.findViewById(R.id.textViewTitle);
-//                TextView textViewDescription = view.findViewById(R.id.textViewDescription);
-//
-//                if (interventionBundle.isPresent()) {
-//                    InterventionBundle bundle = interventionBundle.get();
-//                    // Access the intervention or intervention map from the bundle
-//                    Intervention intervention = bundle.getInterventionMap().values().stream().findFirst().orElse(null);
-//
-//                    // Use the intervention as needed
-//                    System.out.println(intervention.getDescription());
-//
-//                    if (intervention != null) {
-//                        // Access the intervention's properties (title, description, media, etc.)
-//                        String title = intervention.getTitle();
-//                        String description = intervention.getDescription();
-//                        System.out.println(title);
-//
-//                        textViewDescription.setText(intervention.getTitle());
-//
-//                    }
-//                }
-//                interventionLoader.getInterventionWithId(record.interventionId, getApplicationContext());
-//                System.out.println(record.interventionId);
-//                System.out.println(record.questionnaireAnswerId);
-//                System.out.println(record.startTimestamp);
-//                System.out.println(record.endTimestamp);
-//                System.out.println(record.afterQuestionnaire);
-//
-//                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-//                SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm:ss", Locale.US);
-//                try {
-//                    Date date = inputFormat.parse(String.valueOf(record.startTimestamp));
-//                    String formattedDate = outputFormat.format(date);
-//                    System.out.println(formattedDate);
-//
-//
-//                    // Set data for each view
-//                    textViewTitle.setText(formattedDate);
-//
-//                    // Add the view to the parent layout
-//                    parentView.addView(view);
-//
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//            }
     }
 }

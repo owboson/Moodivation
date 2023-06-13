@@ -14,6 +14,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.time.LocalDateTime;
@@ -29,6 +32,7 @@ import de.b08.moodivation.notifications.RandomTimeGenerator;
 import de.b08.moodivation.sensors.SensorConstants;
 import de.b08.moodivation.services.LocationService;
 import de.b08.moodivation.services.SensorService;
+import de.b08.moodivation.services.СhartDataClass;
 
 public class MainActivity extends AppCompatActivity {
     protected SharedPreferences sharedPreferences;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     PendingIntent pendingIntent1;
     PendingIntent pendingIntent2;
     PendingIntent pendingIntent3;
+    СhartDataClass data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +111,16 @@ public class MainActivity extends AppCompatActivity {
         chartsPreviewBtn.setOnClickListener(v -> {
             MainActivity.this.startActivity(new Intent(this, DevelopmentVisualization.class));
         });
+
+        data = new СhartDataClass(findViewById(R.id.barChart), getApplicationContext());
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        data = new СhartDataClass(findViewById(R.id.barChart), getApplicationContext());
     }
 
     protected void set_notifs(SharedPreferences sharedPreferences, Context context, AlarmManager alarmManager) {
