@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         set_notifs(this.sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
 
         Button questionnairePreviewBtn = findViewById(R.id.questionnairePreviewButton);
-
         questionnairePreviewBtn.setOnClickListener(v -> {
             if (sharedPreferences.getInt("allow_questionnaire_data_collection", 0) == 1) {
                 Intent questionnaireIntent = new Intent(this, QuestionnaireActivity.class);
@@ -96,6 +95,16 @@ public class MainActivity extends AppCompatActivity {
         Button settingsPreviewBtn = findViewById(R.id.settingsPreviewButton);
         settingsPreviewBtn.setOnClickListener(v -> {
             MainActivity.this.startActivity(new Intent(this, SettingsPage.class));
+        });
+
+        Button recordsPreviewBtn = findViewById(R.id.recordsPreviewButton);
+        recordsPreviewBtn.setOnClickListener(v -> {
+            MainActivity.this.startActivity(new Intent(this, RecordsPage.class));
+        });
+
+        Button chartsPreviewBtn = findViewById(R.id.chartsPreviewButton);
+        chartsPreviewBtn.setOnClickListener(v -> {
+            MainActivity.this.startActivity(new Intent(this, DevelopmentVisualization.class));
         });
     }
 

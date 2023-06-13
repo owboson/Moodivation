@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/material_dynamic_neutral_variant70"
+    app:cardBackgroundColor="@color/grey"
     app:cardCornerRadius="10dp">
 
     <LinearLayout

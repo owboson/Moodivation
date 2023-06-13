@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"/>
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -20,36 +20,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moodivation"
         tools:targetApi="31">
-        <receiver android:name=".notifications.NotificationReceiver"/>
+        <activity
+            android:name=".DevelopmentVisualization"
+            android:exported="false" />
+
+        <receiver android:name=".notifications.NotificationReceiver" />
 
         <service
             android:name=".services.SensorService"
-            android:exported="false"
             android:description="@string/sensorServiceDescription"
-        />
+            android:exported="false" />
         <service
             android:name=".services.LocationService"
-            android:exported="false"
             android:description="@string/locationServiceDescription"
-        />
+            android:exported="false" />
 
         <activity
             android:name=".QuestionnaireActivity"
             android:exported="true"
-            android:label="Questionnaire"/>
+            android:label="Questionnaire" />
         <activity
             android:name=".DigitSpanTask"
             android:exported="true"
-            android:label="Digit Span Task"/>
+            android:label="Digit Span Task" />
         <activity
             android:name=".SettingsPage"
             android:exported="true"
-            android:label="Settings"/>
+            android:label="Settings" />
         <activity
             android:name=".InterventionActivity"
             android:exported="true"
-            android:label="Intervention"/>
-
+            android:label="Intervention" />
+        <activity
+            android:name=".RecordsPage"
+            android:exported="true"
+            android:label="Records" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
