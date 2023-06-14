@@ -25,6 +25,10 @@ public class SingleTriggerSensorObserver extends SensorObserver {
     private void onTrigger(TriggerEvent event) {
         Observation observation = new Observation(event.values, 0, event.timestamp);
         getObservations().add(observation);
+
+        if (getObservationLiveData() != null)
+            getObservationLiveData().post(observation);
+
         saveBatchIfNecessary();
     }
 

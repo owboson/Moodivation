@@ -27,6 +27,10 @@ public class SingleSensorObserver extends SensorObserver implements SensorEventL
     public void onSensorChanged(SensorEvent event) {
         Observation observation = new Observation(event.values, event.accuracy, event.timestamp);
         getObservations().add(observation);
+
+        if (getObservationLiveData() != null)
+            getObservationLiveData().post(observation);
+
         saveBatchIfNecessary();
     }
 

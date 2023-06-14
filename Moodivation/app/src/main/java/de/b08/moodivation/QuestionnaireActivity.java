@@ -22,9 +22,11 @@ import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.AnswerEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionNotesEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionnaireNotesEntity;
+import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.questionnaire.Note;
 import de.b08.moodivation.questionnaire.QuestionnaireBundle;
 import de.b08.moodivation.questionnaire.QuestionnaireLoader;
+import de.b08.moodivation.questionnaire.WellbeingAlgorithm;
 import de.b08.moodivation.questionnaire.answer.Answer;
 import de.b08.moodivation.questionnaire.view.QuestionnaireNotesView;
 import de.b08.moodivation.questionnaire.view.QuestionnaireView;
@@ -47,15 +49,26 @@ public class QuestionnaireActivity extends AppCompatActivity {
         Button saveBtn = findViewById(R.id.saveBtn);
 
         saveBtn.setOnClickListener(v -> {
-            saveAnswers(questionnaireView.getQuestionnaireId(), questionnaireView.getAllAnswers(), questionnaireView.getAllNotes());
+            Date now = new Date();
+            saveAnswers(now, questionnaireView.getQuestionnaireId(), questionnaireView.getAllAnswers(), questionnaireView.getAllNotes());
 
             String day_from = sharedPreferences.getString("day_from", "12:0");
             String day_to = sharedPreferences.getString("day_to", "14:0");
-            if (isNoonQuestionnaire(new Date(), day_from, day_to)) {
+            if (isNoonQuestionnaire(now, day_from, day_to)) {
                 Intent digitSpanTask = new Intent(this, DigitSpanTask.class);
                 digitSpanTask.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 digitSpanTask.putExtra("afterNoonQuestionnaire", true);
+                digitSpanTask.putExtra("presentIntervention", WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers()));
+                digitSpanTask.putExtra("questionnaireAnswerId", now.getTime());
                 startActivity(digitSpanTask);
+            } else if (WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers())) {
+                Intent interventionIntent = new Intent(this, InterventionActivity.class);
+                interventionIntent.putExtra("questionnaireAnswerId", now.getTime());
+                interventionIntent.putExtra("afterQuestionnaire", true);
+                interventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
+                        InterventionLoader.getLocalizedIntervention(InterventionLoader.getRandomIntervention(getApplicationContext())));
+
+                startActivity(interventionIntent);
             }
         });
 
@@ -73,8 +86,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
-    private void saveAnswers(String questionnaireId, List<Answer<?>> answers, List<Note> notes) {
-        Date now = new Date();
+    private void saveAnswers(Date now, String questionnaireId, List<Answer<?>> answers, List<Note> notes) {
         List<AnswerEntity> answerEntities = answers.stream()
                 .map(a -> AnswerEntity.from(a, now))
                 .collect(Collectors.toList());
