@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -110,6 +111,17 @@ public class RecordsPage extends AppCompatActivity {
 
                                 from.setText(fromLabelText);
                                 to.setText(toLabelText);
+                                final String[] data = { title_val, fromLabelText, toLabelText };
+
+
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(RecordsPage.this, RecordPage.class);
+                                        intent.putExtra("values", data);
+                                        startActivity(intent);
+                                    }
+                                });
 
                                 parentView.addView(view);
                             } catch (ParseException e) {
