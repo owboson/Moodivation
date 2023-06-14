@@ -8,9 +8,11 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import androidx.media3.common.MediaItem;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -41,18 +43,14 @@ public class InterventionMedia implements Serializable {
         if (imagePaths == null)
             return null;
 
-        if (internalIntervention) {
-            return imagePaths.stream().map(p -> {
-                try (InputStream in = context.getAssets().open(p)) {
-                    return new BitmapDrawable(context.getResources(), in);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }).filter(Objects::nonNull).collect(Collectors.toList());
-        } else {
-            return null;
-        }
+        return imagePaths.stream().map(p -> {
+            try (InputStream in = internalIntervention ? context.getAssets().open(p) : Files.newInputStream(new File(p).toPath())) {
+                return new BitmapDrawable(context.getResources(), in);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     public @Nullable MediaItem getVideoMediaItem() {
@@ -62,7 +60,7 @@ public class InterventionMedia implements Serializable {
         if (internalIntervention) {
             return MediaItem.fromUri(Uri.parse(String.format("asset:///%s", videoPath)));
         } else {
-            return null;
+            return MediaItem.fromUri(videoPath);
         }
     }
 
