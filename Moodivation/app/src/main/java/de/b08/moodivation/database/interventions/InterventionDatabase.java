@@ -15,7 +15,7 @@ import de.b08.moodivation.database.typeconverter.DateConverter;
 
 @Database(entities = {InterventionRecordEntity.class},
         exportSchema = true,
-        version = 1)
+        version = 2)
 @TypeConverters(value = {DateConverter.class},
         builtInTypeConverters = @BuiltInTypeConverters(enums = BuiltInTypeConverters.State.ENABLED))
 public abstract class InterventionDatabase extends RoomDatabase {

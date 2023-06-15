@@ -1,5 +1,6 @@
 package de.b08.moodivation;
 
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.Date;
 import de.b08.moodivation.database.interventions.InterventionDatabase;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.intervention.Intervention;
+import de.b08.moodivation.intervention.view.InterventionFeedbackView;
 import de.b08.moodivation.intervention.view.InterventionView;
 import de.b08.moodivation.services.LocationLiveData;
 import de.b08.moodivation.services.LocationService;
@@ -122,18 +124,44 @@ public class InterventionActivity extends AppCompatActivity {
         if (stopWatchValueView != null)
             stopWatchValueView.stop();
 
+        boolean afterQuestionnaire = getIntent().getBooleanExtra("afterQuestionnaire", false);
+        long questionnaireAnswerId = getIntent().getLongExtra("questionnaireAnswerId", -1);
+
+        InterventionRecordEntity interventionRecord = new InterventionRecordEntity(intervention.getId(),
+                questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId), startTime, endTime,
+                afterQuestionnaire, null, null);
         AsyncTask.execute(() -> {
-            boolean afterQuestionnaire = getIntent().getBooleanExtra("afterQuestionnaire", false);
-            long questionnaireAnswerId = getIntent().getLongExtra("questionnaireAnswerId", -1);
-
-            InterventionRecordEntity interventionRecord = new InterventionRecordEntity(intervention.getId(),
-                    questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId), startTime, endTime, afterQuestionnaire);
-
             InterventionDatabase.getInstance(getApplicationContext())
                     .interventionRecordDao().insert(interventionRecord);
-
-            finish();
         });
+
+        showFeedbackAlertAndFinish(interventionRecord.cloneEntity());
+    }
+
+    private void showFeedbackAlertAndFinish(InterventionRecordEntity recordEntity) {
+        LinearLayout linearLayout = new LinearLayout(InterventionActivity.this);
+        InterventionFeedbackView interventionFeedbackView = new InterventionFeedbackView(InterventionActivity.this, null);
+        ViewGroup.MarginLayoutParams marginLayoutParams = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        marginLayoutParams.setMargins(64,64,64,64);
+        interventionFeedbackView.setLayoutParams(marginLayoutParams);
+        linearLayout.addView(interventionFeedbackView);
+        new AlertDialog.Builder(InterventionActivity.this)
+                .setView(linearLayout)
+                .setPositiveButton(R.string.interventionDialogCommentBtn, (dialog, which) -> {
+                    recordEntity.feedback = interventionFeedbackView.getComment();
+                    recordEntity.rating = interventionFeedbackView.getRating();
+
+                    AsyncTask.execute(() -> InterventionDatabase.getInstance(getApplicationContext())
+                            .interventionRecordDao().update(recordEntity));
+
+                    finish();
+                })
+                .setNeutralButton(R.string.interventionDialogSkipBtn, (dialog, which) -> {
+                    finish();
+                })
+                .create()
+                .show();
     }
 
     private void addDataTypeView(Intervention.DataType dataType) {
