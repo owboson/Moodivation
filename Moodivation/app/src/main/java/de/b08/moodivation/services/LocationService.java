@@ -43,6 +43,8 @@ public class LocationService extends Service implements LocationListener,
 
         String LOCATION_SERVICE_ACCURACY_SETTING = "LocationServiceAccuracy";
         Accuracy LOCATION_SERVICE_ACCURACY_DEFAULT_VALUE = Accuracy.GPS;
+
+        float TRAVELLED_DISTANCE_MAX_ACCURACY = 20;
     }
 
     public enum Accuracy {
@@ -92,6 +94,8 @@ public class LocationService extends Service implements LocationListener,
     private LocationManager locationManager;
 
     private SharedPreferences sharedPreferences;
+
+    private Location lastLocation = null;
 
     @Nullable
     @Override
@@ -149,7 +153,15 @@ public class LocationService extends Service implements LocationListener,
     @Override
     public void onLocationChanged(@NonNull Location location) {
         locations.add(location);
+        if (lastLocation != null && location.getAccuracy() <= Constants.TRAVELLED_DISTANCE_MAX_ACCURACY) {
+            TravelledDistanceLiveDataManager.getInstance().addDistance((double) location.distanceTo(lastLocation));
+        }
+        LocationLiveData.getInstance().update(location);
         saveBatchIfNecessary();
+
+        if (location.getAccuracy() <= Constants.TRAVELLED_DISTANCE_MAX_ACCURACY) {
+            lastLocation = location;
+        }
     }
 
     protected void saveBatchIfNecessary() {

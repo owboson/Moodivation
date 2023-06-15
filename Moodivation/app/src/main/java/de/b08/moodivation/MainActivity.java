@@ -1,5 +1,7 @@
 package de.b08.moodivation;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
+import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.notifications.NotificationReceiver;
 import de.b08.moodivation.notifications.RandomTimeGenerator;
 import de.b08.moodivation.sensors.SensorConstants;
@@ -96,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
         Button settingsPreviewBtn = findViewById(R.id.settingsPreviewButton);
         settingsPreviewBtn.setOnClickListener(v -> {
             MainActivity.this.startActivity(new Intent(this, SettingsPage.class));
+        });
+
+        ActivityResultLauncher<String> fileChooser = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), result -> {
+            result.forEach(u -> InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext()));
+        });
+
+        findViewById(R.id.addInterventionBtn).setOnClickListener(v -> {
+            fileChooser.launch("application/zip");
         });
     }
 

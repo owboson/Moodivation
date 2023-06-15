@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "e580a94c8cea7a25dcf10b416b499d35",
+    "identityHash": "4b8f9a49d72499e9d499c01e5f0fa0ce",
     "entities": [
       {
         "tableName": "AnswerEntity",
@@ -111,7 +111,7 @@
       },
       {
         "tableName": "DigitSpanTaskResEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `afterNoonQuestionnaire` INTEGER NOT NULL, `result` INTEGER NOT NULL, PRIMARY KEY(`timestamp`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `afterNoonQuestionnaire` INTEGER NOT NULL, `result` INTEGER NOT NULL, `questionnaireAnswerId` INTEGER, PRIMARY KEY(`timestamp`))",
         "fields": [
           {
             "fieldPath": "timestamp",
@@ -130,6 +130,12 @@
             "columnName": "result",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "questionnaireAnswerId",
+            "columnName": "questionnaireAnswerId",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -218,7 +224,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e580a94c8cea7a25dcf10b416b499d35')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b8f9a49d72499e9d499c01e5f0fa0ce')"
     ]
   }
 }

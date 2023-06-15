@@ -34,4 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Questionnaire" />
+
+    <Button
+        android:id="@+id/addInterventionBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add intervention" />
 </LinearLayout>
