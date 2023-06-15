@@ -108,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.addInterventionBtn).setOnClickListener(v -> {
             fileChooser.launch("application/zip");
         });
+
+        findViewById(R.id.interventionListBtn).setOnClickListener(v -> {
+            Intent overviewIntent = new Intent(getApplicationContext(), InterventionOverviewActivity.class);
+            startActivity(overviewIntent);
+        });
     }
 
     protected void set_notifs(SharedPreferences sharedPreferences, Context context, AlarmManager alarmManager) {
