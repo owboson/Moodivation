@@ -20,6 +20,8 @@ public abstract class SensorObserver {
     private Function<List<Observation>, Boolean> batchStoreFunc;
     private LinkedList<Observation> observations;
 
+    private ObservationLiveData<?> observationLiveData;
+
     private boolean enabled = false;
 
     public SensorObserver(int sensorId, Context context) {
@@ -97,5 +99,13 @@ public abstract class SensorObserver {
 
     public SensorManager getSensorManager() {
         return sensorManager;
+    }
+
+    public ObservationLiveData<?> getObservationLiveData() {
+        return observationLiveData;
+    }
+
+    public void setObservationLiveData(ObservationLiveData<?> observationLiveData) {
+        this.observationLiveData = observationLiveData;
     }
 }

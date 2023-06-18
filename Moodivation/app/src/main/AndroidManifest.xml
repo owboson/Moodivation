@@ -45,6 +45,14 @@
             android:name=".SettingsPage"
             android:exported="true"
             android:label="Settings"/>
+        <activity
+            android:name=".InterventionActivity"
+            android:exported="true"
+            android:label="Intervention"/>
+        <activity
+            android:name=".InterventionOverviewActivity"
+            android:exported="true"
+            android:label="Intervention List"/>
 
         <activity
             android:name=".MainActivity"

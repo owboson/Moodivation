@@ -27,4 +27,21 @@
 
     <string name="addQuestionNoteAlertTitle">Add Note</string>
     <string name="questionnaireNoteViewEditTextHint">Add your notes here.</string>
+
+    <string name="startInterventionBtnText">Start Intervention</string>
+    <string name="skipInterventionBtnText">Skip Intervention</string>
+
+    <string name="chronometerDescriptionText">Elapsed Time</string>
+    <string name="stepDescriptionText">Steps</string>
+    <string name="speedDescriptionText">Speed in m/s</string>
+    <string name="travelledDistanceDescriptionText">Travelled Distance</string>
+    <string name="startButtonText">Start</string>
+    <string name="stopButtonText">Stop</string>
+
+    <string name="interventionRatingLabel">Rating</string>
+    <string name="interventionCommentLabel">Comment</string>
+
+    <string name="interventionFeedbackDialogTitle">Feedback</string>
+    <string name="interventionDialogCommentBtn">Comment</string>
+    <string name="interventionDialogSkipBtn">Skip</string>
 </resources>

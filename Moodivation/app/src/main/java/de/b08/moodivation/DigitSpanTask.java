@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import java.util.Random;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.DigitSpanTaskResEntity;
+import de.b08.moodivation.intervention.InterventionLoader;
 
 public class DigitSpanTask extends AppCompatActivity {
 //   text field that shows the number on the screnn
@@ -135,13 +137,28 @@ public class DigitSpanTask extends AppCompatActivity {
 
     private void saveResult() {
 
+        long questionnaireAnswerId = getIntent().getLongExtra("questionnaireAnswerId", -1);
         if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 1) {
             boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") ?
                     getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false) : false;
             AsyncTask.execute(() -> {
                 QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
-                        .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax));
+                        .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax,
+                                questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId)));
             });
+        }
+
+        boolean presentIntervention = getIntent().hasExtra("presentIntervention") ?
+                getIntent().getExtras().getBoolean("presentIntervention") : false;
+        if (presentIntervention) {
+            Intent interventionIntent = new Intent(this, InterventionActivity.class);
+            if (questionnaireAnswerId != -1)
+                interventionIntent.putExtra("questionnaireAnswerId", questionnaireAnswerId);
+            interventionIntent.putExtra("afterQuestionnaire", true);
+            interventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
+                    InterventionLoader.getLocalizedIntervention(InterventionLoader.getRandomIntervention(getApplicationContext())));
+
+            startActivity(interventionIntent);
         }
     }
 
