@@ -27,14 +27,25 @@ public class InterventionRecordEntity {
 
     public boolean afterQuestionnaire;
 
+    public Float rating;
+
+    public String feedback;
+
     public InterventionRecordEntity(@NonNull String interventionId, @Nullable Date questionnaireAnswerId,
                                     @NonNull Date startTimestamp, @NonNull Date endTimestamp,
-                                    boolean afterQuestionnaire) {
+                                    boolean afterQuestionnaire, Float rating, String feedback) {
         this.interventionId = interventionId;
         this.questionnaireAnswerId = questionnaireAnswerId;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
         this.afterQuestionnaire = afterQuestionnaire;
+        this.rating = rating;
+        this.feedback = feedback;
+    }
+
+    public InterventionRecordEntity cloneEntity() {
+        return new InterventionRecordEntity(interventionId, questionnaireAnswerId == null ? null : new Date(questionnaireAnswerId.getTime()),
+                new Date(startTimestamp.getTime()), new Date(endTimestamp.getTime()), afterQuestionnaire, rating, feedback);
     }
 
 }

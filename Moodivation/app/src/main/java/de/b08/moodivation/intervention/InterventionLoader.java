@@ -27,10 +27,13 @@ import java.util.zip.ZipInputStream;
 public class InterventionLoader {
 
     public static void loadAndStoreExternalFile(Uri source, Context context) {
-        if (context == null || context.getFilesDir() == null || context.getFilesDir().listFiles() == null)
+        if (context.getFilesDir() == null)
+            return;
+        File[] files = context.getFilesDir().listFiles();
+        if (files == null)
             return;
 
-        if (Arrays.stream(context.getFilesDir().listFiles()).noneMatch(f -> f.isDirectory() && f.getName().equals("interventions")))
+        if (Arrays.stream(files).noneMatch(f -> f.isDirectory() && f.getName().equals("interventions")))
            if (!new File(context.getFilesDir().getPath() + "/interventions/").mkdirs())
                return;
 

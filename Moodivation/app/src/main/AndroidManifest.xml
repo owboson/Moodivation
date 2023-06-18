@@ -49,6 +49,10 @@
             android:name=".InterventionActivity"
             android:exported="true"
             android:label="Intervention"/>
+        <activity
+            android:name=".InterventionOverviewActivity"
+            android:exported="true"
+            android:label="Intervention List"/>
 
         <activity
             android:name=".MainActivity"

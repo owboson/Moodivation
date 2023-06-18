@@ -2,6 +2,8 @@ package de.b08.moodivation.intervention.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,8 @@ public class InterventionView extends LinearLayout {
 
     private Intervention intervention;
 
+    private boolean contentViewAllowed = true;
+
     public InterventionView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -54,8 +58,10 @@ public class InterventionView extends LinearLayout {
         initDescriptionTextView();
 
         interventionContentView.removeAllViews();
-        initImageViewIfAvailable();
-        initVideoViewIfAvailable();
+        if (contentViewAllowed) {
+            initImageViewIfAvailable();
+            initVideoViewIfAvailable();
+        }
     }
 
     private void initImageViewIfAvailable() {
@@ -65,15 +71,22 @@ public class InterventionView extends LinearLayout {
         if (intervention.getInterventionMedia() == null)
             return;
 
-        List<Drawable> imageDrawables = intervention.getInterventionMedia().getDrawableImages(getContext());
-        if (imageDrawables == null)
-            return;
-
         GridView imageGrid = new GridView(getContext());
-        imageGrid.setAdapter(new DrawableAdapter(getContext(), imageDrawables, imageGrid));
         imageGrid.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        imageGrid.setNumColumns(imageDrawables.size());
+        AsyncTask.execute(() -> {
+            List<Drawable> imageDrawables = intervention.getInterventionMedia().getDrawableImages(getContext());
+            Handler mainHandler = new Handler(getContext().getMainLooper());
+            if (imageDrawables == null) {
+                mainHandler.post(() -> imageGrid.setVisibility(GONE));
+                return;
+            }
+            mainHandler.post(() -> {
+                imageGrid.setVisibility(VISIBLE);
+                imageGrid.setNumColumns(imageDrawables.size());
+                imageGrid.setAdapter(new DrawableAdapter(getContext(), imageDrawables, imageGrid));
+            });
+        });
 
         interventionContentView.addView(imageGrid);
     }
@@ -109,6 +122,10 @@ public class InterventionView extends LinearLayout {
 
     public Intervention getIntervention() {
         return intervention;
+    }
+
+    public void setContentViewAllowed(boolean contentViewAllowed) {
+        this.contentViewAllowed = contentViewAllowed;
     }
 
     private static class SquaredImageView extends AppCompatImageView {
