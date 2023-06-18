@@ -9,6 +9,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -24,6 +25,8 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
 import java.util.Arrays;
 
@@ -95,6 +98,8 @@ public class SettingsPage extends AppCompatActivity {
     SensorSettingsView<Void, Void> stepDetectorSettingsView;
     SensorSettingsView<Void, SensorDelay> accelerometerSettingsView;
     SensorSettingsView<LocationService.Accuracy, LocationService.Frequency> locationSettingsView;
+
+    RelativeLayout licenseBtn;
 
     private void reset_pickers() {
 
@@ -323,6 +328,7 @@ public class SettingsPage extends AppCompatActivity {
 
         addSensorSettingViews(dataCollectionLayout);
         addLocationSettingsView(dataCollectionLayout);
+        setupLicenseButton();
 
 
 //        // Set the initial visibility of the time-intervals-layout and data-collection-layout based on the state of the switch
@@ -721,5 +727,10 @@ public class SettingsPage extends AppCompatActivity {
         builder.setNegativeButton("Cancel", (dialog, which) -> {});
 
         builder.create().show();
+    }
+
+    private void setupLicenseButton() {
+        licenseBtn = findViewById(R.id.licensesBtn);
+        licenseBtn.setOnClickListener(v -> startActivity(new Intent(this, OssLicensesMenuActivity.class)));
     }
 }
