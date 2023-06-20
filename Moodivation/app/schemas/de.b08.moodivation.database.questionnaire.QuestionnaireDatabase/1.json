@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "378b17df0fee88f571d12a9b5340d7d3",
+    "identityHash": "4b8f9a49d72499e9d499c01e5f0fa0ce",
     "entities": [
       {
         "tableName": "AnswerEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`questionnaireId` TEXT NOT NULL, `questionId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `answer` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`questionnaireId`, `questionId`, `timestamp`), FOREIGN KEY(`questionnaireId`) REFERENCES `QuestionnaireEntity`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`questionnaireId` TEXT NOT NULL, `questionId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `answer` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`questionnaireId`, `questionId`, `timestamp`))",
         "fields": [
           {
             "fieldPath": "questionnaireId",
@@ -48,19 +48,7 @@
           ]
         },
         "indices": [],
-        "foreignKeys": [
-          {
-            "table": "QuestionnaireEntity",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "questionnaireId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       },
       {
         "tableName": "QuestionEntity",
@@ -120,12 +108,123 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "DigitSpanTaskResEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `afterNoonQuestionnaire` INTEGER NOT NULL, `result` INTEGER NOT NULL, `questionnaireAnswerId` INTEGER, PRIMARY KEY(`timestamp`))",
+        "fields": [
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "afterNoonQuestionnaire",
+            "columnName": "afterNoonQuestionnaire",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "result",
+            "columnName": "result",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionnaireAnswerId",
+            "columnName": "questionnaireAnswerId",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "timestamp"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "QuestionNotesEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `questionnaireId` TEXT NOT NULL, `questionId` TEXT NOT NULL, `notes` TEXT, PRIMARY KEY(`timestamp`, `questionnaireId`, `questionId`))",
+        "fields": [
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionnaireId",
+            "columnName": "questionnaireId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionId",
+            "columnName": "questionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "timestamp",
+            "questionnaireId",
+            "questionId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "QuestionnaireNotesEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timestamp` INTEGER NOT NULL, `questionnaireId` TEXT NOT NULL, `notes` TEXT, PRIMARY KEY(`timestamp`, `questionnaireId`))",
+        "fields": [
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionnaireId",
+            "columnName": "questionnaireId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "timestamp",
+            "questionnaireId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '378b17df0fee88f571d12a9b5340d7d3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b8f9a49d72499e9d499c01e5f0fa0ce')"
     ]
   }
 }
