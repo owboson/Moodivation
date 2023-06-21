@@ -3,15 +3,21 @@ package de.b08.moodivation.services;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.renderer.BarChartRenderer;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -132,6 +138,15 @@ public class СhartDataClass {
         });
     }
 
+    int getMax() {
+        int max = 0;
+        for(BarEntryValue e : barEntryValues) {
+            if(e.activityTitle.size() > max) {
+                max = e.activityTitle.size();
+            }
+        }
+        return max;
+    }
 
     private void setupBarChart() {
         barChart.setDrawBarShadow(false);
@@ -154,6 +169,19 @@ public class СhartDataClass {
                 return sdf.format(date);
             }
         });
+
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setValueFormatter(new IndexAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return String.valueOf((int) value);
+            }
+        });
+
+        yAxis.setAxisMinimum(0f);
+        yAxis.setGranularity(1f);
+        yAxis.setLabelCount(getMax()+1, false); // Set the desired number of labels (e.g., 5)
+
 
         barChart.getAxisRight().setEnabled(false);
         barChart.getLegend().setEnabled(false);
@@ -201,13 +229,25 @@ public class СhartDataClass {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Activity Count");
+
+
+        dataSet.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return String.valueOf((int) value);
+            }
+        });
+
         dataSet.setColor(Color.BLACK);
+        dataSet.setBarBorderWidth(1f);
 
         BarData barData = new BarData(dataSet);
-        barData.setBarWidth(0.9f);
+        barData.setBarWidth(0.5f);
 
         barChart.setData(barData);
         barChart.setDrawValueAboveBar(true);
+        barChart.setTouchEnabled(false);
+        barChart.setOnChartValueSelectedListener(null);
 
         barData.setValueTextSize(14f); // Set the text size
         barData.setValueTextColor(Color.BLACK); // Set the text color
