@@ -4,6 +4,8 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -73,16 +75,17 @@ public abstract class SensorObserver {
         LinkedList<Observation> observationsCopy = new LinkedList<>(getObservations());
         getObservations().clear();
 
-        onDataStoredHandlers.forEach(OnDataStoredHandler::onDataStored);
-
+        Handler mainThread = new Handler(Looper.getMainLooper());
         AsyncTask.execute(() -> {
             if (observationsCopy.isEmpty())
                 return;
 
             for (int i = 0; i < TRIES; i++) {
                 boolean returnVal = getBatchStoreFunc().apply(observationsCopy);
-                if (returnVal)
+                if (returnVal) {
+                    mainThread.post(() -> onDataStoredHandlers.forEach(OnDataStoredHandler::onDataStored));
                     return;
+                }
             }
         });
     }
