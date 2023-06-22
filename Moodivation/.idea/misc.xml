@@ -8,12 +8,12 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1045" />
         <entry key="app/src/main/res/layout/activity_development_visualization.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_digit_span_task.xml" value="0.3021881103515625" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.37215423583984375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.10572916666666667" />
         <entry key="app/src/main/res/layout/activity_record.xml" value="0.31342623061028074" />
         <entry key="app/src/main/res/layout/activity_records_page.xml" value="0.26165313720703126" />
         <entry key="app/src/main/res/layout/activity_settings_page.xml" value="0.17880401611328126" />
-        <entry key="app/src/main/res/layout/chart_layout.xml" value="0.1157548125633232" />
+        <entry key="app/src/main/res/layout/chart_layout.xml" value="0.24993743896484377" />
         <entry key="app/src/main/res/layout/content_settings_page.xml" value="0.10572916666666667" />
         <entry key="app/src/main/res/layout/described_value_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.10075531005859373" />
