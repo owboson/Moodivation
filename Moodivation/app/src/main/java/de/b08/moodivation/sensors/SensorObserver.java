@@ -6,6 +6,7 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -19,12 +20,14 @@ public abstract class SensorObserver {
     private final Sensor sensor;
     private Function<List<Observation>, Boolean> batchStoreFunc;
     private LinkedList<Observation> observations;
+    private final List<OnDataStoredHandler> onDataStoredHandlers;
 
     private ObservationLiveData<?> observationLiveData;
 
     private boolean enabled = false;
 
     public SensorObserver(int sensorId, Context context) {
+        onDataStoredHandlers = new ArrayList<>();
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorId);
 
@@ -69,6 +72,9 @@ public abstract class SensorObserver {
 
         LinkedList<Observation> observationsCopy = new LinkedList<>(getObservations());
         getObservations().clear();
+
+        onDataStoredHandlers.forEach(OnDataStoredHandler::onDataStored);
+
         AsyncTask.execute(() -> {
             if (observationsCopy.isEmpty())
                 return;
@@ -107,5 +113,14 @@ public abstract class SensorObserver {
 
     public void setObservationLiveData(ObservationLiveData<?> observationLiveData) {
         this.observationLiveData = observationLiveData;
+    }
+
+    @FunctionalInterface
+    public interface OnDataStoredHandler {
+        void onDataStored();
+    }
+
+    public void addOnDataStoredHandler(OnDataStoredHandler handler) {
+        onDataStoredHandlers.add(handler);
     }
 }
