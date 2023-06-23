@@ -126,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.startActivity(new Intent(this, DevelopmentVisualization.class));
         });
 
+        Button rewardsPreviewButton = findViewById(R.id.rewardsPreviewButton);
+        rewardsPreviewButton.setOnClickListener(v -> {
+            MainActivity.this.startActivity(new Intent(this, Rewards.class));
+        });
+
+
         data = new СhartDataClass(findViewById(R.id.barChart), getApplicationContext());
     }
 
