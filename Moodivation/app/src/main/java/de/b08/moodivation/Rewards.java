@@ -70,7 +70,11 @@ public class Rewards extends AppCompatActivity {
                           textList.add("You don't have a workout streak yet.");
                       } else if (streak > 1){
                           imageList.add(R.drawable.streak_reward_img);
-                          textList.add("Your workout streak is "+ streak + " days!");
+                          if (streak == 1) {
+                              textList.add("Your workout streak is "+ streak + " day!");
+                          } else {
+                              textList.add("Your workout streak is "+ streak + " days!");
+                          }
                       }
 
                       int steps = get5000Steps();
@@ -88,7 +92,7 @@ public class Rewards extends AppCompatActivity {
                           textList.add("Your went for a run more than 10 times this month!");
                       } else {
                           imageList.add(R.drawable.running_reward_img_grey);
-                          textList.add(running+"/10. " + (10-running) +" workouts left");
+                          textList.add(running+"/10. You have " + (10-running) +" workouts left");
                       }
 
                       int cycling = data[2];
@@ -97,7 +101,7 @@ public class Rewards extends AppCompatActivity {
                           textList.add("You rode a bike more than 10 times this month!");
                       } else {
                           imageList.add(R.drawable.cycling_reward_img_grey);
-                          textList.add(cycling+"/10. " + (10-cycling) +" workouts left");
+                          textList.add(cycling+"/10. You have " + (10-cycling) +" workouts left");
                       }
 
                       runOnUiThread(new Runnable() {
