@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ import de.b08.moodivation.database.sensors.dao.StepDao;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.InterventionBundle;
 import de.b08.moodivation.intervention.InterventionLoader;
+import de.b08.moodivation.ui.ShareButton;
+import de.b08.moodivation.ui.ShareUtils;
 
 public class Rewards extends AppCompatActivity {
 
@@ -59,6 +62,7 @@ public class Rewards extends AppCompatActivity {
 
                       List<Integer> imageList = new ArrayList<>();
                       List<String> textList = new ArrayList<>();
+                      List<String> shareMessages = new ArrayList<>();
 
                       // get streak, running and cycling data of this month
                       int[] data = getData();
@@ -68,38 +72,57 @@ public class Rewards extends AppCompatActivity {
                       if (streak == 0) {
                           imageList.add(R.drawable.streak_reward_img_grey);
                           textList.add("You don't have a workout streak yet.");
-                      } else if (streak > 1){
+                          shareMessages.add(null);
+                      } else if (streak >= 1){
                           imageList.add(R.drawable.streak_reward_img);
                           if (streak == 1) {
+                              shareMessages.add(getResources().getString(R.string.workoutStreakSharedMessage));
                               textList.add("Your workout streak is "+ streak + " day!");
                           } else {
+                              shareMessages.add(getResources().getString(R.string.workoutsStreakSharedMessage).replace("%NUM%", "" + streak));
                               textList.add("Your workout streak is "+ streak + " days!");
                           }
                       }
 
                       int steps = get5000Steps();
                       if (steps >= 5000) {
+                          shareMessages.add(getResources().getString(R.string.moreStepsSharedMessage).replace("%NUM%", "" + 5000));
                           imageList.add(R.drawable.steps_reward_img);
                           textList.add("Your could walk "+ steps + " today!");
                       } else {
+                          if (steps != 0)
+                              shareMessages.add(getResources().getString(R.string.stepsSharedMessage).replace("%NUM%", "" + steps));
+                          else
+                              shareMessages.add(null);
                           imageList.add(R.drawable.steps_reward_img_grey);
                           textList.add("You didn't walk 5000 steps today");
                       }
 
                       int running = data[1];
                       if (running >= 10) {
+                          shareMessages.add(getResources().getString(R.string.moreRunsSharedMessage).replace("%NUM%", "" + 10));
                           imageList.add(R.drawable.running_reward_img);
                           textList.add("Your went for a run more than 10 times this month!");
                       } else {
+                          if (running != 0)
+                              shareMessages.add(getResources().getString(R.string.runsSharedMessage).replace("%NUM%", "" + running));
+                          else
+                              shareMessages.add(null);
                           imageList.add(R.drawable.running_reward_img_grey);
                           textList.add(running+"/10. You have " + (10-running) +" workouts left");
                       }
 
                       int cycling = data[2];
                       if (cycling >= 10) {
+                          shareMessages.add(getResources().getString(R.string.moreBikeRidesSharedMessage).replace("%NUM%", "" + 10));
                           imageList.add(R.drawable.cycling_reward_img);
                           textList.add("You rode a bike more than 10 times this month!");
                       } else {
+                          if (cycling != 0)
+                              shareMessages.add(getResources().getString(R.string.bikeRidesSharedMessage).replace("%NUM%", "" + cycling));
+                          else
+                              shareMessages.add(null);
+
                           imageList.add(R.drawable.cycling_reward_img_grey);
                           textList.add(cycling+"/10. You have " + (10-cycling) +" workouts left");
                       }
@@ -107,7 +130,7 @@ public class Rewards extends AppCompatActivity {
                       runOnUiThread(new Runnable() {
                           @Override
                           public void run() {
-                              create_view(imageList, textList);
+                              create_view(imageList, textList, shareMessages);
                           }
                       });
 
@@ -205,7 +228,7 @@ public class Rewards extends AppCompatActivity {
         return result;
     }
 
-    void create_view(List imageList, List textList) {
+    void create_view(List imageList, List textList, List<String> shareMessages) {
         LinearLayout containerLayout = findViewById(R.id.containerLayout);
 
         for (int i = 0; i < imageList.size(); i++) {
@@ -251,8 +274,23 @@ public class Rewards extends AppCompatActivity {
             contentLayout.addView(imageView);
             contentLayout.addView(textView);
 
-            // Add contentLayout to CardView
-            cardView.addView(contentLayout);
+            FrameLayout frameLayout = new FrameLayout(this);
+            frameLayout.addView(contentLayout);
+            ShareButton shareButton = new ShareButton(this);
+
+            String shareMessage = shareMessages.get(i);
+            boolean enabled = shareMessage != null;
+
+            shareButton.setEnabled(enabled);
+            shareButton.setVisibility(enabled ? View.VISIBLE : View.GONE);
+            shareButton.getShareBtn().setOnClickListener(v -> {
+                ShareUtils.shareTextIntent(shareMessage, this);
+            });
+
+            frameLayout.addView(shareButton);
+
+            // Add frameLayout to CardView
+            cardView.addView(frameLayout);
 
             // Add CardView to containerLayout
             LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
