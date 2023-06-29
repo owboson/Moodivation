@@ -10,9 +10,9 @@ import de.b08.moodivation.questionnaire.answer.NumberAnswer;
 public class SimpleWellbeingAlgorithm implements WellbeingAlgorithm {
 
     @Override
-    public double calculateWellbeing(List<Answer<?>> questionnaireAnswers) {
+    public double calculateWellbeing(List<? extends Answer<?>> questionnaireAnswers) {
         // only takes well/unwell question into account (question id 1.3 of questionnaire 1)
-        Optional<Answer<?>> wellbeingAnswer = questionnaireAnswers.stream()
+        Optional<? extends Answer<?>> wellbeingAnswer = questionnaireAnswers.stream()
                 .filter(a -> Objects.equals(a.getQuestionId(), "1.3") && Objects.equals(a.getQuestionnaireId(), "1"))
                 .findFirst();
 

@@ -3,6 +3,7 @@ package de.b08.moodivation.database.location.dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
 
 import java.util.List;
 
@@ -22,5 +23,8 @@ public interface LocationHistoryDao {
 
     @Delete
     void deleteAll(List<LocationHistoryEntity> entities);
+
+    @Query("SELECT * FROM LocationHistoryEntity WHERE timestamp >= :from AND timestamp <= :to")
+    List<LocationHistoryEntity> getLocationsInTimeInterval(long from, long to);
 
 }
