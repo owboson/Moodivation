@@ -1,0 +1,46 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activityDevelopmentView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:background="#E0E0E0"
+        android:elevation="4dp"
+        android:radius="10dp">
+
+        <TextView
+            android:id="@+id/instructionField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="Physical Activity"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="16dp" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -1,49 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    android:orientation="vertical"
+    android:id="@+id/mainActivityView"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView4"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Development Preview"
-        android:textAlignment="center"
-        android:textColor="@android:color/primary_text_light"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/digitSpanTaskPreviewButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Digit Span Task" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Development Preview"
+            android:textAlignment="center"
+            android:textColor="@android:color/primary_text_light"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/settingsPreviewButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Settings" />
+        <Button
+            android:id="@+id/digitSpanTaskPreviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Digit Span Task" />
 
-    <Button
-        android:id="@+id/questionnairePreviewButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Questionnaire" />
+        <Button
+            android:id="@+id/settingsPreviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings" />
 
-    <Button
-        android:id="@+id/addInterventionBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add intervention" />
+        <Button
+            android:id="@+id/questionnairePreviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Questionnaire" />
 
-    <Button
-        android:id="@+id/interventionListBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Show all interventions" />
-</LinearLayout>
+        <Button
+            android:id="@+id/addInterventionBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add intervention" />
+
+        <Button
+            android:id="@+id/interventionListBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show all interventions" />
+
+        <Button
+            android:id="@+id/recordsPreviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Records" />
+        <Button
+            android:id="@+id/chartsPreviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Charts" />
+        <include
+            layout="@layout/chart_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

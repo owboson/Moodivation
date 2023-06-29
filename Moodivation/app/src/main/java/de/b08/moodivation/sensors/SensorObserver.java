@@ -4,8 +4,11 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -19,12 +22,14 @@ public abstract class SensorObserver {
     private final Sensor sensor;
     private Function<List<Observation>, Boolean> batchStoreFunc;
     private LinkedList<Observation> observations;
+    private final List<OnDataStoredHandler> onDataStoredHandlers;
 
     private ObservationLiveData<?> observationLiveData;
 
     private boolean enabled = false;
 
     public SensorObserver(int sensorId, Context context) {
+        onDataStoredHandlers = new ArrayList<>();
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorId);
 
@@ -69,14 +74,18 @@ public abstract class SensorObserver {
 
         LinkedList<Observation> observationsCopy = new LinkedList<>(getObservations());
         getObservations().clear();
+
+        Handler mainThread = new Handler(Looper.getMainLooper());
         AsyncTask.execute(() -> {
             if (observationsCopy.isEmpty())
                 return;
 
             for (int i = 0; i < TRIES; i++) {
                 boolean returnVal = getBatchStoreFunc().apply(observationsCopy);
-                if (returnVal)
+                if (returnVal) {
+                    mainThread.post(() -> onDataStoredHandlers.forEach(OnDataStoredHandler::onDataStored));
                     return;
+                }
             }
         });
     }
@@ -107,5 +116,14 @@ public abstract class SensorObserver {
 
     public void setObservationLiveData(ObservationLiveData<?> observationLiveData) {
         this.observationLiveData = observationLiveData;
+    }
+
+    @FunctionalInterface
+    public interface OnDataStoredHandler {
+        void onDataStored();
+    }
+
+    public void addOnDataStoredHandler(OnDataStoredHandler handler) {
+        onDataStoredHandlers.add(handler);
     }
 }

@@ -32,6 +32,7 @@ import de.b08.moodivation.notifications.RandomTimeGenerator;
 import de.b08.moodivation.sensors.SensorConstants;
 import de.b08.moodivation.services.LocationService;
 import de.b08.moodivation.services.SensorService;
+import de.b08.moodivation.services.СhartDataClass;
 
 public class MainActivity extends AppCompatActivity {
     protected SharedPreferences sharedPreferences;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     PendingIntent pendingIntent1;
     PendingIntent pendingIntent2;
     PendingIntent pendingIntent3;
+    СhartDataClass data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,24 @@ public class MainActivity extends AppCompatActivity {
             Intent overviewIntent = new Intent(getApplicationContext(), InterventionOverviewActivity.class);
             startActivity(overviewIntent);
         });
+
+        Button recordsPreviewBtn = findViewById(R.id.recordsPreviewButton);
+        recordsPreviewBtn.setOnClickListener(v -> {
+            MainActivity.this.startActivity(new Intent(this, RecordsPage.class));
+        });
+
+        Button chartsPreviewBtn = findViewById(R.id.chartsPreviewButton);
+        chartsPreviewBtn.setOnClickListener(v -> {
+            MainActivity.this.startActivity(new Intent(this, DevelopmentVisualization.class));
+        });
+
+        data = new СhartDataClass(findViewById(R.id.barChart), getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        data = new СhartDataClass(findViewById(R.id.barChart), getApplicationContext());
     }
 
     protected void set_notifs(SharedPreferences sharedPreferences, Context context, AlarmManager alarmManager) {

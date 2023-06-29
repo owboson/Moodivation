@@ -26,7 +26,7 @@ import de.b08.moodivation.database.typeconverter.DateConverter;
           QuestionnaireEntity.class, DigitSpanTaskResEntity.class, QuestionNotesEntity.class,
           QuestionnaireNotesEntity.class},
           exportSchema = true,
-          version = 3)
+          version = 1)
 @TypeConverters(value = {DateConverter.class},
                 builtInTypeConverters = @BuiltInTypeConverters(enums = BuiltInTypeConverters.State.ENABLED))
 public abstract class QuestionnaireDatabase extends RoomDatabase {
