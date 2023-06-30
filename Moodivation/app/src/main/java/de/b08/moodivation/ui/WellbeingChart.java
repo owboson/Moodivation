@@ -27,8 +27,8 @@ public class WellbeingChart extends IntervalDateLineChart {
 
     @Override
     public void syncChart() {
-        Date from = DateUtils.minimizeDate(this.from);
-        Date to = DateUtils.maximizeDate(this.to);
+        Date from = DateUtils.minimizeDay(this.from);
+        Date to = DateUtils.maximizeDay(this.to);
         AsyncTask.execute(() -> {
             QuestionnaireDatabase questionnaireDatabase = QuestionnaireDatabase.getInstance(getContext());
             List<Date> dates = questionnaireDatabase.answerDao().getAllDates();

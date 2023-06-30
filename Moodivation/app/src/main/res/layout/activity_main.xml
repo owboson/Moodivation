@@ -67,6 +67,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload Data" />
+        <Button
+            android:id="@+id/rewardsPreviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rewards" />
         <include
             layout="@layout/chart_layout"
             android:layout_width="match_parent"

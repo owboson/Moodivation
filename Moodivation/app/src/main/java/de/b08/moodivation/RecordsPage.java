@@ -36,7 +36,7 @@ import de.b08.moodivation.intervention.InterventionLoader;
 
 public class RecordsPage extends AppCompatActivity {
 
-    InterventionDatabase db;
+    InterventionDatabase interventionDatabase;
     InterventionRecordDao recordDao;
     InterventionLoader interventionLoader;
 
@@ -55,7 +55,7 @@ public class RecordsPage extends AppCompatActivity {
         inflater = LayoutInflater.from(getApplicationContext());
         parentView = findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
 
-        InterventionDatabase interventionDatabase = InterventionDatabase.getInstance(getApplicationContext());
+        interventionDatabase = InterventionDatabase.getInstance(getApplicationContext());
         interventionLoader = new InterventionLoader();
 
         AsyncTask.execute(new Runnable() {
@@ -82,7 +82,6 @@ public class RecordsPage extends AppCompatActivity {
                                 if (intervention != null) {
                                     String title = intervention.getTitle();
                                     title_val = title;
-//                                    textViewTitle.setText(title);
                                 }
                             }
 
