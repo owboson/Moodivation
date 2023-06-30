@@ -7,6 +7,10 @@ android {
     namespace 'de.b08.moodivation'
     compileSdk 33
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
     defaultConfig {
         applicationId "de.b08.moodivation"
         minSdk 29
@@ -49,6 +53,8 @@ dependencies {
     implementation "androidx.room:room-runtime:room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
+    implementation 'org.apache.httpcomponents:httpmime:4.5.6'
+    implementation 'commons-httpclient:commons-httpclient:3.1'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation "androidx.media3:media3-exoplayer:1.0.2"
     implementation "androidx.media3:media3-exoplayer-dash:1.0.2"
