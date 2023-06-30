@@ -3,6 +3,7 @@ package de.b08.moodivation;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -65,7 +66,7 @@ public class Rewards extends AppCompatActivity {
                       List<String> shareMessages = new ArrayList<>();
 
                       // get streak, running and cycling data of this month
-                      int[] data = getData();
+                      int[] data = getData(getApplicationContext());
 
                       // add streak reward to list (if exists)
                       int streak = data[0];
@@ -84,7 +85,7 @@ public class Rewards extends AppCompatActivity {
                           }
                       }
 
-                      int steps = get5000Steps();
+                      int steps = get5000Steps(getApplicationContext());
                       if (steps >= 5000) {
                           shareMessages.add(getResources().getString(R.string.moreStepsSharedMessage).replace("%NUM%", "" + 5000));
                           imageList.add(R.drawable.steps_reward_img);
@@ -138,8 +139,8 @@ public class Rewards extends AppCompatActivity {
         });
     }
 
-    int get5000Steps(){
-        SensorDatabase sensorDatabase = SensorDatabase.getInstance(getApplicationContext());
+    public static int get5000Steps(Context context){
+        SensorDatabase sensorDatabase = SensorDatabase.getInstance(context);
         StepDao stepDao = sensorDatabase.stepDataDao();
 
         Calendar calendar = Calendar.getInstance();
@@ -166,29 +167,29 @@ public class Rewards extends AppCompatActivity {
         return stepsToday;
     }
 
-    int[] getData() {
-        final List<InterventionRecordEntity> records = db.interventionRecordDao().getAllRecords();
+    public static int[] getData(Context context) {
+        final List<InterventionRecordEntity> records = InterventionDatabase.getInstance(context).interventionRecordDao().getAllRecords();
         Collections.reverse(records);
 
         int running = 0;
         int cycling = 0;
 
         List<LocalDate> dateList = new ArrayList<>();
-        String title = "";
+        String id = "";
 
         LocalDate today = LocalDate.now();
         LocalDate firstDayOfMonth = today.withDayOfMonth(1);
         LocalDate lastDayOfMonth = today.withDayOfMonth(today.lengthOfMonth());
 
         for (final InterventionRecordEntity record : records) {
-            final Optional<InterventionBundle> interventionBundle = interventionLoader.getInterventionWithId(record.interventionId, getApplicationContext());
+            final Optional<InterventionBundle> interventionBundle = InterventionLoader.getInterventionWithId(record.interventionId, context);
             String title_val;
             if (interventionBundle.isPresent()) {
                 InterventionBundle bundle = interventionBundle.get();
                 // Access the intervention or intervention map from the bundle
                 Intervention intervention = bundle.getInterventionMap().values().stream().findFirst().orElse(null);
                 if (intervention != null) {
-                    title = intervention.getTitle();
+                    id = intervention.getId();
                 }
             }
 
@@ -202,9 +203,9 @@ public class Rewards extends AppCompatActivity {
                 boolean isWithinRange = (localDate.isEqual(firstDayOfMonth) || localDate.isAfter(firstDayOfMonth)) &&
                         (localDate.isEqual(lastDayOfMonth) || localDate.isBefore(lastDayOfMonth));
                 if (isWithinRange) {
-                    if (title.equals("Running")) {
+                    if (id.equals("RunningIntervention_Internal")) {
                         running+=1;
-                    } else if (title.equals("Cycling")) {
+                    } else if (id.equals("CyclingIntervention_Internal")) {
                         cycling+=1;
                     }
                 }
@@ -303,5 +304,21 @@ public class Rewards extends AppCompatActivity {
         }
 
 
+    }
+
+    public static boolean stepsCompleted(Context context) {
+        return get5000Steps(context) >= 5000;
+    }
+
+    public static boolean cyclingCompleted(Context context) {
+        return getData(context)[2] >= 10;
+    }
+
+    public static boolean runningCompleted(Context context) {
+        return getData(context)[1] >= 10;
+    }
+
+    public static boolean streakCompleted(Context context) {
+        return getData(context)[0] >= 1;
     }
 }

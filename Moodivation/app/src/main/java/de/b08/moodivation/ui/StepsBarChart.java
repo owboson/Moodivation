@@ -3,15 +3,12 @@ package de.b08.moodivation.ui;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
-import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +27,8 @@ public class StepsBarChart extends IntervalDateBarChart {
         AsyncTask.execute(() -> {
             List<BarEntry> entries = new ArrayList<>();
 
-            Date from = DateUtils.minimizeDate(this.from);
-            Date to = DateUtils.maximizeDate(this.to);
+            Date from = DateUtils.minimizeDay(this.from);
+            Date to = DateUtils.maximizeDay(this.to);
             int days = (int) (to.getTime() - from.getTime())/(1000*60*60*24);
             List<Date> dates = new ArrayList<>();
 

@@ -8,14 +8,16 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import de.b08.moodivation.database.interventions.dao.RewardCompletionDao;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.database.interventions.dao.InterventionRecordDao;
+import de.b08.moodivation.database.interventions.entities.RewardCompletionEntity;
 import de.b08.moodivation.database.typeconverter.DateConverter;
 
 
-@Database(entities = {InterventionRecordEntity.class},
+@Database(entities = {InterventionRecordEntity.class, RewardCompletionEntity.class},
         exportSchema = true,
-        version = 2)
+        version = 3)
 @TypeConverters(value = {DateConverter.class},
         builtInTypeConverters = @BuiltInTypeConverters(enums = BuiltInTypeConverters.State.ENABLED))
 public abstract class InterventionDatabase extends RoomDatabase {
@@ -35,5 +37,7 @@ public abstract class InterventionDatabase extends RoomDatabase {
     }
 
     public abstract InterventionRecordDao interventionRecordDao();
+
+    public abstract RewardCompletionDao rewardCompletionDao();
 
 }

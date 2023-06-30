@@ -26,7 +26,7 @@ public class AltitudeChart extends IntervalDateLineChart {
     public void syncChart() {
         AsyncTask.execute(() -> {
             List<LocationHistoryEntity> locations = LocationDatabase.getInstance(getContext()).locationHistoryDao()
-                    .getLocationsInTimeInterval(DateUtils.minimizeDate(from).getTime(), DateUtils.maximizeDate(to).getTime());
+                    .getLocationsInTimeInterval(DateUtils.minimizeDay(from).getTime(), DateUtils.maximizeDay(to).getTime());
             Date minDate = locations.stream().map(l -> l.timestamp).min(Date::compareTo).orElse(new Date());
 
             List<Entry> entries = locations.stream()
