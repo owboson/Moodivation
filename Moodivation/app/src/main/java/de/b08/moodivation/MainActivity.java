@@ -13,11 +13,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Button;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.time.LocalTime;
@@ -25,6 +30,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.TimeZone;
 
+import de.b08.moodivation.database.ExportUtils;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.notifications.NotificationReceiver;
@@ -55,9 +61,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
+
+        findViewById(R.id.uploadData).setOnClickListener(v -> {
+            AsyncTask.execute(() -> {
+                try {
+                    String id = sharedPreferences.getString("uploadId", "null");
+                    if (id.equals("null")) {
+                        id = ExportUtils.generateId();
+                        sharedPreferences.edit().putString("uploadId", id).apply();
+                    }
+                    Pair<Boolean, Integer> result = ExportUtils.exportDatabases(MainActivity.this, id);
+                    if (!result.first) {
+                        runOnUiThread(() -> {
+                            new android.app.AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Data Upload")
+                                    .setMessage("Something went wrong.")
+                                    .setPositiveButton("OK", (dialog, which) -> {})
+                                    .show();
+                        });
+                    } else {
+                        runOnUiThread(() -> {
+                            new android.app.AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Data Upload")
+                                    .setMessage("Data was uploaded successfully.")
+                                    .setPositiveButton("OK", (dialog, which) -> {})
+                                    .show();
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> {
+                        new android.app.AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Data Upload")
+                                .setMessage("Something went wrong.")
+                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .show();
+                    });
+                }
+            });
+        });
+
         QuestionnaireDatabase.getInstance(getApplicationContext());
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         preset_sharedPreferences();
 
