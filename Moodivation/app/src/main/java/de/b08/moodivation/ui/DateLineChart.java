@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.google.android.material.color.MaterialColors;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,22 +57,16 @@ public abstract class DateLineChart extends LinearLayout {
         chart.setDrawGridBackground(false);
         chart.setOnChartValueSelectedListener(null);
 
-        chart.setNoDataTextColor(Color.BLACK);
-
-        chart.setBackgroundColor(Color.WHITE);
-
         chart.getLegend().setEnabled(false);
 
         chart.getXAxis().setGranularityEnabled(true);
         chart.getXAxis().setGranularity(1f);
         chart.getXAxis().setDrawGridLines(false);
-        chart.getXAxis().setTextColor(Color.BLACK);
         chart.getXAxis().setCenterAxisLabels(true);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
         chart.getAxisLeft().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         chart.getAxisLeft().setDrawGridLines(true);
-        chart.getAxisLeft().setTextColor(Color.BLACK);
         chart.getAxisLeft().setDrawLabels(true);
         chart.getAxisLeft().setEnabled(true);
         chart.getAxisLeft().setValueFormatter((value, axis) -> Float.toString(value));
@@ -91,16 +86,13 @@ public abstract class DateLineChart extends LinearLayout {
         }
 
         LineDataSet dataSet = new LineDataSet(values,"");
-        dataSet.setColor(0xff334AD3);
         dataSet.setDrawCircles(true);
-        dataSet.setCircleColor(Color.BLACK);
         dataSet.setDrawCircleHole(false);
         dataSet.setCircleRadius(3);
         dataSet.setDrawFilled(true);
         dataSet.setFillDrawable(ContextCompat.getDrawable(getContext(), R.drawable.gradient));
 
         LineData data = new LineData(dataSet);
-        data.setValueTextColor(Color.BLACK);
         data.setValueTextSize(14f);
         data.setDrawValues(false);
 

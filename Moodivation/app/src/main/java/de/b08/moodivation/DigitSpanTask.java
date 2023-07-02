@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -169,7 +171,7 @@ public class DigitSpanTask extends AppCompatActivity {
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
         if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 0) {
-            new AlertDialog.Builder(DigitSpanTask.this)
+            new MaterialAlertDialogBuilder(DigitSpanTask.this)
                     .setTitle("Settings")
                     .setMessage("Allow data collection in the settings to save results.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {

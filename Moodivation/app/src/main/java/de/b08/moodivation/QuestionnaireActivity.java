@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -126,7 +128,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
         questionnaireNotesView.getQuestionnaireNotesTextBox().setMinimumHeight(450);
         questionnaireNotesView.setTitleVisible(false);
 
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
                 .setView(questionnaireNotesView)
                 .setPositiveButton("OK", (dialog, which) -> {

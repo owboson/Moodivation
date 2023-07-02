@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.color.DynamicColors;
+
 public class RecordPage extends AppCompatActivity {
 
     TextView title;

@@ -67,6 +67,7 @@ public class InterventionLoader {
             ex.printStackTrace();
         }
 
+        interventions = null;
         interventions = getAllInterventions(context);
     }
 

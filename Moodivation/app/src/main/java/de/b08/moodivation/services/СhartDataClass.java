@@ -238,7 +238,6 @@ public class СhartDataClass {
             }
         });
 
-        dataSet.setColor(Color.BLACK);
         dataSet.setBarBorderWidth(1f);
 
         BarData barData = new BarData(dataSet);
@@ -250,7 +249,6 @@ public class СhartDataClass {
         barChart.setOnChartValueSelectedListener(null);
 
         barData.setValueTextSize(14f); // Set the text size
-        barData.setValueTextColor(Color.BLACK); // Set the text color
 
         barChart.invalidate();
     }

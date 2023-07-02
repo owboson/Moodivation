@@ -94,11 +94,11 @@ public class SensorSettingsView<A, F> extends LinearLayout {
                 onSensorEnabledChangeListener.onChange(isChecked);
         });
 
-        accuracyAdapter = new StringResourceArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        accuracyAdapter = new StringResourceArrayAdapter<>(getContext(), R.layout.spinner_item);
         accuracyAdapter.setNotifyOnChange(false);
         accuracySpinner.setAdapter(accuracyAdapter);
 
-        frequencyAdapter = new StringResourceArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        frequencyAdapter = new StringResourceArrayAdapter<>(getContext(), R.layout.spinner_item);
         frequencyAdapter.setNotifyOnChange(false);
         frequencySpinner.setAdapter(frequencyAdapter);
 

@@ -28,7 +28,6 @@ public abstract class IntervalDateBarChart extends DateBarChart {
         TextView fromToLabel = new TextView(getContext(), attrs);
         fromToLabel.setTextSize(14);
         fromToLabel.setTextAlignment(TEXT_ALIGNMENT_CENTER);
-        fromToLabel.setTextColor(Color.BLACK);
 
         getAdditionalComponentsPanel().addView(fromToLabel);
 

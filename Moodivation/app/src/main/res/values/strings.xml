@@ -45,6 +45,20 @@
     <string name="interventionDialogCommentBtn">Comment</string>
     <string name="interventionDialogSkipBtn">Skip</string>
 
+    <string name="home">Home</string>
+    <string name="activities">Activities</string>
+    <string name="rewards">Rewards</string>
+    <string name="settings">Settings</string>
+    <string name="data">Data</string>
+
+    <string name="charts">Charts</string>
+    <string name="records">Records</string>
+
+    <string name="addInterventionItem">Add Intervention</string>
+    <string name="uploadDataItem">Upload Data</string>
+
+
+
     <string name="moreStepsSharedMessage">I recorded more than %NUM% steps today! Moodivation helped me to stay motivated and track my progress.</string>
     <string name="stepsSharedMessage">I recorded %NUM% steps today! Moodivation helped me to stay motivated and track my progress.</string>
     <string name="workoutsStreakSharedMessage">I recorded workouts for %NUM% days in a row! Moodivation helped me to stay motivated and track my progress.</string>
