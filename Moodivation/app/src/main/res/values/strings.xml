@@ -1,14 +1,9 @@
 <resources>
     <string name="app_name">Moodivation</string>
-    <string name="title_activity_settings_page">SettingsPage</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="sensorServiceDescription">This service is used to collect sensor data.</string>
     <string name="locationServiceDescription">This service is used to collect location data.</string>
     <string name="accuracyLabelText">Accuracy</string>
@@ -67,4 +62,48 @@
     <string name="runsSharedMessage">I completed %NUM% runs this month! Moodivation helped me to stay motivated and track my progress.</string>
     <string name="moreBikeRidesSharedMessage">I completed more than %NUM% bike rides this month! Moodivation helped me stay motivated and track my progress.</string>
     <string name="bikeRidesSharedMessage">I completed %NUM% bike rides this month! Moodivation helped me stay motivated and track my progress.</string>
+
+    <string name="digitSpanCongrats">Congratulations! Click start to proceed.</string>
+    <string name="digitSpanFinalRes">Wrong number! Your maximum is %NUM%.</string>
+    <string name="digitSpanEnterNumbersInstruction">Enter the numbers</string>
+    <string name="digitSpanMemorizeInstruction">Try to memorize the numbers!</string>
+    <string name="digitSpanStartBtn">Start</string>
+
+    <string name="questionnaireSaveBtn">Start</string>
+    <string name="questionnaireAddNoteBtn">Add Note</string>
+
+    <string name="recordDeleteBtn">Delete</string>
+
+    <string name="receiveNotifications">Receive notifications</string>
+    <string name="changeIntervals">Change Intervals</string>
+    <string name="intervalsOverlapHint">Make sure the intervals are correct and don\'t overlap.</string>
+    <string name="morningInterval">Morning Interval</string>
+    <string name="dayInterval">Day Interval</string>
+    <string name="eveningInterval">Evening Interval</string>
+    <string name="allowDataCollection">Allow data collection</string>
+    <string name="questionnaire">Questionnaire</string>
+    <string name="timesPerDay">Times per day</string>
+    <string name="periodicity">Periodicity</string>
+    <string name="digitSpanTask">Digit Span Task</string>
+    <string name="licenses">Licenses</string>
+    <string name="settingsSave">Save</string>
+    <string name="physicalActivity">Physical Activity</string>
+
+    <string name="from">From</string>
+
+    <string name="to">To</string>
+    <string name="moreRuns">You went for a run more than 10 times this month!</string>
+    <string name="notEnoughSteps">You didn\'t walk 5000 steps today</string>
+    <string name="notWorkoutStreak">You don\'t have a workout streak yet.</string>
+    <string name="moreRides">You rode a bike more than 10 times this month!</string>
+    <string name="workoutsLeft">/10. You have %NUM% workouts left.</string>
+    <string name="runsLeft">/10. You have %NUM% runs left.</string>
+    <string name="walkedSteps">You recorded %NUM% steps today!</string>
+    <string name="workoutStreak">Your workout streak is %NUM% day!</string>
+    <string name="workoutStreakPlural">Your workout streak is %NUM% days!</string>
+
+    <string name="wellbeingChartTitle">Wellbeing</string>
+    <string name="stepsChartTitle">Steps</string>
+    <string name="altitudeChartTitle">Elevation Plot</string>
+
 </resources>

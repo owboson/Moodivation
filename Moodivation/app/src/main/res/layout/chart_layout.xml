@@ -26,7 +26,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:padding="6dp"
-            android:text="Physical Activity"
+            android:text="@string/physicalActivity"
             android:textSize="16dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold" />

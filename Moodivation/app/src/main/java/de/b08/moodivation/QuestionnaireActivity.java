@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -82,7 +83,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
         String questionnaireName = getIntent().hasExtra("name") ? getIntent().getStringExtra("name") : "main";
         try {
             QuestionnaireBundle questionnaireBundle = QuestionnaireLoader.loadFromAssets(getApplicationContext()).get(questionnaireName);
-            questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(questionnaireBundle.getLanguages().stream().findFirst().get()));
+            questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(Locale.getDefault().getLanguage()));
         } catch (Exception e) {
             e.printStackTrace();
         }

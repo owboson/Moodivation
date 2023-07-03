@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.b08.moodivation.R;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.questionnaire.WellbeingAlgorithm;
 import de.b08.moodivation.questionnaire.answer.Answer;
@@ -21,7 +22,7 @@ public class WellbeingChart extends IntervalDateLineChart {
 
     public WellbeingChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setTitle("Wellbeing");
+        setTitle(R.string.wellbeingChartTitle);
         syncChart();
     }
 

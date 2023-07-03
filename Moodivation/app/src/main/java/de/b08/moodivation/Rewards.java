@@ -87,16 +87,16 @@ public class Rewards extends Fragment {
                       int streak = data[0];
                       if (streak == 0) {
                           imageList.add(R.drawable.streak_reward_img_grey);
-                          textList.add("You don't have a workout streak yet.");
+                          textList.add(getResources().getString(R.string.notWorkoutStreak));
                           shareMessages.add(null);
                       } else if (streak >= 1){
                           imageList.add(R.drawable.streak_reward_img);
                           if (streak == 1) {
                               shareMessages.add(getResources().getString(R.string.workoutStreakSharedMessage));
-                              textList.add("Your workout streak is "+ streak + " day!");
+                              textList.add(getResources().getString(R.string.workoutStreak).replace("%NUM%", Integer.toString(streak)));
                           } else {
                               shareMessages.add(getResources().getString(R.string.workoutsStreakSharedMessage).replace("%NUM%", "" + streak));
-                              textList.add("Your workout streak is "+ streak + " days!");
+                              textList.add(getResources().getString(R.string.workoutStreakPlural).replace("%NUM%", Integer.toString(streak)));
                           }
                       }
 
@@ -104,35 +104,35 @@ public class Rewards extends Fragment {
                       if (steps >= 5000) {
                           shareMessages.add(getResources().getString(R.string.moreStepsSharedMessage).replace("%NUM%", "" + 5000));
                           imageList.add(R.drawable.steps_reward_img);
-                          textList.add("Your could walk "+ steps + " today!");
+                          textList.add(getResources().getString(R.string.walkedSteps).replace("%NUM%", Integer.toString(steps)));
                       } else {
                           if (steps != 0)
                               shareMessages.add(getResources().getString(R.string.stepsSharedMessage).replace("%NUM%", "" + steps));
                           else
                               shareMessages.add(null);
                           imageList.add(R.drawable.steps_reward_img_grey);
-                          textList.add("You didn't walk 5000 steps today");
+                          textList.add(getResources().getString(R.string.notEnoughSteps));
                       }
 
                       int running = data[1];
                       if (running >= 10) {
                           shareMessages.add(getResources().getString(R.string.moreRunsSharedMessage).replace("%NUM%", "" + 10));
                           imageList.add(R.drawable.running_reward_img);
-                          textList.add("Your went for a run more than 10 times this month!");
+                          textList.add(getResources().getString(R.string.moreRuns));
                       } else {
                           if (running != 0)
                               shareMessages.add(getResources().getString(R.string.runsSharedMessage).replace("%NUM%", "" + running));
                           else
                               shareMessages.add(null);
                           imageList.add(R.drawable.running_reward_img_grey);
-                          textList.add(running+"/10. You have " + (10-running) +" workouts left");
+                          textList.add(running + getResources().getText(R.string.runsLeft).toString().replace("%NUM%", Integer.toString(10 - running)));
                       }
 
                       int cycling = data[2];
                       if (cycling >= 10) {
                           shareMessages.add(getResources().getString(R.string.moreBikeRidesSharedMessage).replace("%NUM%", "" + 10));
                           imageList.add(R.drawable.cycling_reward_img);
-                          textList.add("You rode a bike more than 10 times this month!");
+                          textList.add(getResources().getString(R.string.moreRides));
                       } else {
                           if (cycling != 0)
                               shareMessages.add(getResources().getString(R.string.bikeRidesSharedMessage).replace("%NUM%", "" + cycling));
@@ -140,7 +140,7 @@ public class Rewards extends Fragment {
                               shareMessages.add(null);
 
                           imageList.add(R.drawable.cycling_reward_img_grey);
-                          textList.add(cycling+"/10. You have " + (10-cycling) +" workouts left");
+                          textList.add(cycling+ getResources().getText(R.string.workoutsLeft).toString().replace("%NUM%", Integer.toString(10 - cycling)));
                       }
 
                       getActivity().runOnUiThread(new Runnable() {

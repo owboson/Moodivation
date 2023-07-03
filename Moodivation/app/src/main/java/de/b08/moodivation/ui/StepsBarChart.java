@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.b08.moodivation.R;
 import de.b08.moodivation.database.sensors.SensorDatabase;
 
 public class StepsBarChart extends IntervalDateBarChart {
 
     public StepsBarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setTitle("Steps");
+        setTitle(R.string.stepsChartTitle);
         syncChart();
     }
 

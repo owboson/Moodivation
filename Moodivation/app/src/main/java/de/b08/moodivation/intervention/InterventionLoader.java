@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -90,7 +91,7 @@ public class InterventionLoader {
         // TODO: implement
         if (bundle == null)
             return null;
-        return bundle.getInterventionMap().values().stream().findFirst().orElse(null);
+        return bundle.getInterventionMap().entrySet().stream().filter(e -> e.getKey().equals(Locale.getDefault().getLanguage())).map(Map.Entry::getValue).findFirst().orElse(bundle.getInterventionMap().values().stream().findAny().get());
     }
 
     public static InterventionBundle getRandomIntervention(Context context) {

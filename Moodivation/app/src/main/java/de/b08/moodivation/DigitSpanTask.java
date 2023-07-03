@@ -2,8 +2,6 @@ package de.b08.moodivation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +23,7 @@ import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.DigitSpanTaskResEntity;
 import de.b08.moodivation.intervention.InterventionLoader;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class DigitSpanTask extends AppCompatActivity {
 //   text field that shows the number on the screnn
     private TextView numberField;
@@ -56,7 +55,7 @@ public class DigitSpanTask extends AppCompatActivity {
     private Button button9;
 
     // array of those buttons
-    ArrayList buttons = new ArrayList<Button>();
+    ArrayList<Button> buttons = new ArrayList<>();
 
     protected SharedPreferences sharedPreferences;
 
@@ -75,18 +74,15 @@ public class DigitSpanTask extends AppCompatActivity {
                         @Override
                         public void run() {
                             numberField.setVisibility(View.VISIBLE);
-                            mHandler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    numberField.setVisibility(View.INVISIBLE);
-                                    mHandler.postDelayed(mRunnable, 1000);
-                                }
+                            mHandler.postDelayed(() -> {
+                                numberField.setVisibility(View.INVISIBLE);
+                                mHandler.postDelayed(mRunnable, 1000);
                             }, 1000);
                         }
                     }, 1000);
             } else {
                 // Show message that user should start entering numbers
-                instructionField.setText("Enter the numbers");
+                instructionField.setText(R.string.digitSpanEnterNumbersInstruction);
                 mCurrentIndex = 0;
                 enableButtons();
             }
@@ -109,7 +105,7 @@ public class DigitSpanTask extends AppCompatActivity {
     }
 
     // parse pressed buttons and compare them to list of shown numbers
-    private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Button button = (Button) v;
@@ -119,14 +115,14 @@ public class DigitSpanTask extends AppCompatActivity {
                 mCurrentIndex++;
                 if (mCurrentIndex == upperBound) {
                     // Show message that user has successfully completed the task
-                    instructionField.setText("Congratulations! Click start to procede");
+                    instructionField.setText(R.string.digitSpanCongrats);
                     userMax = upperBound;
                     upperBound+=1;
                     disableButtons();
                 }
             } else {
                 // Show message that user made a mistake
-                instructionField.setText("Wrong number! Your maximum is " + userMax);
+                instructionField.setText(getResources().getText(R.string.digitSpanFinalRes).toString().replace("%NUM%", "" + userMax));
 
                 // store in database
                 saveResult();
@@ -226,7 +222,7 @@ public class DigitSpanTask extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                instructionField.setText("Try to memorize the numbers! ");
+                instructionField.setText(R.string.digitSpanMemorizeInstruction);
                 mCount = 0; // Reset the count
                 mNumbers = new int[upperBound]; // reset the array of shown numbers
                 mHandler.postDelayed(mRunnable, 1000); // Start the countdown
