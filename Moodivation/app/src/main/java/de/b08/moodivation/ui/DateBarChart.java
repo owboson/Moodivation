@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.google.android.material.color.MaterialColors;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,7 +68,6 @@ public abstract class DateBarChart extends LinearLayout {
         });
 
         chart.getAxisLeft().setValueFormatter((value, axis) -> Float.toString(value));
-        chart.getAxisLeft().setTextColor(Color.BLACK);
         chart.getAxisLeft().setEnabled(true);
         chart.getAxisLeft().setGranularity(1f);
         chart.getAxisLeft().setLabelCount(10);
@@ -89,11 +89,9 @@ public abstract class DateBarChart extends LinearLayout {
         }
 
         BarDataSet dataSet = new BarDataSet(values,"");
-        dataSet.setColor(Color.BLACK);
         dataSet.setBarBorderWidth(1f);
 
         BarData data = new BarData(dataSet);
-        data.setValueTextColor(Color.BLACK);
         data.setValueTextSize(14f);
         // data.setDrawValues(false);
 

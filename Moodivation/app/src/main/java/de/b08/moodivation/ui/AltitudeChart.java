@@ -12,13 +12,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.b08.moodivation.R;
 import de.b08.moodivation.database.location.LocationDatabase;
 import de.b08.moodivation.database.location.entities.LocationHistoryEntity;
 
 public class AltitudeChart extends IntervalDateLineChart {
     public AltitudeChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setTitle("Elevation Plot");
+        setTitle(R.string.altitudeChartTitle);
         syncChart();
     }
 

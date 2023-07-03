@@ -100,8 +100,8 @@ public class СhartDataClass {
                 }
                 interventionLoader.getInterventionWithId(record.interventionId, context);
 
-                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
                 try {
                     Date date = inputFormat.parse(String.valueOf(record.startTimestamp));
                     String formattedDate = outputFormat.format(date);
@@ -238,7 +238,6 @@ public class СhartDataClass {
             }
         });
 
-        dataSet.setColor(Color.BLACK);
         dataSet.setBarBorderWidth(1f);
 
         BarData barData = new BarData(dataSet);
@@ -250,7 +249,6 @@ public class СhartDataClass {
         barChart.setOnChartValueSelectedListener(null);
 
         barData.setValueTextSize(14f); // Set the text size
-        barData.setValueTextColor(Color.BLACK); // Set the text color
 
         barChart.invalidate();
     }

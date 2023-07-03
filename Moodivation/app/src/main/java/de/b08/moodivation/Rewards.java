@@ -1,7 +1,10 @@
 package de.b08.moodivation;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +20,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.material.color.MaterialColors;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,17 +49,27 @@ import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.ui.ShareButton;
 import de.b08.moodivation.ui.ShareUtils;
 
-public class Rewards extends AppCompatActivity {
+public class Rewards extends Fragment {
 
     InterventionDatabase db;
     InterventionLoader interventionLoader;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rewards);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_rewards, container, false);
+    }
 
-        db = InterventionDatabase.getInstance(getApplicationContext());
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        db = InterventionDatabase.getInstance(getContext());
         interventionLoader = new InterventionLoader();
 
         AsyncTask.execute(new Runnable() {
@@ -66,58 +81,58 @@ public class Rewards extends AppCompatActivity {
                       List<String> shareMessages = new ArrayList<>();
 
                       // get streak, running and cycling data of this month
-                      int[] data = getData(getApplicationContext());
+                      int[] data = getData(getContext());
 
                       // add streak reward to list (if exists)
                       int streak = data[0];
                       if (streak == 0) {
                           imageList.add(R.drawable.streak_reward_img_grey);
-                          textList.add("You don't have a workout streak yet.");
+                          textList.add(getResources().getString(R.string.notWorkoutStreak));
                           shareMessages.add(null);
                       } else if (streak >= 1){
                           imageList.add(R.drawable.streak_reward_img);
                           if (streak == 1) {
                               shareMessages.add(getResources().getString(R.string.workoutStreakSharedMessage));
-                              textList.add("Your workout streak is "+ streak + " day!");
+                              textList.add(getResources().getString(R.string.workoutStreak).replace("%NUM%", Integer.toString(streak)));
                           } else {
                               shareMessages.add(getResources().getString(R.string.workoutsStreakSharedMessage).replace("%NUM%", "" + streak));
-                              textList.add("Your workout streak is "+ streak + " days!");
+                              textList.add(getResources().getString(R.string.workoutStreakPlural).replace("%NUM%", Integer.toString(streak)));
                           }
                       }
 
-                      int steps = get5000Steps(getApplicationContext());
+                      int steps = get5000Steps(getContext());
                       if (steps >= 5000) {
                           shareMessages.add(getResources().getString(R.string.moreStepsSharedMessage).replace("%NUM%", "" + 5000));
                           imageList.add(R.drawable.steps_reward_img);
-                          textList.add("Your could walk "+ steps + " today!");
+                          textList.add(getResources().getString(R.string.walkedSteps).replace("%NUM%", Integer.toString(steps)));
                       } else {
                           if (steps != 0)
                               shareMessages.add(getResources().getString(R.string.stepsSharedMessage).replace("%NUM%", "" + steps));
                           else
                               shareMessages.add(null);
                           imageList.add(R.drawable.steps_reward_img_grey);
-                          textList.add("You didn't walk 5000 steps today");
+                          textList.add(getResources().getString(R.string.notEnoughSteps));
                       }
 
                       int running = data[1];
                       if (running >= 10) {
                           shareMessages.add(getResources().getString(R.string.moreRunsSharedMessage).replace("%NUM%", "" + 10));
                           imageList.add(R.drawable.running_reward_img);
-                          textList.add("Your went for a run more than 10 times this month!");
+                          textList.add(getResources().getString(R.string.moreRuns));
                       } else {
                           if (running != 0)
                               shareMessages.add(getResources().getString(R.string.runsSharedMessage).replace("%NUM%", "" + running));
                           else
                               shareMessages.add(null);
                           imageList.add(R.drawable.running_reward_img_grey);
-                          textList.add(running+"/10. You have " + (10-running) +" workouts left");
+                          textList.add(running + getResources().getText(R.string.runsLeft).toString().replace("%NUM%", Integer.toString(10 - running)));
                       }
 
                       int cycling = data[2];
                       if (cycling >= 10) {
                           shareMessages.add(getResources().getString(R.string.moreBikeRidesSharedMessage).replace("%NUM%", "" + 10));
                           imageList.add(R.drawable.cycling_reward_img);
-                          textList.add("You rode a bike more than 10 times this month!");
+                          textList.add(getResources().getString(R.string.moreRides));
                       } else {
                           if (cycling != 0)
                               shareMessages.add(getResources().getString(R.string.bikeRidesSharedMessage).replace("%NUM%", "" + cycling));
@@ -125,10 +140,10 @@ public class Rewards extends AppCompatActivity {
                               shareMessages.add(null);
 
                           imageList.add(R.drawable.cycling_reward_img_grey);
-                          textList.add(cycling+"/10. You have " + (10-cycling) +" workouts left");
+                          textList.add(cycling+ getResources().getText(R.string.workoutsLeft).toString().replace("%NUM%", Integer.toString(10 - cycling)));
                       }
 
-                      runOnUiThread(new Runnable() {
+                      getActivity().runOnUiThread(new Runnable() {
                           @Override
                           public void run() {
                               create_view(imageList, textList, shareMessages);
@@ -230,34 +245,34 @@ public class Rewards extends AppCompatActivity {
     }
 
     void create_view(List imageList, List textList, List<String> shareMessages) {
-        LinearLayout containerLayout = findViewById(R.id.containerLayout);
+        LinearLayout containerLayout = getView().findViewById(R.id.containerLayout);
 
         for (int i = 0; i < imageList.size(); i++) {
             // Create CardView
-            CardView cardView = new CardView(this);
+            CardView cardView = new CardView(getContext());
+            cardView.setCardBackgroundColor(MaterialColors.getColor(cardView, com.google.android.material.R.attr.colorSecondaryContainer));
 
             int paddingInPixels = getResources().getDimensionPixelSize(R.dimen.padding_size);
             cardView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels);
 
             // Set CardView properties as needed
             cardView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            cardView.setCardBackgroundColor(Color.WHITE);
             cardView.setCardElevation(getResources().getDimensionPixelSize(R.dimen.card_elevation));
 
             // Create a LinearLayout as the content container
-            LinearLayout contentLayout = new LinearLayout(this);
+            LinearLayout contentLayout = new LinearLayout(getContext());
             contentLayout.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             contentLayout.setOrientation(LinearLayout.VERTICAL);
             contentLayout.setGravity(Gravity.CENTER);
 
             // Create ImageView
-            ImageView imageView = new ImageView(this);
+            ImageView imageView = new ImageView(getContext());
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(350, 350);
             imageView.setLayoutParams(imageParams);
             imageView.setImageResource((int) imageList.get(i));
 
             // Create TextView
-            TextView textView = new TextView(this);
+            TextView textView = new TextView(getContext());
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -270,14 +285,15 @@ public class Rewards extends AppCompatActivity {
             textView.setPadding(5, 5, 5, 15);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20); // Set text size to 30dp
             textView.setTypeface(null, Typeface.BOLD); // Set text to bold
+            textView.setTextColor(MaterialColors.getColor(textView, com.google.android.material.R.attr.colorOnSecondaryContainer));
 
             // Add ImageView and TextView to contentLayout
             contentLayout.addView(imageView);
             contentLayout.addView(textView);
 
-            FrameLayout frameLayout = new FrameLayout(this);
+            FrameLayout frameLayout = new FrameLayout(getContext());
             frameLayout.addView(contentLayout);
-            ShareButton shareButton = new ShareButton(this);
+            ShareButton shareButton = new ShareButton(getContext());
 
             String shareMessage = shareMessages.get(i);
             boolean enabled = shareMessage != null;
@@ -285,7 +301,7 @@ public class Rewards extends AppCompatActivity {
             shareButton.setEnabled(enabled);
             shareButton.setVisibility(enabled ? View.VISIBLE : View.GONE);
             shareButton.getShareBtn().setOnClickListener(v -> {
-                ShareUtils.shareTextIntent(shareMessage, this);
+                ShareUtils.shareTextIntent(shareMessage, getActivity());
             });
 
             frameLayout.addView(shareButton);
