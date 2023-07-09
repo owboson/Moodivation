@@ -17,6 +17,7 @@ import de.b08.moodivation.R;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.questionnaire.WellbeingAlgorithm;
 import de.b08.moodivation.questionnaire.answer.Answer;
+import de.b08.moodivation.utils.DateUtils;
 
 public class WellbeingChart extends IntervalDateLineChart {
 

@@ -22,7 +22,7 @@ import de.b08.moodivation.database.sensors.entities.StepDataEntity;
 import de.b08.moodivation.sensors.SensorConstants;
 import de.b08.moodivation.sensors.SingleSensorObserver;
 import de.b08.moodivation.sensors.SingleTriggerSensorObserver;
-import de.b08.moodivation.ui.DateUtils;
+import de.b08.moodivation.utils.DateUtils;
 
 public class SensorService extends Service implements SharedPreferences.OnSharedPreferenceChangeListener {
 

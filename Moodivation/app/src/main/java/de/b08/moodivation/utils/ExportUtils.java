@@ -1,4 +1,4 @@
-package de.b08.moodivation.database;
+package de.b08.moodivation.utils;
 
 import android.app.Activity;
 import android.util.Pair;

@@ -24,7 +24,7 @@ import de.b08.moodivation.services.LocationLiveData;
 import de.b08.moodivation.services.LocationService;
 import de.b08.moodivation.services.StepLiveData;
 import de.b08.moodivation.services.TravelledDistanceLiveDataManager;
-import de.b08.moodivation.ui.DateUtils;
+import de.b08.moodivation.utils.DateUtils;
 import de.b08.moodivation.ui.DescribedChronometerView;
 import de.b08.moodivation.ui.DescribedValueView;
 

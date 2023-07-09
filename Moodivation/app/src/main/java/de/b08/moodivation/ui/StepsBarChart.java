@@ -14,6 +14,7 @@ import java.util.List;
 
 import de.b08.moodivation.R;
 import de.b08.moodivation.database.sensors.SensorDatabase;
+import de.b08.moodivation.utils.DateUtils;
 
 public class StepsBarChart extends IntervalDateBarChart {
 

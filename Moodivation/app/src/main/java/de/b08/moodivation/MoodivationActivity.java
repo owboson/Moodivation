@@ -20,7 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import de.b08.moodivation.database.ExportUtils;
+import de.b08.moodivation.utils.ExportUtils;
 import de.b08.moodivation.intervention.InterventionLoader;
 
 public class MoodivationActivity extends AppCompatActivity {

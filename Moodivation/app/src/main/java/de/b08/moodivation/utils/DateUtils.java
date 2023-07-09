@@ -1,4 +1,4 @@
-package de.b08.moodivation.ui;
+package de.b08.moodivation.utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class DateUtils {
         Date minimizedDay = minimizeDay(date);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(minimizedDay);
-        return new Date(minimizedDay.getTime() + 1000L*60*60*24*calendar.get(Calendar.DAY_OF_MONTH));
+        return new Date(minimizedDay.getTime() - 1000L*60*60*24*(calendar.get(Calendar.DAY_OF_MONTH) - 1));
     }
 
 }

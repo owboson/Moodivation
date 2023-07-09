@@ -1,25 +1,15 @@
 package de.b08.moodivation;
 
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -27,19 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Map;
-import java.util.TimeZone;
-
-import de.b08.moodivation.database.ExportUtils;
-import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
-import de.b08.moodivation.intervention.InterventionLoader;
-import de.b08.moodivation.notifications.NotificationReceiver;
-import de.b08.moodivation.notifications.RandomTimeGenerator;
-import de.b08.moodivation.sensors.SensorConstants;
-import de.b08.moodivation.services.LocationService;
-import de.b08.moodivation.services.SensorService;
 import de.b08.moodivation.services.СhartDataClass;
 
 public class MainActivity extends Fragment {

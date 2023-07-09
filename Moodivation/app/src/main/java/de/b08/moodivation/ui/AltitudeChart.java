@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import de.b08.moodivation.R;
 import de.b08.moodivation.database.location.LocationDatabase;
 import de.b08.moodivation.database.location.entities.LocationHistoryEntity;
+import de.b08.moodivation.utils.DateUtils;
 
 public class AltitudeChart extends IntervalDateLineChart {
     public AltitudeChart(Context context, @Nullable AttributeSet attrs) {

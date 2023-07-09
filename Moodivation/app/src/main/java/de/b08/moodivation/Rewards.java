@@ -2,12 +2,10 @@ package de.b08.moodivation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,27 +25,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
 import de.b08.moodivation.database.interventions.InterventionDatabase;
-import de.b08.moodivation.database.interventions.dao.InterventionRecordDao;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.database.sensors.SensorDatabase;
-import de.b08.moodivation.database.sensors.dao.AccelerometerDao;
 import de.b08.moodivation.database.sensors.dao.StepDao;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.InterventionBundle;
 import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.ui.ShareButton;
-import de.b08.moodivation.ui.ShareUtils;
+import de.b08.moodivation.utils.ShareUtils;
 
 public class Rewards extends Fragment {
 
