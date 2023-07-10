@@ -1,6 +1,5 @@
 package de.b08.moodivation.questionnaire.view;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
@@ -69,7 +68,7 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
 
     @Override
     public void setEnabled(boolean enabled) {
-        super.setEnabled(false);
+        super.setEnabled(enabled);
     }
 
     public void setQuestion(Q question) {

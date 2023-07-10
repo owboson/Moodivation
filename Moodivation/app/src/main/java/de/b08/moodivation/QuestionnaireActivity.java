@@ -140,4 +140,8 @@ public class QuestionnaireActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", (dialog, which) -> {})
                 .show();
     }
+
+    public String getNote() {
+        return note;
+    }
 }
