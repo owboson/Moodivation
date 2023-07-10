@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 import de.b08.moodivation.questionnaire.Note;
 
@@ -34,4 +35,16 @@ public class QuestionNotesEntity {
         return new QuestionNotesEntity(note.getQuestionnaireId(), now, note.getQuestionId(), note.getValue());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof QuestionNotesEntity)) return false;
+        QuestionNotesEntity that = (QuestionNotesEntity) o;
+        return timestamp.equals(that.timestamp) && questionnaireId.equals(that.questionnaireId) && questionId.equals(that.questionId) && Objects.equals(notes, that.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, questionnaireId, questionId, notes);
+    }
 }

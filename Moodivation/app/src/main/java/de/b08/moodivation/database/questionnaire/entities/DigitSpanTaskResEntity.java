@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(primaryKeys = {"timestamp"})
 public class DigitSpanTaskResEntity {
@@ -29,4 +30,16 @@ public class DigitSpanTaskResEntity {
         this.questionnaireAnswerId = questionnaireAnswerId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DigitSpanTaskResEntity)) return false;
+        DigitSpanTaskResEntity that = (DigitSpanTaskResEntity) o;
+        return timestamp.equals(that.timestamp) && afterNoonQuestionnaire.equals(that.afterNoonQuestionnaire) && result.equals(that.result) && Objects.equals(questionnaireAnswerId, that.questionnaireAnswerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, afterNoonQuestionnaire, result, questionnaireAnswerId);
+    }
 }

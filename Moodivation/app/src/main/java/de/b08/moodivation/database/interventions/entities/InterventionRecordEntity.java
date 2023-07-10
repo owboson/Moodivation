@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(primaryKeys = {"interventionId", "startTimestamp", "endTimestamp"})
 public class InterventionRecordEntity {
@@ -48,4 +49,16 @@ public class InterventionRecordEntity {
                 new Date(startTimestamp.getTime()), new Date(endTimestamp.getTime()), afterQuestionnaire, rating, feedback);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InterventionRecordEntity)) return false;
+        InterventionRecordEntity record = (InterventionRecordEntity) o;
+        return afterQuestionnaire == record.afterQuestionnaire && interventionId.equals(record.interventionId) && Objects.equals(questionnaireAnswerId, record.questionnaireAnswerId) && startTimestamp.equals(record.startTimestamp) && endTimestamp.equals(record.endTimestamp) && Objects.equals(rating, record.rating) && Objects.equals(feedback, record.feedback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(interventionId, questionnaireAnswerId, startTimestamp, endTimestamp, afterQuestionnaire, rating, feedback);
+    }
 }

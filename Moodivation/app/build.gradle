@@ -48,7 +48,7 @@ android {
 }
 
 dependencies {
-    def room_version = "2.5.1"
+    def room_version = "2.5.2"
 
     implementation "androidx.room:room-rxjava3:$room_version"
 
@@ -63,15 +63,15 @@ dependencies {
     implementation "androidx.media3:media3-ui:1.0.2"
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'commons-io:commons-io:2.13.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.1'
 
     implementation 'com.google.android.material:material:m3'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

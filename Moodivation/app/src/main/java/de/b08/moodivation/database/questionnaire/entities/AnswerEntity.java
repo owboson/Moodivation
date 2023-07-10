@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Objects;
 
 import de.b08.moodivation.questionnaire.answer.Answer;
 import de.b08.moodivation.questionnaire.answer.ChoiceAnswer;
@@ -77,4 +78,16 @@ public class AnswerEntity {
         return new AnswerEntity(answer.getQuestionnaireId(), answer.getQuestionId(), now, type, answerString);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AnswerEntity)) return false;
+        AnswerEntity that = (AnswerEntity) o;
+        return questionnaireId.equals(that.questionnaireId) && questionId.equals(that.questionId) && timestamp.equals(that.timestamp) && answer.equals(that.answer) && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(questionnaireId, questionId, timestamp, answer, type);
+    }
 }

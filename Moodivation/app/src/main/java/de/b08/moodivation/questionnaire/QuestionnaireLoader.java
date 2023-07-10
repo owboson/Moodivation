@@ -3,11 +3,12 @@ package de.b08.moodivation.questionnaire;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.xml.sax.InputSource;
+import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,20 @@ import de.b08.moodivation.questionnaire.parser.QuestionnaireParsingException;
 
 public class QuestionnaireLoader {
 
+    private static Map<String, QuestionnaireBundle> questionnaires;
+
+    public static Map<String, QuestionnaireBundle> loadQuestionnaires(Context context) throws Exception {
+        if (questionnaires == null) {
+            questionnaires = loadFromAssets(context);
+        }
+        return questionnaires;
+    }
+
     public static Map<String, QuestionnaireBundle> loadFromAssets(Context context) throws Exception {
+        return loadFromAssets(context, true);
+    }
+
+    public static Map<String, QuestionnaireBundle> loadFromAssets(Context context, boolean storeInDatabase) throws Exception {
         String[] paths = context.getAssets().list("questionnaires/");
         Set<String> names = Arrays.stream(paths).map(s -> s.split("\\.")[0])
                 .collect(Collectors.toSet());
@@ -35,7 +49,9 @@ public class QuestionnaireLoader {
             Arrays.stream(paths).filter(p -> p.startsWith(name + ".")).forEach(p -> {
                 try {
                     InputStream in = context.getAssets().open("questionnaires/" + p);
-                    Questionnaire q = QuestionnaireParser.parse(new InputSource(in));
+                    String xmlString = IOUtils.toString(in, StandardCharsets.UTF_8);
+                    xmlString = xmlString.replaceAll("<!--(?:.|[\\r\\t\\n])*-->", "");
+                    Questionnaire q = QuestionnaireParser.parse(xmlString);
                     String lang = p.replaceFirst(name + "\\.", "").split("\\.")[0];
                     questionnaireMap.put(lang, q);
                 } catch (IOException | QuestionnaireParsingException |
@@ -47,7 +63,8 @@ public class QuestionnaireLoader {
                 throw new Exception("multiple questionnaires with same id");
 
             if (!questionnaireMap.values().isEmpty()) {
-                addToDatabase(questionnaireMap.values().stream().findFirst().get(), context);
+                if (storeInDatabase)
+                    addToDatabase(questionnaireMap.values().stream().findFirst().get(), context);
                 questionnaires.put(name, new QuestionnaireBundle(name, questionnaireMap));
             }
         }

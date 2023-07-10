@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Each entry is a single step
@@ -18,4 +19,16 @@ public class StepDataEntity {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StepDataEntity)) return false;
+        StepDataEntity that = (StepDataEntity) o;
+        return timestamp.equals(that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp);
+    }
 }

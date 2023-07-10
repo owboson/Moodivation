@@ -1,0 +1,15 @@
+<!-- Comment -->
+<Questionnaire id="1">
+    <Title/>
+    <ChoiceQuestion defaultItemId="2" id="1">
+        <Title>XYZ_EN</Title>
+        <Items>
+            <Item id="1">X</Item>
+            <Item id="2">Y</Item>
+        </Items>
+        <Items>
+            <Item id="3">X</Item>
+            <Item id="4">Y</Item>
+        </Items>
+    </ChoiceQuestion>
+</Questionnaire>

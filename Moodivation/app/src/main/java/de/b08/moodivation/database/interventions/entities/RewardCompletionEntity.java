@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(primaryKeys = {"challenge", "referenceDate"})
 public class RewardCompletionEntity {
@@ -39,4 +40,16 @@ public class RewardCompletionEntity {
         return new RewardCompletionEntity("Cycling", referenceDate, completionDate);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RewardCompletionEntity)) return false;
+        RewardCompletionEntity that = (RewardCompletionEntity) o;
+        return challenge.equals(that.challenge) && completionDate.equals(that.completionDate) && referenceDate.equals(that.referenceDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(challenge, completionDate, referenceDate);
+    }
 }
