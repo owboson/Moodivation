@@ -142,10 +142,14 @@ public class SettingsPage extends AppCompatActivity {
         this.correctIntervals_day = true;
 
         for(NumberPicker picker: hour_pickers) {
-            picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            }
         }
         for(NumberPicker picker: minute_pickers) {
-            picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            }
         }
 
         this.saveButton.setEnabled(true);
@@ -165,8 +169,12 @@ public class SettingsPage extends AppCompatActivity {
                 this.correctIntervals_evening = false;
             }
             this.saveButton.setEnabled(false);
-            from_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
-            to_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                from_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                to_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
         } else if (to_hour_picker_val == from_hour_picker_val &&
                 to_minute_picker_val <= from_minute_picker_val) {
             if (type==0) {
@@ -178,8 +186,12 @@ public class SettingsPage extends AppCompatActivity {
             }
 
             this.saveButton.setEnabled(false);
-            to_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
-            from_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                to_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                from_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
         } else {
             if (type==0) {
                 this.correctIntervals_morning = true;
@@ -191,10 +203,12 @@ public class SettingsPage extends AppCompatActivity {
             if (this.correctIntervals_morning && this.correctIntervals_day && this.correctIntervals_evening) {
                 this.saveButton.setEnabled(true);
             }
-            from_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
-            to_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
-            to_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
-            from_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                from_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+                to_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+                to_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+                from_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            }
         }
 
 
