@@ -1,8 +1,8 @@
 package de.b08.moodivation.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,13 +11,11 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.android.material.color.MaterialColors;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +35,9 @@ public abstract class DateLineChart extends LinearLayout {
 
     private LinearLayout additionalComponentsPanel;
 
+    private boolean resetMin = true;
+    private boolean resetMax = true;
+
     public DateLineChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.lastweek_day_line_chart, this);
@@ -52,6 +53,9 @@ public abstract class DateLineChart extends LinearLayout {
     public abstract void syncChart();
 
     private void setupChart() {
+        chart.setNoDataText(getResources().getText(R.string.noDataAvailable).toString());
+        chart.setNoDataTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSecondaryContainer));
+
         chart.getDescription().setEnabled(false);
         chart.setTouchEnabled(false);
         chart.setDrawGridBackground(false);
@@ -64,12 +68,15 @@ public abstract class DateLineChart extends LinearLayout {
         chart.getXAxis().setDrawGridLines(false);
         chart.getXAxis().setCenterAxisLabels(true);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.getXAxis().setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSecondaryContainer));
 
         chart.getAxisLeft().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         chart.getAxisLeft().setDrawGridLines(true);
         chart.getAxisLeft().setDrawLabels(true);
         chart.getAxisLeft().setEnabled(true);
         chart.getAxisLeft().setValueFormatter((value, axis) -> Float.toString(value));
+        chart.getAxisLeft().setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSecondaryContainer));
+        chart.getAxisLeft().setGranularity(0.1f);
 
         chart.getAxisRight().setEnabled(false);
     }
@@ -91,15 +98,19 @@ public abstract class DateLineChart extends LinearLayout {
         dataSet.setCircleRadius(3);
         dataSet.setDrawFilled(true);
         dataSet.setFillDrawable(ContextCompat.getDrawable(getContext(), R.drawable.gradient));
+        dataSet.setValueTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSecondaryContainer));
 
         LineData data = new LineData(dataSet);
         data.setValueTextSize(14f);
         data.setDrawValues(false);
+        data.setValueTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSecondaryContainer));
 
         float minY = values.stream().map(Entry::getY).min(Float::compareTo).orElse(0F);
         float maxY = values.stream().map(Entry::getY).max(Float::compareTo).orElse(0F);
-        chart.getAxisLeft().setAxisMinimum(minY);
-        chart.getAxisLeft().setAxisMaximum(maxY);
+        if (resetMin)
+            chart.getAxisLeft().setAxisMinimum(minY);
+        if (resetMax)
+            chart.getAxisLeft().setAxisMaximum(maxY);
 
         float minX = values.stream().map(Entry::getX).min(Float::compareTo).orElse(0F);
         float maxX = values.stream().map(Entry::getX).max(Float::compareTo).orElse(0F);
@@ -125,4 +136,21 @@ public abstract class DateLineChart extends LinearLayout {
         return additionalComponentsPanel;
     }
 
+    public LineChart getChart() {
+        return chart;
+    }
+
+    public void setResetMin(boolean resetMin) {
+        this.resetMin = resetMin;
+    }
+
+    public void setResetMax(boolean resetMax) {
+        this.resetMax = resetMax;
+    }
+
+    public void setManualReloadingAllowed(boolean allowed) {
+        ImageButton syncButton = findViewById(R.id.syncChartBtn);
+        syncButton.setEnabled(allowed);
+        syncButton.setVisibility(allowed ? VISIBLE : GONE);
+    }
 }

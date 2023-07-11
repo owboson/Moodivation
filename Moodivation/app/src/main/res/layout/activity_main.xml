@@ -24,20 +24,8 @@
             android:layout_height="wrap_content"
             android:text="Questionnaire" />
 
-        <include
-            layout="@layout/chart_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <de.b08.moodivation.ui.StepsBarChart
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <de.b08.moodivation.ui.WellbeingChart
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <de.b08.moodivation.ui.AltitudeChart
+            android:id="@+id/wellbeingChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

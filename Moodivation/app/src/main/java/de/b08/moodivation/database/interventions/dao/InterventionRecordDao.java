@@ -1,6 +1,7 @@
 package de.b08.moodivation.database.interventions.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -23,5 +24,8 @@ public interface InterventionRecordDao {
 
     @Update
     void update(InterventionRecordEntity entity);
+
+    @Delete
+    void delete(InterventionRecordEntity entity);
 
 }

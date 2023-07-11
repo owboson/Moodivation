@@ -35,9 +35,9 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
     public QuestionView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.question_view, this);
-        questionTextView = (TextView) findViewById(R.id.questionTextView);
-        questionContentView = (LinearLayout) findViewById(R.id.questionContentView);
-        addNoteButton = (ImageButton) findViewById(R.id.addNoteButton);
+        questionTextView = findViewById(R.id.questionTextView);
+        questionContentView = findViewById(R.id.questionContentView);
+        addNoteButton = findViewById(R.id.addNoteButton);
         updateHandlers = new ArrayList<>();
 
         note = null;

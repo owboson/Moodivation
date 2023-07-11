@@ -23,10 +23,10 @@ import de.b08.moodivation.questionnaire.question.ChoiceQuestionItem;
 
 public class ChoiceQuestionView extends QuestionView<ChoiceQuestion, ChoiceAnswer> {
 
-    private RadioGroup radioGroup = null;
+    private RadioGroup radioGroup;
 
-    private List<CheckBox> checkBoxes = null;
-    private List<RadioButton> radioButtons = null;
+    private List<CheckBox> checkBoxes;
+    private List<RadioButton> radioButtons;
 
     public ChoiceQuestionView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

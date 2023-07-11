@@ -2,11 +2,9 @@ package de.b08.moodivation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,8 +14,6 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -64,8 +60,8 @@ public class SettingsPage extends AppCompatActivity {
     NumberPicker day_to_minute_picker;
     NumberPicker evening_to_minute_picker;
 
-    NumberPicker hour_pickers[];
-    NumberPicker minute_pickers[];
+    NumberPicker[] hour_pickers;
+    NumberPicker[] minute_pickers;
 
     LinearLayout intervalsLayout;
     LinearLayout dataCollectionLayout;
@@ -573,15 +569,15 @@ public class SettingsPage extends AppCompatActivity {
 
                     editor.commit();
 
-                    MoodivationApplication.getApplication().unset_notification_intents();
+                    MoodivationApplication.getApplication().unset_notification_intents((AlarmManager) getSystemService(ALARM_SERVICE));
                     MoodivationApplication.getApplication().set_notifs(sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
 
                     changeIntervalsSwitch.setChecked(false);
                     intervalsLayout.setVisibility(View.GONE);
 
-                    new AlertDialog.Builder(SettingsPage.this)
-                        .setTitle("Success")
-                        .setMessage("All the changes were saved")
+                    new MaterialAlertDialogBuilder(SettingsPage.this)
+                        .setTitle(R.string.settingsSuccess)
+                        .setMessage(R.string.settingSavedMessage)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

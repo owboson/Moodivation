@@ -3,12 +3,13 @@ package de.b08.moodivation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.color.DynamicColors;
+import de.b08.moodivation.database.interventions.InterventionDatabase;
+import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 
 public class RecordPage extends AppCompatActivity {
 
@@ -24,12 +25,7 @@ public class RecordPage extends AppCompatActivity {
         setContentView(R.layout.activity_record);
         deleteButton = findViewById(R.id.deleteButton);
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteRecord("0");
-            }
-        });
+        deleteButton.setOnClickListener(v -> deleteRecord());
         Intent intent = getIntent();
         String[] data = intent.getStringArrayExtra("values");
         title = findViewById(R.id.title);
@@ -40,8 +36,11 @@ public class RecordPage extends AppCompatActivity {
         from.setText(data[1]);
         to.setText(data[2]);
     }
-    private void deleteRecord(String interventionId) {
-        System.out.println("print");
+
+    private void deleteRecord() {
+        InterventionRecordEntity record = (InterventionRecordEntity) getIntent().getExtras().get("record");
+        AsyncTask.execute(() -> InterventionDatabase.getInstance(getApplicationContext()).interventionRecordDao().delete(record));
+        finish();
     }
 
 }

@@ -18,7 +18,7 @@ public class FreeTextQuestionView extends QuestionView<FreeTextQuestion, TextAns
         super(context, attrs);
 
         inflate(context, R.layout.free_text_question_view, getQuestionContentView());
-        answerTextField = (EditText) findViewById(R.id.freeTextQuestionAnswerTextField);
+        answerTextField = findViewById(R.id.freeTextQuestionAnswerTextField);
         answerTextField.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus)
                 notifyUpdateHandlers();

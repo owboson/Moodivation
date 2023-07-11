@@ -2,7 +2,6 @@ package de.b08.moodivation.ui;
 
 import android.widget.NumberPicker;
 
-import java.util.Arrays;
 public class CustomPickerAdapter implements NumberPicker.Formatter {
     private static final String[] VALUES1 = {"Morning", "Noon", "Evening"};
     private static final String[] VALUES2 = {"Morning & Noon", "Morning & Evening", "Noon & Evening"};

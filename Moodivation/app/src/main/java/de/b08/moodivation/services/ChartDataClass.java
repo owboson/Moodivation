@@ -1,9 +1,7 @@
 package de.b08.moodivation.services;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -12,12 +10,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.google.android.material.color.MaterialColors;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.b08.moodivation.R;
 import de.b08.moodivation.database.interventions.InterventionDatabase;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.intervention.Intervention;
@@ -68,16 +66,14 @@ class BarEntryValue {
     }
 }
 
-public class СhartDataClass {
+public class ChartDataClass {
 
     private BarChart barChart;
-    InterventionLoader interventionLoader;
     List<BarEntryValue> barEntryValues = new ArrayList<>();
 
 
-    public СhartDataClass(BarChart chartView, Context context) {
+    public ChartDataClass(BarChart chartView, Context context) {
         InterventionDatabase interventionDatabase = InterventionDatabase.getInstance(context);
-        interventionLoader = new InterventionLoader();
 //        barChart = findViewById(R.id.barChart);
         barChart = chartView;
         List<RecordEntry> chartEntries = new ArrayList<>();
@@ -87,7 +83,7 @@ public class СhartDataClass {
             for (InterventionRecordEntity record : records) {
                 RecordEntry entry = new RecordEntry();
 
-                Optional<InterventionBundle> interventionBundle = interventionLoader.getInterventionWithId(record.interventionId, context);
+                Optional<InterventionBundle> interventionBundle = InterventionLoader.getInterventionWithId(record.interventionId, context);
 
                 if (interventionBundle.isPresent()) {
                     InterventionBundle bundle = interventionBundle.get();
@@ -98,7 +94,7 @@ public class СhartDataClass {
                         entry.setActivityTitle(title);
                     }
                 }
-                interventionLoader.getInterventionWithId(record.interventionId, context);
+                InterventionLoader.getInterventionWithId(record.interventionId, context);
 
                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
                 SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
@@ -125,7 +121,7 @@ public class СhartDataClass {
                         barEntryValue.addTitle(e.activityTitle);
                     }
                 }
-                if (containsDate == false) {
+                if (!containsDate) {
                     BarEntryValue val = new BarEntryValue();
                     val.addTitle(e.activityTitle);
                     val.date = e.date;
@@ -149,6 +145,8 @@ public class СhartDataClass {
     }
 
     private void setupBarChart() {
+        barChart.setNoDataText(barChart.getResources().getText(R.string.noDataAvailable).toString());
+        barChart.setNoDataTextColor(MaterialColors.getColor(barChart, com.google.android.material.R.attr.colorOnSecondaryContainer));
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
         barChart.getDescription().setEnabled(false);
@@ -219,11 +217,11 @@ public class СhartDataClass {
                 indices.add(index);
 
             } catch (ParseException e) {
-
+                e.printStackTrace();
             }
         }
         for (int i = 0; i < 7; i++) {
-            if (indices.contains(i) == false) {
+            if (!indices.contains(i)) {
                 entries.add(new BarEntry(i, 0));
             }
         }
@@ -243,12 +241,15 @@ public class СhartDataClass {
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(0.5f);
 
+        barChart.getAxisLeft().setTextColor(MaterialColors.getColor(barChart, com.google.android.material.R.attr.colorOnSecondaryContainer));
+        barChart.getXAxis().setTextColor(MaterialColors.getColor(barChart, com.google.android.material.R.attr.colorOnSecondaryContainer));
         barChart.setData(barData);
         barChart.setDrawValueAboveBar(true);
         barChart.setTouchEnabled(false);
         barChart.setOnChartValueSelectedListener(null);
 
         barData.setValueTextSize(14f); // Set the text size
+        barData.setValueTextColor(MaterialColors.getColor(barChart, com.google.android.material.R.attr.colorOnSecondaryContainer));
 
         barChart.invalidate();
     }

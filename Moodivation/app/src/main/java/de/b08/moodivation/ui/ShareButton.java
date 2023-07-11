@@ -8,7 +8,7 @@ import de.b08.moodivation.R;
 
 public class ShareButton extends LinearLayout {
 
-    private ImageButton shareBtn;
+    private final ImageButton shareBtn;
 
     public ShareButton(Context context) {
         super(context);

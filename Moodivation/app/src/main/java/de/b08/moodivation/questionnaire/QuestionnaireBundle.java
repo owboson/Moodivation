@@ -18,7 +18,7 @@ public class QuestionnaireBundle {
         if (questionnaires.containsKey(lang))
             return questionnaires.get(lang);
 
-        return questionnaires.values().stream().findFirst().orElse(null);
+        return questionnaires.containsKey("en") ? questionnaires.get("en") : questionnaires.values().stream().findFirst().orElse(null);
     }
 
     public Set<String> getLanguages() {

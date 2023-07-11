@@ -1,7 +1,5 @@
 package de.b08.moodivation;
 
-import android.content.BroadcastReceiver;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,7 +80,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
         String questionnaireName = getIntent().hasExtra("name") ? getIntent().getStringExtra("name") : "main";
         try {
-            QuestionnaireBundle questionnaireBundle = QuestionnaireLoader.loadFromAssets(getApplicationContext()).get(questionnaireName);
+            QuestionnaireBundle questionnaireBundle = QuestionnaireLoader.loadQuestionnaires(getApplicationContext()).get(questionnaireName);
             questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(Locale.getDefault().getLanguage()));
         } catch (Exception e) {
             e.printStackTrace();

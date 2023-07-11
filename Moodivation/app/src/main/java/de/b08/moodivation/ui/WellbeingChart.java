@@ -24,6 +24,10 @@ public class WellbeingChart extends IntervalDateLineChart {
     public WellbeingChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setTitle(R.string.wellbeingChartTitle);
+        getChart().getAxisLeft().setAxisMinimum(0);
+        getChart().getAxisLeft().setAxisMaximum(1);
+        setResetMin(false);
+        setResetMax(false);
         syncChart();
     }
 

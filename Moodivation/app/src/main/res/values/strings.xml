@@ -106,4 +106,20 @@
     <string name="stepsChartTitle">Steps</string>
     <string name="altitudeChartTitle">Elevation Plot</string>
 
+    <string name="dataUploadTitle">Data Upload</string>
+    <string name="dataUploadError">Something went wrong.</string>
+    <string name="dataUploadSuccess">Upload was successful.</string>
+    <string name="dataUploadOk">OK</string>
+    <string name="settingsSuccess">Success</string>
+    <string name="settingSavedMessage">All the changes were saved.</string>
+
+    <string name="questionnaireNotificationTitle">Questionnaire Reminder</string>
+    <string name="morningQuestionnaireNotification">Please fill out your morning questionnaire</string>
+    <string name="noonQuestionnaireNotification">Please fill out your noon questionnaire</string>
+    <string name="eveningQuestionnaireNotification">Please fill out your evening questionnaire</string>
+    <string name="allowQuestionnaireDataCollection">Allow data collection to be able to complete the questionnaire</string>
+
+    <string name="noRecordsAvailable">You don\'t have any saved records yet.</string>
+    <string name="noDataAvailable">No data available.</string>
+
 </resources>

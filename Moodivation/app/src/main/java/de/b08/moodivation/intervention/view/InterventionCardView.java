@@ -1,7 +1,6 @@
 package de.b08.moodivation.intervention.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -10,10 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.material.color.DynamicColors;
-import com.google.android.material.color.MaterialColors;
-
-import de.b08.moodivation.R;
 import de.b08.moodivation.intervention.Intervention;
 
 public class InterventionCardView extends LinearLayout {
