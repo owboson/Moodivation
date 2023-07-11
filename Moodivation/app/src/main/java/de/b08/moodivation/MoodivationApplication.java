@@ -5,14 +5,11 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.IBinder;
 import android.util.Log;
 
 import com.google.android.material.color.DynamicColors;
@@ -25,6 +22,7 @@ import java.util.TimeZone;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.notifications.NotificationReceiver;
 import de.b08.moodivation.notifications.RandomTimeGenerator;
+import de.b08.moodivation.questionnaire.QuestionnaireLoader;
 import de.b08.moodivation.sensors.SensorConstants;
 import de.b08.moodivation.services.LocationService;
 import de.b08.moodivation.services.SensorService;
@@ -55,7 +53,6 @@ public class MoodivationApplication extends Application {
     public void onCreate() {
         super.onCreate();
         MoodivationApplication.application = this;
-        DynamicColors.applyToActivitiesIfAvailable(MoodivationApplication.getApplication());
 
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
@@ -71,6 +68,12 @@ public class MoodivationApplication extends Application {
 
         SensorConstants.presetSensorSharedPreferencesIfRequired(getApplicationContext());
         startService(new Intent(getApplicationContext(), SensorService.class));
+
+        try {
+            QuestionnaireLoader.loadQuestionnaires(getApplicationContext());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         AsyncTask.execute(() -> startForegroundService(new Intent(getApplicationContext(), LocationService.class)));
     }
@@ -169,7 +172,7 @@ public class MoodivationApplication extends Application {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar3.getTimeInMillis(), pendingIntent3);
     }
 
-    public void unset_notification_intents() {
+    public void unset_notification_intents(AlarmManager alarmManager) {
         System.out.println("pendingIntents");
         if (pendingIntent1 != null) {
             alarmManager.cancel(pendingIntent1);

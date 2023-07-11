@@ -21,6 +21,8 @@ public class AltitudeChart extends IntervalDateLineChart {
     public AltitudeChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setTitle(R.string.altitudeChartTitle);
+        getChart().getAxisLeft().setAxisMinimum(0);
+        setResetMin(false);
         syncChart();
     }
 

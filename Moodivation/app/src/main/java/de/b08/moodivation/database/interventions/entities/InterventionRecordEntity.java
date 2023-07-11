@@ -4,11 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity(primaryKeys = {"interventionId", "startTimestamp", "endTimestamp"})
-public class InterventionRecordEntity {
+public class InterventionRecordEntity implements Serializable {
 
     @NonNull
     public String interventionId;

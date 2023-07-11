@@ -2,8 +2,6 @@ package de.b08.moodivation.sensors;
 
 import android.hardware.SensorManager;
 
-import androidx.annotation.NonNull;
-
 import java.util.Arrays;
 
 public enum SensorDelay {
@@ -13,18 +11,17 @@ public enum SensorDelay {
     GAME(SensorManager.SENSOR_DELAY_GAME),
     NORMAL(SensorManager.SENSOR_DELAY_NORMAL);
 
-    private int value;
+    private final int value;
 
     /**
      * @param val Either set to one of {@link SensorManager#SENSOR_DELAY_NORMAL}, {@link SensorManager#SENSOR_DELAY_UI},
      *            {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_FASTEST} or the delay
      *            in milliseconds.
      */
-    private SensorDelay(int val) {
+    SensorDelay(int val) {
         this.value = val;
     }
 
-    @NonNull
     public int getValue() {
         return value;
     }

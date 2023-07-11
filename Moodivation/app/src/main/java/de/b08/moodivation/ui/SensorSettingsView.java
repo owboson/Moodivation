@@ -3,6 +3,7 @@ package de.b08.moodivation.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -80,6 +81,9 @@ public class SensorSettingsView<A, F> extends LinearLayout {
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SensorSettingsView, 0, 0);
         boolean showAccuracy = attributes.getBoolean(R.styleable.SensorSettingsView_showAccuracy, false);
         String sensorTitle = attributes.getString(R.styleable.SensorSettingsView_sensorTitle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            attributes.close();
+        }
 
         if (sensorTitle != null) {
             sensorSwitch.setText(sensorTitle);

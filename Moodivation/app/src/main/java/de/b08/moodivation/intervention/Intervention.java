@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class Intervention implements Serializable {
 
@@ -31,7 +30,7 @@ public class Intervention implements Serializable {
     private final InterventionOptions options;
 
     @Nullable
-    private final Set<DataType> collectedDataTypes;
+    private final List<DataType> collectedDataTypes;
 
     public Intervention(@NonNull String id, @NonNull String title, @Nullable String description,
                         @Nullable InterventionMedia interventionMedia, @Nullable List<DataType> collectedDataTypes,
@@ -41,7 +40,7 @@ public class Intervention implements Serializable {
         this.description = description;
         this.interventionMedia = interventionMedia;
         this.options = options == null ? InterventionOptions.getDefaultOptions() : options;
-        this.collectedDataTypes = collectedDataTypes == null ? null : new HashSet<>(collectedDataTypes);
+        this.collectedDataTypes = collectedDataTypes;
     }
 
     public Intervention(@NonNull String id, @NonNull String title, @Nullable String description,
@@ -71,7 +70,7 @@ public class Intervention implements Serializable {
     }
 
     @Nullable
-    public Set<DataType> getCollectedDataTypes() {
+    public List<DataType> getCollectedDataTypes() {
         return collectedDataTypes;
     }
 
@@ -80,7 +79,7 @@ public class Intervention implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Intervention)) return false;
         Intervention that = (Intervention) o;
-        return id.equals(that.id) && title.equals(that.title) && Objects.equals(description, that.description) && Objects.equals(interventionMedia, that.interventionMedia) && options.equals(that.options) && Objects.equals(collectedDataTypes, that.collectedDataTypes);
+        return id.equals(that.id) && title.equals(that.title) && Objects.equals(description, that.description) && Objects.equals(interventionMedia, that.interventionMedia) && options.equals(that.options) && Objects.equals(collectedDataTypes == null ? null : new HashSet<>(collectedDataTypes), that.collectedDataTypes == null ? null : new HashSet<>(that.collectedDataTypes));
     }
 
     @Override

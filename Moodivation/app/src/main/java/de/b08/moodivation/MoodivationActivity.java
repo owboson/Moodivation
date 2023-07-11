@@ -14,7 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentContainerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.color.DynamicColors;
@@ -39,7 +38,6 @@ public class MoodivationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        DynamicColors.applyToActivitiesIfAvailable(MoodivationApplication.getApplication());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moodivation_activity);
 
@@ -49,33 +47,25 @@ public class MoodivationActivity extends AppCompatActivity {
 
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
-        FragmentContainerView fragmentContainerView = findViewById(R.id.fragmentContainerView2);
         navigationView = findViewById(R.id.navigationView);
 
         navigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.activitiesItem:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContainerView2, InterventionOverviewActivity.class, null)
-                            .commit();
-                    break;
-                case R.id.homeItem:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContainerView2, MainActivity.class, null)
-                            .commit();
-                    break;
-                case R.id.rewardsItem:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContainerView2, Rewards.class, null)
-                            .commit();
-                    break;
-                case R.id.dataItem:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContainerView2, DataFragment.class, null)
-                            .commit();
-                    break;
-                default:
-                    ;
+            if (item.getItemId() == R.id.activitiesItem) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView2, InterventionOverviewActivity.class, null)
+                        .commit();
+            } else if (item.getItemId() == R.id.homeItem) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView2, MainActivity.class, null)
+                        .commit();
+            } else if (item.getItemId() == R.id.rewardsItem) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView2, Rewards.class, null)
+                        .commit();
+            } else if (item.getItemId() == R.id.dataItem) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView2, DataFragment.class, null)
+                        .commit();
             }
             return true;
         });
@@ -85,7 +75,6 @@ public class MoodivationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        DynamicColors.applyToActivitiesIfAvailable(MoodivationApplication.getApplication());
         if (item.getItemId() == R.id.addInterventionItemId) {
             interventionFileChooser.launch("application/zip");
             return true;
@@ -101,17 +90,17 @@ public class MoodivationActivity extends AppCompatActivity {
                     if (!result.first) {
                         runOnUiThread(() -> {
                             new MaterialAlertDialogBuilder(this)
-                                    .setTitle("Data Upload")
-                                    .setMessage("Something went wrong.")
-                                    .setPositiveButton("OK", (dialog, which) -> {})
+                                    .setTitle(R.string.dataUploadTitle)
+                                    .setMessage(R.string.dataUploadError)
+                                    .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
                                     .show();
                         });
                     } else {
                         runOnUiThread(() -> {
                             new MaterialAlertDialogBuilder(this)
-                                    .setTitle("Data Upload")
-                                    .setMessage("Data was uploaded successfully.")
-                                    .setPositiveButton("OK", (dialog, which) -> {})
+                                    .setTitle(R.string.dataUploadTitle)
+                                    .setMessage(R.string.dataUploadSuccess)
+                                    .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
                                     .show();
                         });
                     }
@@ -119,9 +108,9 @@ public class MoodivationActivity extends AppCompatActivity {
                     e.printStackTrace();
                     runOnUiThread(() -> {
                         new MaterialAlertDialogBuilder(this)
-                                .setTitle("Data Upload")
-                                .setMessage("Something went wrong.")
-                                .setPositiveButton("OK", (dialog, which) -> {})
+                                .setTitle(R.string.dataUploadTitle)
+                                .setMessage(R.string.dataUploadError)
+                                .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
                                 .show();
                     });
                 }

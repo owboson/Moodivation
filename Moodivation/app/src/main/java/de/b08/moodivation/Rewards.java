@@ -9,6 +9,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,7 +48,6 @@ import de.b08.moodivation.utils.ShareUtils;
 public class Rewards extends Fragment {
 
     InterventionDatabase db;
-    InterventionLoader interventionLoader;
 
     @Nullable
     @Override
@@ -64,7 +65,6 @@ public class Rewards extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         db = InterventionDatabase.getInstance(getContext());
-        interventionLoader = new InterventionLoader();
 
         AsyncTask.execute(new Runnable() {
                   @Override
@@ -137,12 +137,8 @@ public class Rewards extends Fragment {
                           textList.add(cycling+ getResources().getText(R.string.workoutsLeft).toString().replace("%NUM%", Integer.toString(10 - cycling)));
                       }
 
-                      getActivity().runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              create_view(imageList, textList, shareMessages);
-                          }
-                      });
+                      Handler handler = new Handler(Looper.getMainLooper());
+                      handler.post(() -> create_view(imageList, textList, shareMessages, getContext(), view));
 
                   }
         });
@@ -172,8 +168,7 @@ public class Rewards extends Fragment {
 // Get the end timestamp of today as a long value
         long endTimestamp = calendar.getTimeInMillis();
 
-        int stepsToday = stepDao.getStepsInTimeInterval(startTimestamp, endTimestamp);
-        return stepsToday;
+        return stepDao.getStepsInTimeInterval(startTimestamp, endTimestamp);
     }
 
     public static int[] getData(Context context) {
@@ -192,7 +187,6 @@ public class Rewards extends Fragment {
 
         for (final InterventionRecordEntity record : records) {
             final Optional<InterventionBundle> interventionBundle = InterventionLoader.getInterventionWithId(record.interventionId, context);
-            String title_val;
             if (interventionBundle.isPresent()) {
                 InterventionBundle bundle = interventionBundle.get();
                 // Access the intervention or intervention map from the bundle
@@ -238,12 +232,12 @@ public class Rewards extends Fragment {
         return result;
     }
 
-    void create_view(List imageList, List textList, List<String> shareMessages) {
-        LinearLayout containerLayout = getView().findViewById(R.id.containerLayout);
+    void create_view(List<Integer> imageList, List<String> textList, List<String> shareMessages, Context context, View view) {
+        LinearLayout containerLayout = view.findViewById(R.id.containerLayout);
 
         for (int i = 0; i < imageList.size(); i++) {
             // Create CardView
-            CardView cardView = new CardView(getContext());
+            CardView cardView = new CardView(context);
             cardView.setCardBackgroundColor(MaterialColors.getColor(cardView, com.google.android.material.R.attr.colorSecondaryContainer));
 
             int paddingInPixels = getResources().getDimensionPixelSize(R.dimen.padding_size);

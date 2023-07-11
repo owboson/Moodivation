@@ -37,7 +37,7 @@ public class InterventionOverviewActivity extends Fragment {
 
         List<InterventionBundle> interventionBundleList = InterventionLoader.getAllInterventions(view.getContext());
 
-        ListView interventionListView = getView().findViewById(R.id.interventionListView);
+        ListView interventionListView = view.findViewById(R.id.interventionListView);
         interventionListView.setDivider(null);
         interventionListView.setAdapter(new BaseAdapter() {
             @Override

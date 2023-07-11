@@ -93,14 +93,14 @@ public class DigitSpanTask extends AppCompatActivity {
     // disable buttons from 0 to 9
     private void disableButtons() {
         for (int i = 0; i < buttons.size(); i++) {
-            ((Button)buttons.get(i)).setEnabled(false);
+            buttons.get(i).setEnabled(false);
         }
     }
 
     // enable buttons from 0 to 9
     private void enableButtons() {
         for (int i = 0; i < buttons.size(); i++) {
-            ((Button)buttons.get(i)).setEnabled(true);
+            buttons.get(i).setEnabled(true);
         }
     }
 

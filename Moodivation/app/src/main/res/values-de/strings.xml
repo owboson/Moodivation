@@ -30,7 +30,7 @@
     <string name="interventionRatingLabel">Bewertung</string>
     <string name="interventionCommentLabel">Kommentar</string>
     <string name="interventionFeedbackDialogTitle">Feedback</string>
-    <string name="interventionDialogCommentBtn">Kommentar</string>
+    <string name="interventionDialogCommentBtn">Kommentieren</string>
     <string name="interventionDialogSkipBtn">Überspringen</string>
     <string name="home">Startseite</string>
     <string name="activities">Aktivitäten</string>
@@ -54,7 +54,7 @@
     <string name="digitSpanEnterNumbersInstruction">Geben Sie die Zahlen ein</string>
     <string name="digitSpanMemorizeInstruction">Versuchen Sie sich die Zahlen einzuprägen!</string>
     <string name="digitSpanStartBtn">Start</string>
-    <string name="questionnaireSaveBtn">Start</string>
+    <string name="questionnaireSaveBtn">Speichern</string>
     <string name="questionnaireAddNoteBtn">Notiz hinzufügen</string>
     <string name="recordDeleteBtn">Löschen</string>
     <string name="receiveNotifications">Benachrichtigungen erhalten</string>
@@ -85,4 +85,18 @@
     <string name="wellbeingChartTitle">Wohlbefinden</string>
     <string name="stepsChartTitle">Schritte</string>
     <string name="altitudeChartTitle">Höhenlage</string>
+    <string name="dataUploadTitle">Daten hochladen</string>
+    <string name="dataUploadError">Etwas ist schief gelaufen.</string>
+    <string name="dataUploadSuccess">Das Hochladen war erfolgreich.</string>
+    <string name="dataUploadOk">OK</string>
+    <string name="settingsSuccess">Einstellungen gespeichert</string>
+    <string name="settingSavedMessage">Alle Einstellungen wurden gespeichert.</string>
+    <string name="questionnaireNotificationTitle">Questionnaire Erinnerung</string>
+    <string name="morningQuestionnaireNotification">Bitte füllen Sie den Fragebogen für den Vormittag aus</string>
+    <string name="noonQuestionnaireNotification">Bitte füllen Sie den Fragebogen für den Nachmittag aus</string>
+    <string name="eveningQuestionnaireNotification">Bitte füllen Sie den Fragebogen für den Abend aus</string>
+    <string name="allowQuestionnaireDataCollection">Ermöglichen Sie die Datenerhebung, um den Fragebogen ausfüllen zu können</string>
+
+    <string name="noRecordsAvailable">Sie haben noch keine Aufzeichnungen.</string>
+    <string name="noDataAvailable">Es sind keine Daten verfügbar.</string>
 </resources>

@@ -1,7 +1,6 @@
 package de.b08.moodivation.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -20,12 +19,14 @@ public abstract class IntervalDateBarChart extends DateBarChart {
     Date from;
     Date to;
 
+    TextView fromToLabel;
+
     final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
     public IntervalDateBarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        TextView fromToLabel = new TextView(getContext(), attrs);
+        fromToLabel = new TextView(getContext(), attrs);
         fromToLabel.setTextSize(14);
         fromToLabel.setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
@@ -50,6 +51,11 @@ public abstract class IntervalDateBarChart extends DateBarChart {
 
             datePicker.show(((FragmentActivity) context).getSupportFragmentManager(), "DATE_RANGE");
         });
+    }
+
+    public void setIntervalChangeAllowed(boolean allowed) {
+        fromToLabel.setEnabled(allowed);
+        fromToLabel.setVisibility(allowed ? VISIBLE : GONE);
     }
 
 }

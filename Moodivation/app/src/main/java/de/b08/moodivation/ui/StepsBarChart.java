@@ -21,6 +21,8 @@ public class StepsBarChart extends IntervalDateBarChart {
     public StepsBarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setTitle(R.string.stepsChartTitle);
+        getChart().getAxisLeft().setAxisMinimum(0);
+        setResetMin(false);
         syncChart();
     }
 

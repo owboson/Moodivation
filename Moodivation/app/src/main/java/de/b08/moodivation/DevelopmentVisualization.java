@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import de.b08.moodivation.services.СhartDataClass;
+import de.b08.moodivation.services.ChartDataClass;
 
 
 public class DevelopmentVisualization extends Fragment {
@@ -24,6 +24,6 @@ public class DevelopmentVisualization extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        СhartDataClass data = new СhartDataClass(view.findViewById(R.id.barChart), getContext());
+        ChartDataClass data = new ChartDataClass(view.findViewById(R.id.barChart), getContext());
     }
 }
