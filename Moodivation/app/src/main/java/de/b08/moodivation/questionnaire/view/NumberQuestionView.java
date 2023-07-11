@@ -81,4 +81,11 @@ public class NumberQuestionView extends QuestionView<NumberQuestion, NumberAnswe
         }
     }
 
+    public void setValue(float value) {
+        if (slider != null)
+            slider.setValue(value);
+        else if (numberBox != null)
+            numberBox.setText(Float.toString(value));
+    }
+
 }

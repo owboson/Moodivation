@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
 
     <TextView
         android:id="@+id/interventionTitle"
@@ -12,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="TextView"
-        android:textColor="@android:color/primary_text_light"
         android:textSize="24dp"
         android:textStyle="bold" />
 
@@ -30,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:layout_weight="0"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical" />
 
 </LinearLayout>

@@ -8,7 +8,7 @@ public interface WellbeingAlgorithm {
 
     WellbeingAlgorithm INSTANCE = new SimpleWellbeingAlgorithm();
 
-    double calculateWellbeing(List<Answer<?>> questionnaireAnswers);
+    double calculateWellbeing(List<? extends Answer<?>> questionnaireAnswers);
 
     boolean shouldPresentIntervention(List<Answer<?>> questionnaireAnswers);
 

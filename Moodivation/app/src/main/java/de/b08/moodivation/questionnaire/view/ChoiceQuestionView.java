@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import de.b08.moodivation.ui.EditableCheckBox;
@@ -150,4 +151,16 @@ public class ChoiceQuestionView extends QuestionView<ChoiceQuestion, ChoiceAnswe
                     .collect(Collectors.toList());
         }
     }
+
+    public void selectItemWithId(String id, boolean selected) {
+        ChoiceQuestionItem questionItem = getQuestion().getItems().stream().filter(c -> Objects.equals(c.getId(), id)).findAny().get();
+        int index = getQuestion().getItems().indexOf(questionItem);
+
+        if (getQuestion().isMultiSelectionAllowed()) {
+            checkBoxes.get(index).setChecked(selected);
+        } else {
+            radioButtons.get(index).setChecked(selected);
+        }
+    }
+
 }

@@ -1,6 +1,9 @@
 package de.b08.moodivation;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Dao;
 import androidx.room.Room;
@@ -12,8 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.material.color.DynamicColors;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,9 +40,9 @@ import de.b08.moodivation.intervention.InterventionBundle;
 import de.b08.moodivation.intervention.InterventionLoader;
 
 
-public class RecordsPage extends AppCompatActivity {
+public class RecordsPage extends Fragment {
 
-    InterventionDatabase db;
+    InterventionDatabase interventionDatabase;
     InterventionRecordDao recordDao;
     InterventionLoader interventionLoader;
 
@@ -47,15 +53,25 @@ public class RecordsPage extends AppCompatActivity {
     LayoutInflater inflater;
     LinearLayout parentView;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_records_page, container, false);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        DynamicColors.applyToActivityIfAvailable(getActivity());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_records_page);
+    }
 
-        inflater = LayoutInflater.from(getApplicationContext());
-        parentView = findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        inflater = LayoutInflater.from(getContext());
+        parentView = getView().findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
 
-        InterventionDatabase interventionDatabase = InterventionDatabase.getInstance(getApplicationContext());
+        interventionDatabase = InterventionDatabase.getInstance(getContext());
         interventionLoader = new InterventionLoader();
 
         AsyncTask.execute(new Runnable() {
@@ -64,9 +80,9 @@ public class RecordsPage extends AppCompatActivity {
                 final List<InterventionRecordEntity> records = interventionDatabase.interventionRecordDao().getAllRecords();
                 Collections.reverse(records);
                 for (final InterventionRecordEntity record : records) {
-                    final Optional<InterventionBundle> interventionBundle = interventionLoader.getInterventionWithId(record.interventionId, getApplicationContext());
+                    final Optional<InterventionBundle> interventionBundle = interventionLoader.getInterventionWithId(record.interventionId, getContext());
 
-                    runOnUiThread(new Runnable() {
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             View view = inflater.inflate(R.layout.loop_item, parentView, false);
@@ -82,7 +98,6 @@ public class RecordsPage extends AppCompatActivity {
                                 if (intervention != null) {
                                     String title = intervention.getTitle();
                                     title_val = title;
-//                                    textViewTitle.setText(title);
                                 }
                             }
 
@@ -117,7 +132,7 @@ public class RecordsPage extends AppCompatActivity {
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent intent = new Intent(RecordsPage.this, RecordPage.class);
+                                        Intent intent = new Intent(getContext(), RecordPage.class);
                                         intent.putExtra("values", data);
                                         startActivity(intent);
                                     }

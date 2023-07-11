@@ -64,4 +64,16 @@ public class InterventionMedia implements Serializable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InterventionMedia)) return false;
+        InterventionMedia that = (InterventionMedia) o;
+        return internalIntervention == that.internalIntervention && Objects.equals(imagePaths, that.imagePaths) && Objects.equals(videoPath, that.videoPath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(internalIntervention, imagePaths, videoPath);
+    }
 }

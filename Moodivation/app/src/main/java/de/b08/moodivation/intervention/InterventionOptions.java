@@ -1,6 +1,7 @@
 package de.b08.moodivation.intervention;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class InterventionOptions implements Serializable {
 
@@ -24,4 +25,16 @@ public class InterventionOptions implements Serializable {
         return new InterventionOptions(true, false);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InterventionOptions)) return false;
+        InterventionOptions options = (InterventionOptions) o;
+        return showOptionalImages == options.showOptionalImages && showOptionalVideo == options.showOptionalVideo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(showOptionalImages, showOptionalVideo);
+    }
 }

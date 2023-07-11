@@ -1,6 +1,5 @@
 package de.b08.moodivation.questionnaire.view;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
@@ -9,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
         questionnaireNotesView.getQuestionnaireNotesTextBox().setMinimumHeight(450);
         questionnaireNotesView.setTitleVisible(false);
 
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
                 .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
                 .setView(questionnaireNotesView)
                 .setPositiveButton("OK", (dialog, which) -> {
@@ -67,7 +68,7 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
 
     @Override
     public void setEnabled(boolean enabled) {
-        super.setEnabled(false);
+        super.setEnabled(enabled);
     }
 
     public void setQuestion(Q question) {

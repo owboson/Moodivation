@@ -13,12 +13,16 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import de.b08.moodivation.Rewards;
+import de.b08.moodivation.database.interventions.InterventionDatabase;
+import de.b08.moodivation.database.interventions.entities.RewardCompletionEntity;
 import de.b08.moodivation.database.sensors.SensorDatabase;
 import de.b08.moodivation.database.sensors.entities.AccelerometerDataEntity;
 import de.b08.moodivation.database.sensors.entities.StepDataEntity;
 import de.b08.moodivation.sensors.SensorConstants;
 import de.b08.moodivation.sensors.SingleSensorObserver;
 import de.b08.moodivation.sensors.SingleTriggerSensorObserver;
+import de.b08.moodivation.utils.DateUtils;
 
 public class SensorService extends Service implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -62,9 +66,21 @@ public class SensorService extends Service implements SharedPreferences.OnShared
             return true;
         });
         stepTriggerSensorObserver.setObservationLiveData(StepLiveData.getInstance());
+        stepTriggerSensorObserver.addOnDataStoredHandler(() -> {
+            if (Rewards.stepsCompleted(getApplicationContext())
+                    && !InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                    .stepsReferenceDateExists(DateUtils.minimizeDay(new Date()).getTime())) {
+                InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                        .insert(RewardCompletionEntity.createStepsEntity(DateUtils.minimizeDay(new Date()), new Date()));
+            }
+        });
 
         stepTriggerSensorObserver.setEnabled(sharedPreferences.getBoolean(SensorConstants.STEP_DETECTOR_ENABLED_SETTING,
                 SensorConstants.STEP_DETECTOR_DEFAULT_ENABLED_VALUE));
+
+        stepTriggerSensorObserver.addOnDataStoredHandler(() -> {
+            System.out.println("something ");
+        });
     }
 
     @Override

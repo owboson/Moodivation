@@ -1,6 +1,10 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Moodivation"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText" >
 
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,9 +26,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Receive notifications"
-            android:textColor="#000000"
-            android:textSize="20dp" />
+            android:text="@string/receiveNotifications"
+            android:textSize="20sp" />
 
         <Switch
             android:id="@+id/notifications_switch"
@@ -44,8 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change intervals"
-            android:textColor="#000000"
+            android:text="@string/changeIntervals"
             android:textSize="20dp" />
 
         <Switch
@@ -66,7 +68,6 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:textColorPrimary="#000000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -79,8 +80,8 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
 
-            android:text="Make sure the intervals are correct and don't overlap"
-            android:textColor="#FF0000"
+            android:text="@string/intervalsOverlapHint"
+            android:textColor="?attr/colorError"
             android:textSize="20dp" />
 
         <TextView
@@ -89,8 +90,7 @@
             android:textSize="20dp"
             android:id="@+id/morning_interval_textview"
             android:padding="10dp"
-            android:textColor="#000000"
-            android:text="Morning interval" />
+            android:text="@string/morningInterval" />
 
         <LinearLayout
             android:id="@+id/morning_interval_layout"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:text="From"
+                android:text="@string/from"
                 android:textSize="18dp" />
 
             <NumberPicker
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:text="To"
+                android:text="@string/to"
                 android:textSize="18dp" />
 
             <NumberPicker
@@ -164,10 +164,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:textColor="#000000"
             android:padding="10dp"
             android:id="@+id/day_interval_textview"
-            android:text="Day interval" />
+            android:text="@string/dayInterval" />
 
         <LinearLayout
 
@@ -181,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:text="From"
+                android:text="@string/from"
                 android:textSize="18dp" />
 
             <NumberPicker
@@ -211,7 +210,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:text="To"
+                android:text="@string/to"
                 android:textSize="18dp" />
 
             <NumberPicker
@@ -243,10 +242,9 @@
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:padding="10dp"
-            android:textColor="#000000"
             android:id="@+id/evening_interval_textview"
 
-            android:text="Evening interval" />
+            android:text="@string/eveningInterval" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -259,7 +257,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:text="From"
+                android:text="@string/from"
                 android:textSize="18dp"/>
 
             <NumberPicker
@@ -289,7 +287,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:text="To"
+                android:text="@string/to"
                 android:textSize="18dp"/>
 
             <NumberPicker
@@ -327,8 +325,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Allow data collection"
-            android:textColor="#000000"
+            android:text="@string/allowDataCollection"
             android:textSize="20dp" />
 
         <Switch
@@ -358,7 +355,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:text="Google Fit API"
-            android:textColor="#000000"
             android:textSize="20dp" />
 
         <Switch
@@ -383,8 +379,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:text="Questionnaire"
-                android:textColor="#000000"
+                android:text="@string/questionnaire"
                 android:textSize="20dp" />
 
             <Switch
@@ -413,8 +408,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
-                android:text="Times per day"
-                android:textColor="#000000"
+                android:text="@string/timesPerDay"
                 android:textSize="20dp" />
 
             <NumberPicker
@@ -439,8 +433,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
-                android:text="Periodicity"
-                android:textColor="#000000"
+                android:text="@string/periodicity"
                 android:textSize="20dp" />
 
             <NumberPicker
@@ -465,8 +458,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:text="Digit Span Task"
-            android:textColor="#000000"
+            android:text="@string/digitSpanTask"
             android:textSize="20dp" />
 
         <Switch
@@ -490,8 +482,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Licenses"
-            android:textColor="#000000"
+            android:text="@string/licenses"
             android:textSize="20dp" />
 
     </RelativeLayout>
@@ -505,10 +496,10 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:padding="12dp"
-        android:text="Save"
-        android:textColor="@android:color/white"
+        android:text="@string/settingsSave"
         android:textSize="16sp" />
 
 
 </LinearLayout>
 </ScrollView>
+</merge>

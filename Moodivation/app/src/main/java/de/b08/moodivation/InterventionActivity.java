@@ -1,6 +1,5 @@
 package de.b08.moodivation;
 
-import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +10,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Date;
 
 import de.b08.moodivation.database.interventions.InterventionDatabase;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
+import de.b08.moodivation.database.interventions.entities.RewardCompletionEntity;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.view.InterventionFeedbackView;
 import de.b08.moodivation.intervention.view.InterventionView;
@@ -22,6 +24,7 @@ import de.b08.moodivation.services.LocationLiveData;
 import de.b08.moodivation.services.LocationService;
 import de.b08.moodivation.services.StepLiveData;
 import de.b08.moodivation.services.TravelledDistanceLiveDataManager;
+import de.b08.moodivation.utils.DateUtils;
 import de.b08.moodivation.ui.DescribedChronometerView;
 import de.b08.moodivation.ui.DescribedValueView;
 
@@ -133,9 +136,31 @@ public class InterventionActivity extends AppCompatActivity {
         AsyncTask.execute(() -> {
             InterventionDatabase.getInstance(getApplicationContext())
                     .interventionRecordDao().insert(interventionRecord);
+
+            checkRewards();
         });
 
         showFeedbackAlertAndFinish(interventionRecord.cloneEntity());
+    }
+
+    private void checkRewards() {
+        if (Rewards.streakCompleted(getApplicationContext()) && !InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                .streakReferenceDateExists(DateUtils.minimizeDay(new Date()).getTime())) {
+            InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                    .insert(RewardCompletionEntity.createStreakEntity(DateUtils.minimizeDay(new Date()), new Date()));
+        }
+
+        if (intervention.getId().equals("CyclingIntervention_Internal") && Rewards.cyclingCompleted(getApplicationContext())
+                && !InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                .cyclingReferenceDateExists(DateUtils.minimizeMonthAndDay(new Date()).getTime())) {
+            InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                    .insert(RewardCompletionEntity.createCyclingEntity(DateUtils.minimizeMonthAndDay(new Date()), new Date()));
+        } else if (intervention.getId().equals("RunningIntervention_Internal") && Rewards.runningCompleted(getApplicationContext())
+            && !InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                .runningReferenceDateExists(DateUtils.minimizeMonthAndDay(new Date()).getTime())) {
+            InterventionDatabase.getInstance(getApplicationContext()).rewardCompletionDao()
+                    .insert(RewardCompletionEntity.createRunningEntity(DateUtils.minimizeMonthAndDay(new Date()), new Date()));
+        }
     }
 
     private void showFeedbackAlertAndFinish(InterventionRecordEntity recordEntity) {
@@ -146,7 +171,7 @@ public class InterventionActivity extends AppCompatActivity {
         marginLayoutParams.setMargins(64,64,64,64);
         interventionFeedbackView.setLayoutParams(marginLayoutParams);
         linearLayout.addView(interventionFeedbackView);
-        new AlertDialog.Builder(InterventionActivity.this)
+        new MaterialAlertDialogBuilder(InterventionActivity.this)
                 .setView(linearLayout)
                 .setPositiveButton(R.string.interventionDialogCommentBtn, (dialog, which) -> {
                     recordEntity.feedback = interventionFeedbackView.getComment();

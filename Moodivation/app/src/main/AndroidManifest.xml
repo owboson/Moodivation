@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
@@ -10,16 +11,22 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MoodivationApplication"
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Moodivation"
+        android:theme="@style/Moodivation"
         tools:targetApi="31">
+        <activity
+            android:name=".Rewards"
+            android:exported="false" />
         <activity
             android:name=".RecordPage"
             android:exported="false" />
@@ -31,42 +38,45 @@
 
         <service
             android:name=".services.SensorService"
-            android:exported="false"
             android:description="@string/sensorServiceDescription"
-        />
+            android:exported="false" />
         <service
             android:name=".services.LocationService"
-            android:exported="false"
             android:description="@string/locationServiceDescription"
-        />
+            android:exported="false" />
 
         <activity
             android:name=".QuestionnaireActivity"
             android:exported="true"
-            android:label="Questionnaire"/>
+            android:label="Questionnaire" />
         <activity
             android:name=".DigitSpanTask"
             android:exported="true"
-            android:label="Digit Span Task"/>
+            android:label="Digit Span Task" />
         <activity
             android:name=".SettingsPage"
             android:exported="true"
-            android:label="Settings"/>
+            android:label="Settings" />
         <activity
             android:name=".InterventionActivity"
             android:exported="true"
-            android:label="Intervention"/>
+            android:label="Intervention" />
         <activity
             android:name=".InterventionOverviewActivity"
             android:exported="true"
-            android:label="Intervention List"/>
+            android:label="Intervention List" />
         <activity
             android:name=".RecordsPage"
             android:exported="true"
-            android:label="Records"/>
+            android:label="Records" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
+        </activity>
+        <activity
+            android:name=".MoodivationActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

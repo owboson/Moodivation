@@ -23,7 +23,7 @@ public class DescribedValueView extends LinearLayout {
     public DescribedValueView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        inflate(getContext(), R.layout.described_value_view, this);
+        inflate(context, R.layout.described_value_view, this);
 
         valueTextField = findViewById(R.id.valueTextField);
         descriptionTextField = findViewById(R.id.descriptionTextField);

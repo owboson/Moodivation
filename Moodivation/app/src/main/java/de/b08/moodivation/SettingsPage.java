@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Arrays;
 
@@ -139,10 +142,14 @@ public class SettingsPage extends AppCompatActivity {
         this.correctIntervals_day = true;
 
         for(NumberPicker picker: hour_pickers) {
-            picker.setTextColor(ContextCompat.getColor(this, R.color.black));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            }
         }
         for(NumberPicker picker: minute_pickers) {
-            picker.setTextColor(ContextCompat.getColor(this, R.color.black));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            }
         }
 
         this.saveButton.setEnabled(true);
@@ -162,8 +169,12 @@ public class SettingsPage extends AppCompatActivity {
                 this.correctIntervals_evening = false;
             }
             this.saveButton.setEnabled(false);
-            from_hour_picker.setTextColor(ContextCompat.getColor(this, R.color.red));
-            to_hour_picker.setTextColor(ContextCompat.getColor(this, R.color.red));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                from_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                to_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
         } else if (to_hour_picker_val == from_hour_picker_val &&
                 to_minute_picker_val <= from_minute_picker_val) {
             if (type==0) {
@@ -175,8 +186,12 @@ public class SettingsPage extends AppCompatActivity {
             }
 
             this.saveButton.setEnabled(false);
-            to_minute_picker.setTextColor(ContextCompat.getColor(this, R.color.red));
-            from_minute_picker.setTextColor(ContextCompat.getColor(this, R.color.red));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                to_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                from_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, Color.BLACK));
+            }
         } else {
             if (type==0) {
                 this.correctIntervals_morning = true;
@@ -188,10 +203,12 @@ public class SettingsPage extends AppCompatActivity {
             if (this.correctIntervals_morning && this.correctIntervals_day && this.correctIntervals_evening) {
                 this.saveButton.setEnabled(true);
             }
-            from_hour_picker.setTextColor(ContextCompat.getColor(this, R.color.black));
-            to_hour_picker.setTextColor(ContextCompat.getColor(this, R.color.black));
-            to_minute_picker.setTextColor(ContextCompat.getColor(this, R.color.black));
-            from_minute_picker.setTextColor(ContextCompat.getColor(this, R.color.black));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                from_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+                to_hour_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+                to_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+                from_minute_picker.setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary, Color.BLACK));
+            }
         }
 
 
@@ -556,9 +573,8 @@ public class SettingsPage extends AppCompatActivity {
 
                     editor.commit();
 
-                    MainActivity act_ = new MainActivity();
-                    act_.unset_notification_intents();
-                    act_.set_notifs(sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
+                    MoodivationApplication.getApplication().unset_notification_intents();
+                    MoodivationApplication.getApplication().set_notifs(sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
 
                     changeIntervalsSwitch.setChecked(false);
                     intervalsLayout.setVisibility(View.GONE);
@@ -671,7 +687,7 @@ public class SettingsPage extends AppCompatActivity {
             requestBackgroundLocationPermission();
         } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 || shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.locationPermissionDialogTitle);
             builder.setMessage(R.string.locationPermissionDialogText);
 
@@ -717,7 +733,7 @@ public class SettingsPage extends AppCompatActivity {
         if (checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
             return;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.locationBackgroundPermissionDialogTitle);
         builder.setMessage(R.string.locationBackgroundPermissionDialogText);
 

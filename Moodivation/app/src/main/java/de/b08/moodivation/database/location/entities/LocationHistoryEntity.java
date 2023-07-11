@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -53,4 +54,16 @@ public class LocationHistoryEntity {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LocationHistoryEntity)) return false;
+        LocationHistoryEntity that = (LocationHistoryEntity) o;
+        return Float.compare(that.speed, speed) == 0 && Float.compare(that.speedAccuracyMetersPerSecond, speedAccuracyMetersPerSecond) == 0 && Double.compare(that.altitude, altitude) == 0 && Double.compare(that.latitude, latitude) == 0 && Double.compare(that.longitude, longitude) == 0 && Float.compare(that.bearing, bearing) == 0 && Float.compare(that.bearingAccuracyDegrees, bearingAccuracyDegrees) == 0 && Float.compare(that.accuracy, accuracy) == 0 && Float.compare(that.verticalAccuracyMeters, verticalAccuracyMeters) == 0 && timestamp.equals(that.timestamp) && Objects.equals(provider, that.provider);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, speed, speedAccuracyMetersPerSecond, altitude, latitude, longitude, bearing, bearingAccuracyDegrees, accuracy, verticalAccuracyMeters, provider);
+    }
 }

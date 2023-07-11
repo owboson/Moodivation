@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:l="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/addInterventionItemId"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/addInterventionItem"
+        l:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/uploadDataItemId"
+        android:icon="@drawable/baseline_cloud_sync_24"
+        android:iconTint="?attr/colorOnPrimary"
+        android:title="@string/uploadDataItem"
+        l:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/settingsItemId"
+        android:icon="@drawable/round_settings_24"
+        android:title="@string/settings"
+        l:showAsAction="collapseActionView" />
+</menu>
