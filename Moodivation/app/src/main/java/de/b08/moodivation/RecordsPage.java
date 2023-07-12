@@ -1,11 +1,7 @@
 package de.b08.moodivation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.color.DynamicColors;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,7 +53,6 @@ public class RecordsPage extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        DynamicColors.applyToActivityIfAvailable(getActivity());
         super.onCreate(savedInstanceState);
     }
 
@@ -75,15 +73,31 @@ public class RecordsPage extends Fragment {
         loadRecords();
     }
 
+    private void addNoRecordsLabel() {
+        TextView textView = new TextView(getContext());
+        textView.setText(R.string.noRecordsAvailable);
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0,20,0,0);
+        textView.setLayoutParams(layoutParams);
+
+        textView.setTextSize(18);
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+        parentView.addView(textView);
+    }
+
     private void loadRecords() {
+        parentView.removeAllViews();
         Handler mainHandler = new Handler(Looper.getMainLooper());
         AsyncTask.execute(() -> {
             final List<InterventionRecordEntity> records = interventionDatabase.interventionRecordDao().getAllRecords();
             Collections.reverse(records);
 
             mainHandler.post(() -> {
-                if (!records.isEmpty())
-                    parentView.removeAllViews();
+                if (records.isEmpty())
+                    addNoRecordsLabel();
             });
 
             for (final InterventionRecordEntity record : records) {
@@ -132,7 +146,6 @@ public class RecordsPage extends Fragment {
                         from.setText(fromLabelText);
                         to.setText(toLabelText);
                         final String[] data = { title_val, fromLabelText, toLabelText };
-
 
                         view.setOnClickListener(v -> {
                             Intent intent = new Intent(getContext(), RecordPage.class);
