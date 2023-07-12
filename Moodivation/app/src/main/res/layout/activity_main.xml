@@ -12,17 +12,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/digitSpanTaskPreviewButton"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Digit Span Task" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/questionnairePreviewButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Questionnaire" />
+            <Button
+                android:id="@+id/digitSpanTaskPreviewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:text="Digit Span Task"
+                app:cornerRadius="20dp" />
+
+            <Button
+                android:id="@+id/questionnairePreviewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:text="Questionnaire"
+                app:cornerRadius="20dp" />
+        </LinearLayout>
 
         <de.b08.moodivation.ui.WellbeingChart
             android:id="@+id/wellbeingChart"
