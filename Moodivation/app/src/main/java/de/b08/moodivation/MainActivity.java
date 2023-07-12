@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import de.b08.moodivation.services.ChartDataClass;
 import de.b08.moodivation.ui.WellbeingChart;
 
 public class MainActivity extends Fragment {
@@ -41,9 +40,7 @@ public class MainActivity extends Fragment {
         sharedPreferences = view.getContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
         Button digitSpanTaskPreviewBtn = view.findViewById(R.id.digitSpanTaskPreviewButton);
-        digitSpanTaskPreviewBtn.setOnClickListener(v -> {
-            MainActivity.this.startActivity(new Intent(getActivity(), DigitSpanTask.class));
-        });
+        digitSpanTaskPreviewBtn.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(getActivity(), DigitSpanTask.class)));
 
         Button questionnairePreviewBtn = view.findViewById(R.id.questionnairePreviewButton);
 

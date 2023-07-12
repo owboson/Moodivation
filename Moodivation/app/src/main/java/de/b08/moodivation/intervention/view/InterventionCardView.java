@@ -13,7 +13,7 @@ import de.b08.moodivation.intervention.Intervention;
 
 public class InterventionCardView extends LinearLayout {
 
-    private InterventionView interventionView;
+    private final InterventionView interventionView;
 
     public InterventionCardView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

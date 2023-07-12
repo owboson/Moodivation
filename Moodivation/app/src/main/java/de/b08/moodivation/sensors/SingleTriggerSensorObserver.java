@@ -8,7 +8,7 @@ public class SingleTriggerSensorObserver extends SensorObserver {
 
     private static final String TAG = "SingleSensorObserver";
 
-    private TriggerEventListener triggerEventListener;
+    private final TriggerEventListener triggerEventListener;
 
 
     public SingleTriggerSensorObserver(int sensorId, Context context) {

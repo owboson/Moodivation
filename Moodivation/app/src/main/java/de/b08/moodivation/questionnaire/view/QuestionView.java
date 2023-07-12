@@ -30,7 +30,7 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
 
     private String note;
 
-    private List<QuestionUpdateEventHandler<Q,A>> updateHandlers;
+    private final List<QuestionUpdateEventHandler<Q,A>> updateHandlers;
 
     public QuestionView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -55,9 +55,7 @@ public abstract class QuestionView<Q extends QuestionnaireElement,A extends Answ
         new MaterialAlertDialogBuilder(getContext())
                 .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
                 .setView(questionnaireNotesView)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    note = questionnaireNotesView.getText().toString();
-                })
+                .setPositiveButton("OK", (dialog, which) -> note = questionnaireNotesView.getText().toString())
                 .setNegativeButton("Cancel", (dialog, which) -> {})
                 .show();
     }

@@ -78,9 +78,7 @@ public class SensorService extends Service implements SharedPreferences.OnShared
         stepTriggerSensorObserver.setEnabled(sharedPreferences.getBoolean(SensorConstants.STEP_DETECTOR_ENABLED_SETTING,
                 SensorConstants.STEP_DETECTOR_DEFAULT_ENABLED_VALUE));
 
-        stepTriggerSensorObserver.addOnDataStoredHandler(() -> {
-            System.out.println("something ");
-        });
+        stepTriggerSensorObserver.addOnDataStoredHandler(() -> System.out.println("something "));
     }
 
     @Override

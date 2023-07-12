@@ -28,11 +28,11 @@ import de.b08.moodivation.R;
 
 public abstract class DateBarChart extends LinearLayout {
 
-    private BarChart chart;
+    private final BarChart chart;
 
-    private TextView chartTitle;
+    private final TextView chartTitle;
 
-    private LinearLayout additionalComponentsPanel;
+    private final LinearLayout additionalComponentsPanel;
 
     private Function<Integer, Date> indexDateMapper = i -> new Date();
 

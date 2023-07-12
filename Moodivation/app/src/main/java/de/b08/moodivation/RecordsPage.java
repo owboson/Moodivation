@@ -60,7 +60,7 @@ public class RecordsPage extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inflater = LayoutInflater.from(getContext());
-        parentView = getView().findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
+        parentView = view.findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
 
         interventionDatabase = InterventionDatabase.getInstance(getContext());
 
@@ -115,8 +115,7 @@ public class RecordsPage extends Fragment {
                         // Access the intervention or intervention map from the bundle
                         Intervention intervention = bundle.getInterventionMap().values().stream().findFirst().orElse(null);
                         if (intervention != null) {
-                            String title = intervention.getTitle();
-                            title_val = title;
+                            title_val = intervention.getTitle();
                         }
                     }
 

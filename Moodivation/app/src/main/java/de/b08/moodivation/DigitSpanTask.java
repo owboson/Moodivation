@@ -59,8 +59,8 @@ public class DigitSpanTask extends AppCompatActivity {
 
     protected SharedPreferences sharedPreferences;
 
-    private Handler mHandler = new Handler();
-    private Runnable mRunnable = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
 //  show numbers one by one on the screen with a pause of 1 second between each number
@@ -70,15 +70,12 @@ public class DigitSpanTask extends AppCompatActivity {
                 System.out.println("random "+randomNumber);
                 mNumbers[mCount-1] = randomNumber;
                 numberField.setText(String.valueOf(randomNumber));
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            numberField.setVisibility(View.VISIBLE);
-                            mHandler.postDelayed(() -> {
-                                numberField.setVisibility(View.INVISIBLE);
-                                mHandler.postDelayed(mRunnable, 1000);
-                            }, 1000);
-                        }
+                    mHandler.postDelayed(() -> {
+                        numberField.setVisibility(View.VISIBLE);
+                        mHandler.postDelayed(() -> {
+                            numberField.setVisibility(View.INVISIBLE);
+                            mHandler.postDelayed(mRunnable, 1000);
+                        }, 1000);
                     }, 1000);
             } else {
                 // Show message that user should start entering numbers
@@ -137,17 +134,13 @@ public class DigitSpanTask extends AppCompatActivity {
 
         long questionnaireAnswerId = getIntent().getLongExtra("questionnaireAnswerId", -1);
         if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 1) {
-            boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") ?
-                    getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false) : false;
-            AsyncTask.execute(() -> {
-                QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
-                        .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax,
-                                questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId)));
-            });
+            boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") && getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false);
+            AsyncTask.execute(() -> QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
+                    .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax,
+                            questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId))));
         }
 
-        boolean presentIntervention = getIntent().hasExtra("presentIntervention") ?
-                getIntent().getExtras().getBoolean("presentIntervention") : false;
+        boolean presentIntervention = getIntent().hasExtra("presentIntervention") && getIntent().getExtras().getBoolean("presentIntervention");
         if (presentIntervention) {
             Intent interventionIntent = new Intent(this, InterventionActivity.class);
             if (questionnaireAnswerId != -1)
@@ -170,11 +163,8 @@ public class DigitSpanTask extends AppCompatActivity {
             new MaterialAlertDialogBuilder(DigitSpanTask.this)
                     .setTitle("Settings")
                     .setMessage("Allow data collection in the settings to save results.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // Perform action when "Discard" button is clicked
-                        }
+                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                        // Perform action when "Discard" button is clicked
                     })
                     .show();
         }
@@ -219,14 +209,11 @@ public class DigitSpanTask extends AppCompatActivity {
 
         disableButtons();
 
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                instructionField.setText(R.string.digitSpanMemorizeInstruction);
-                mCount = 0; // Reset the count
-                mNumbers = new int[upperBound]; // reset the array of shown numbers
-                mHandler.postDelayed(mRunnable, 1000); // Start the countdown
-            }
+        startBtn.setOnClickListener(v -> {
+            instructionField.setText(R.string.digitSpanMemorizeInstruction);
+            mCount = 0; // Reset the count
+            mNumbers = new int[upperBound]; // reset the array of shown numbers
+            mHandler.postDelayed(mRunnable, 1000); // Start the countdown
         });
 
 

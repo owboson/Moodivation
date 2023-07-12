@@ -307,7 +307,7 @@ public class SettingsPage extends AppCompatActivity {
         String[] hours  = new String[24];
         for(int i=0; i<24; i++){
             if (i < 10) {
-                hours[i] = "0"+String.valueOf(i);
+                hours[i] = "0"+ i;
             } else {
                 hours[i] = String.valueOf(i);
             }
@@ -316,7 +316,7 @@ public class SettingsPage extends AppCompatActivity {
         String[] minutes  = new String[60];
         for(int i=0; i<60; i++){
             if (i < 10) {
-                minutes[i] = "0"+String.valueOf(i);
+                minutes[i] = "0"+ i;
             } else {
                 minutes[i] = String.valueOf(i);
             }
@@ -348,58 +348,46 @@ public class SettingsPage extends AppCompatActivity {
         intervalsLayout.setVisibility(changeIntervalsSwitch.isChecked() ? View.VISIBLE : View.GONE);
         dataCollectionLayout.setVisibility(dataCollectSwitch.isChecked() ? View.VISIBLE : View.GONE);
 
-        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Set the visibility of the LinearLayout based on the state of the switch
-                if (aSwitch.isChecked()) {
-                    intervalsSwitchLayout.setVisibility(View.VISIBLE);
-                } else {
-                    intervalsSwitchLayout.setVisibility(View.GONE);
-                    intervalsLayout.setVisibility(View.GONE);
-                    changeIntervalsSwitch.setChecked(false);
-                }
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Set the visibility of the LinearLayout based on the state of the switch
+            if (aSwitch.isChecked()) {
+                intervalsSwitchLayout.setVisibility(View.VISIBLE);
+            } else {
+                intervalsSwitchLayout.setVisibility(View.GONE);
+                intervalsLayout.setVisibility(View.GONE);
+                changeIntervalsSwitch.setChecked(false);
             }
         });
 
         //        // Add an OnCheckedChangeListener to the switch
-        changeIntervalsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Set the visibility of the LinearLayout based on the state of the switch
-                reset_pickers();
-                intervalsLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        changeIntervalsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Set the visibility of the LinearLayout based on the state of the switch
+            reset_pickers();
+            intervalsLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+
+        });
+
+        dataCollectSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Set the visibility of the LinearLayout based on the state of the switch
+            if (isChecked) {
+                dataCollectionLayout.setVisibility(View.VISIBLE);
+            } else {
+                dataCollectionLayout.setVisibility(View.GONE);
+                googleApiSwitch.setChecked(false);
+                questionnaireSwitch.setChecked(false);
+                questionnaireLayout.setVisibility(View.GONE);
+
+                digitSpanSwitch.setChecked(false);
 
             }
         });
 
-        dataCollectSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Set the visibility of the LinearLayout based on the state of the switch
-                if (isChecked) {
-                    dataCollectionLayout.setVisibility(View.VISIBLE);
-                } else {
-                    dataCollectionLayout.setVisibility(View.GONE);
-                    googleApiSwitch.setChecked(false);
-                    questionnaireSwitch.setChecked(false);
-                    questionnaireLayout.setVisibility(View.GONE);
-
-                    digitSpanSwitch.setChecked(false);
-
-                }
-            }
-        });
-
-        questionnaireSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Set the visibility of the LinearLayout based on the state of the switch
-                if (isChecked) {
-                    questionnaireLayout.setVisibility(View.VISIBLE);
-                } else {
-                    questionnaireLayout.setVisibility(View.GONE);
-                }
+        questionnaireSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Set the visibility of the LinearLayout based on the state of the switch
+            if (isChecked) {
+                questionnaireLayout.setVisibility(View.VISIBLE);
+            } else {
+                questionnaireLayout.setVisibility(View.GONE);
             }
         });
 
@@ -417,176 +405,144 @@ public class SettingsPage extends AppCompatActivity {
 
 
 
-        morning_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(morning_from_hour_picker.getValue(), morning_to_hour_picker.getValue(),
-                    newVal, morning_to_minute_picker.getValue(),
-                    morning_from_hour_picker, morning_to_hour_picker,
-                    morning_from_minute_picker, morning_to_minute_picker, 0);
-        });
+        morning_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(morning_from_hour_picker.getValue(), morning_to_hour_picker.getValue(),
+                newVal, morning_to_minute_picker.getValue(),
+                morning_from_hour_picker, morning_to_hour_picker,
+                morning_from_minute_picker, morning_to_minute_picker, 0));
 
-        morning_to_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(morning_from_hour_picker.getValue(), newVal,
-                    morning_from_minute_picker.getValue(), morning_to_minute_picker.getValue(),
-                    morning_from_hour_picker, morning_to_hour_picker,
-                    morning_from_minute_picker, morning_to_minute_picker, 0);
+        morning_to_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(morning_from_hour_picker.getValue(), newVal,
+                morning_from_minute_picker.getValue(), morning_to_minute_picker.getValue(),
+                morning_from_hour_picker, morning_to_hour_picker,
+                morning_from_minute_picker, morning_to_minute_picker, 0));
 
-        });
+        morning_from_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(morning_from_hour_picker.getValue(), morning_to_hour_picker.getValue(),
+                newVal, morning_to_minute_picker.getValue(),
+                morning_from_hour_picker, morning_to_hour_picker,
+                morning_from_minute_picker, morning_to_minute_picker, 0));
 
-        morning_from_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(morning_from_hour_picker.getValue(), morning_to_hour_picker.getValue(),
-                    newVal, morning_to_minute_picker.getValue(),
-                    morning_from_hour_picker, morning_to_hour_picker,
-                    morning_from_minute_picker, morning_to_minute_picker, 0);
-        });
-
-        morning_to_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(morning_from_hour_picker.getValue(), morning_to_hour_picker.getValue(),
-                    morning_from_minute_picker.getValue(), newVal,
-                    morning_from_hour_picker, morning_to_hour_picker,
-                    morning_from_minute_picker, morning_to_minute_picker, 0);
-        });
+        morning_to_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(morning_from_hour_picker.getValue(), morning_to_hour_picker.getValue(),
+                morning_from_minute_picker.getValue(), newVal,
+                morning_from_hour_picker, morning_to_hour_picker,
+                morning_from_minute_picker, morning_to_minute_picker, 0));
 
 //        -----
 
-        day_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(newVal, day_to_hour_picker.getValue(),
-                    day_from_minute_picker.getValue(), day_to_minute_picker.getValue(),
-                    day_from_hour_picker, day_to_hour_picker,
-                    day_from_minute_picker, day_to_minute_picker, 1);
-        });
+        day_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(newVal, day_to_hour_picker.getValue(),
+                day_from_minute_picker.getValue(), day_to_minute_picker.getValue(),
+                day_from_hour_picker, day_to_hour_picker,
+                day_from_minute_picker, day_to_minute_picker, 1));
 
-        day_to_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(day_from_hour_picker.getValue(), newVal,
-                    day_from_minute_picker.getValue(), day_to_minute_picker.getValue(),
-                    day_from_hour_picker, day_to_hour_picker,
-                    day_from_minute_picker, day_to_minute_picker, 1);
+        day_to_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(day_from_hour_picker.getValue(), newVal,
+                day_from_minute_picker.getValue(), day_to_minute_picker.getValue(),
+                day_from_hour_picker, day_to_hour_picker,
+                day_from_minute_picker, day_to_minute_picker, 1));
 
-        });
+        day_from_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(day_from_hour_picker.getValue(), day_to_hour_picker.getValue(),
+                newVal, day_to_minute_picker.getValue(),
+                day_from_hour_picker, day_to_hour_picker,
+                day_from_minute_picker, day_to_minute_picker, 1));
 
-        day_from_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(day_from_hour_picker.getValue(), day_to_hour_picker.getValue(),
-                    newVal, day_to_minute_picker.getValue(),
-                    day_from_hour_picker, day_to_hour_picker,
-                    day_from_minute_picker, day_to_minute_picker, 1);
-        });
-
-        day_to_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(day_from_hour_picker.getValue(), day_to_hour_picker.getValue(),
-                    day_from_minute_picker.getValue(), newVal,
-                    day_from_hour_picker, day_to_hour_picker,
-                    day_from_minute_picker, day_to_minute_picker, 1);
-        });
+        day_to_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(day_from_hour_picker.getValue(), day_to_hour_picker.getValue(),
+                day_from_minute_picker.getValue(), newVal,
+                day_from_hour_picker, day_to_hour_picker,
+                day_from_minute_picker, day_to_minute_picker, 1));
 
 // -------
 
-        evening_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(newVal, evening_to_hour_picker.getValue(),
-                    evening_from_minute_picker.getValue(), evening_to_minute_picker.getValue(),
-                    evening_from_hour_picker, evening_to_hour_picker,
-                    evening_from_minute_picker, evening_to_minute_picker, 2);
-        });
+        evening_from_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(newVal, evening_to_hour_picker.getValue(),
+                evening_from_minute_picker.getValue(), evening_to_minute_picker.getValue(),
+                evening_from_hour_picker, evening_to_hour_picker,
+                evening_from_minute_picker, evening_to_minute_picker, 2));
 
-        evening_to_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(evening_from_hour_picker.getValue(), newVal,
-                    evening_from_minute_picker.getValue(), evening_to_minute_picker.getValue(),
-                    evening_from_hour_picker, evening_to_hour_picker,
-                    evening_from_minute_picker, evening_to_minute_picker, 2);
-        });
+        evening_to_hour_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(evening_from_hour_picker.getValue(), newVal,
+                evening_from_minute_picker.getValue(), evening_to_minute_picker.getValue(),
+                evening_from_hour_picker, evening_to_hour_picker,
+                evening_from_minute_picker, evening_to_minute_picker, 2));
 
-        evening_from_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(evening_from_hour_picker.getValue(), evening_to_hour_picker.getValue(),
-                    newVal, evening_to_minute_picker.getValue(),
-                    evening_from_hour_picker, evening_to_hour_picker,
-                    evening_from_minute_picker, evening_to_minute_picker, 2);
-        });
+        evening_from_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(evening_from_hour_picker.getValue(), evening_to_hour_picker.getValue(),
+                newVal, evening_to_minute_picker.getValue(),
+                evening_from_hour_picker, evening_to_hour_picker,
+                evening_from_minute_picker, evening_to_minute_picker, 2));
 
-        evening_to_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> {
-            picker_listener(evening_from_hour_picker.getValue(), evening_to_hour_picker.getValue(),
-                    evening_from_minute_picker.getValue(), newVal,
-                    evening_from_hour_picker, evening_to_hour_picker,
-                    evening_from_minute_picker, evening_to_minute_picker, 2);
-        });
+        evening_to_minute_picker.setOnValueChangedListener((_v, _vv, newVal) -> picker_listener(evening_from_hour_picker.getValue(), evening_to_hour_picker.getValue(),
+                evening_from_minute_picker.getValue(), newVal,
+                evening_from_hour_picker, evening_to_hour_picker,
+                evening_from_minute_picker, evening_to_minute_picker, 2));
 
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editor = sharedPreferences.edit();
-                System.out.println(periodicityPicker.getValue());
-                int morning_from_hour_picker_val = morning_from_hour_picker.getValue();
-                int morning_from_minute_picker_val = morning_from_minute_picker.getValue();
-                int morning_to_hour_picker_val = morning_to_hour_picker.getValue();
-                int morning_to_minute_picker_val = morning_to_minute_picker.getValue();
+        saveButton.setOnClickListener(view -> {
+            editor = sharedPreferences.edit();
+            System.out.println(periodicityPicker.getValue());
+            int morning_from_hour_picker_val = morning_from_hour_picker.getValue();
+            int morning_from_minute_picker_val = morning_from_minute_picker.getValue();
+            int morning_to_hour_picker_val = morning_to_hour_picker.getValue();
+            int morning_to_minute_picker_val = morning_to_minute_picker.getValue();
 
-                int day_from_hour_picker_val = day_from_hour_picker.getValue();
-                int day_from_minute_picker_val = day_from_minute_picker.getValue();
-                int day_to_hour_picker_val = day_to_hour_picker.getValue();
-                int day_to_minute_picker_val = day_to_minute_picker.getValue();
+            int day_from_hour_picker_val = day_from_hour_picker.getValue();
+            int day_from_minute_picker_val = day_from_minute_picker.getValue();
+            int day_to_hour_picker_val = day_to_hour_picker.getValue();
+            int day_to_minute_picker_val = day_to_minute_picker.getValue();
 
-                int evening_from_hour_picker_val = evening_from_hour_picker.getValue();
-                int evening_from_minute_picker_val = evening_from_minute_picker.getValue();
-                int evening_to_hour_picker_val = evening_to_hour_picker.getValue();
-                int evening_to_minute_picker_val = evening_to_minute_picker.getValue();
+            int evening_from_hour_picker_val = evening_from_hour_picker.getValue();
+            int evening_from_minute_picker_val = evening_from_minute_picker.getValue();
+            int evening_to_hour_picker_val = evening_to_hour_picker.getValue();
+            int evening_to_minute_picker_val = evening_to_minute_picker.getValue();
 
-                if (day_from_hour_picker_val < morning_to_hour_picker_val ||
-                        (day_from_hour_picker_val == morning_to_hour_picker_val && morning_to_minute_picker_val > day_from_minute_picker_val) ||
-                    evening_from_hour_picker_val < day_to_hour_picker_val ||
-                        (evening_from_hour_picker_val == day_to_hour_picker_val && day_to_minute_picker_val > evening_from_minute_picker_val)
-                ) {
-                    errorText.setVisibility(View.VISIBLE);
-                    saveButton.setEnabled(false);
-                } else {
-                    errorText.setVisibility(View.GONE);
-                    String morning_from = ((Integer) morning_from_hour_picker_val).toString() + ":" + ((Integer) morning_from_minute_picker_val).toString();
-                    String morning_to = ((Integer)morning_to_hour_picker_val).toString() + ":" + ((Integer)morning_to_minute_picker_val).toString();
+            if (day_from_hour_picker_val < morning_to_hour_picker_val ||
+                    (day_from_hour_picker_val == morning_to_hour_picker_val && morning_to_minute_picker_val > day_from_minute_picker_val) ||
+                evening_from_hour_picker_val < day_to_hour_picker_val ||
+                    (evening_from_hour_picker_val == day_to_hour_picker_val && day_to_minute_picker_val > evening_from_minute_picker_val)
+            ) {
+                errorText.setVisibility(View.VISIBLE);
+                saveButton.setEnabled(false);
+            } else {
+                errorText.setVisibility(View.GONE);
+                String morning_from = ((Integer) morning_from_hour_picker_val) + ":" + ((Integer) morning_from_minute_picker_val);
+                String morning_to = ((Integer)morning_to_hour_picker_val) + ":" + ((Integer)morning_to_minute_picker_val);
 
-                    String day_from = ((Integer)day_from_hour_picker_val).toString() + ":" + ((Integer)day_from_minute_picker_val).toString();
-                    String day_to = ((Integer)day_to_hour_picker_val).toString() + ":" + ((Integer)day_to_minute_picker_val).toString();
+                String day_from = ((Integer)day_from_hour_picker_val) + ":" + ((Integer)day_from_minute_picker_val);
+                String day_to = ((Integer)day_to_hour_picker_val) + ":" + ((Integer)day_to_minute_picker_val);
 
-                    String evening_from = ((Integer)evening_from_hour_picker_val).toString() + ":" + ((Integer)evening_from_minute_picker_val).toString();
-                    String evening_to = ((Integer)evening_to_hour_picker_val).toString() + ":" + ((Integer)evening_to_minute_picker_val).toString();
+                String evening_from = ((Integer)evening_from_hour_picker_val) + ":" + ((Integer)evening_from_minute_picker_val);
+                String evening_to = ((Integer)evening_to_hour_picker_val) + ":" + ((Integer)evening_to_minute_picker_val);
 
-                    editor.putInt("allow_notifs", aSwitch.isChecked() ? 1 : 0);
-                    if (aSwitch.isChecked()) {
-                        editor.putString("morning_from", morning_from);
-                        editor.putString("morning_to", morning_to);
-                        editor.putString("day_from", day_from);
-                        editor.putString("day_to", day_to);
-                        editor.putString("evening_from", evening_from);
-                        editor.putString("evening_to", evening_to);
-                    }
-
-                    editor.putInt("allow_data_collection", dataCollectSwitch.isChecked() ? 1 : 0);
-                    editor.putInt("google_fit_collection", googleApiSwitch.isChecked() ? 1 : 0);
-
-                    editor.putInt("allow_questionnaire_data_collection", questionnaireSwitch.isChecked() ? 1: 0);
-                    editor.putInt("questionnaire_periodicity", timesPerDayPicker.getValue());
-                    editor.putInt("questionnaire_periodicity_details", periodicityPicker.getValue());
-                    editor.putInt("allow_digit_span_collection", digitSpanSwitch.isChecked() ? 1: 0);
-
-                    saveSensorSettings(editor);
-                    saveLocationSettings(editor);
-
-                    editor.commit();
-
-                    MoodivationApplication.getApplication().unset_notification_intents((AlarmManager) getSystemService(ALARM_SERVICE));
-                    MoodivationApplication.getApplication().set_notifs(sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
-
-                    changeIntervalsSwitch.setChecked(false);
-                    intervalsLayout.setVisibility(View.GONE);
-
-                    new MaterialAlertDialogBuilder(SettingsPage.this)
-                        .setTitle(R.string.settingsSuccess)
-                        .setMessage(R.string.settingSavedMessage)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // Perform action when "Discard" button is clicked
-                            }
-                        })
-                        .show();
-
+                editor.putInt("allow_notifs", aSwitch.isChecked() ? 1 : 0);
+                if (aSwitch.isChecked()) {
+                    editor.putString("morning_from", morning_from);
+                    editor.putString("morning_to", morning_to);
+                    editor.putString("day_from", day_from);
+                    editor.putString("day_to", day_to);
+                    editor.putString("evening_from", evening_from);
+                    editor.putString("evening_to", evening_to);
                 }
+
+                editor.putInt("allow_data_collection", dataCollectSwitch.isChecked() ? 1 : 0);
+                editor.putInt("google_fit_collection", googleApiSwitch.isChecked() ? 1 : 0);
+
+                editor.putInt("allow_questionnaire_data_collection", questionnaireSwitch.isChecked() ? 1: 0);
+                editor.putInt("questionnaire_periodicity", timesPerDayPicker.getValue());
+                editor.putInt("questionnaire_periodicity_details", periodicityPicker.getValue());
+                editor.putInt("allow_digit_span_collection", digitSpanSwitch.isChecked() ? 1: 0);
+
+                saveSensorSettings(editor);
+                saveLocationSettings(editor);
+
+                editor.commit();
+
+                MoodivationApplication.getApplication().unset_notification_intents((AlarmManager) getSystemService(ALARM_SERVICE));
+                MoodivationApplication.getApplication().set_notifs(sharedPreferences, getApplicationContext(), (AlarmManager) getSystemService(ALARM_SERVICE));
+
+                changeIntervalsSwitch.setChecked(false);
+                intervalsLayout.setVisibility(View.GONE);
+
+                new MaterialAlertDialogBuilder(SettingsPage.this)
+                    .setTitle(R.string.settingsSuccess)
+                    .setMessage(R.string.settingSavedMessage)
+                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                        // Perform action when "Discard" button is clicked
+                    })
+                    .show();
+
             }
         });
     }
@@ -687,9 +643,7 @@ public class SettingsPage extends AppCompatActivity {
             builder.setTitle(R.string.locationPermissionDialogTitle);
             builder.setMessage(R.string.locationPermissionDialogText);
 
-            builder.setPositiveButton("OK", (dialog, which) -> {
-                requestLocationPermission();
-            });
+            builder.setPositiveButton("OK", (dialog, which) -> requestLocationPermission());
 
             builder.create().show();
         } else {
@@ -733,9 +687,7 @@ public class SettingsPage extends AppCompatActivity {
         builder.setTitle(R.string.locationBackgroundPermissionDialogTitle);
         builder.setMessage(R.string.locationBackgroundPermissionDialogText);
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            requestPermissions(new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_REQUEST_ID);
-        });
+        builder.setPositiveButton("OK", (dialog, which) -> requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_REQUEST_ID));
         builder.setNegativeButton("Cancel", (dialog, which) -> {});
 
         builder.create().show();

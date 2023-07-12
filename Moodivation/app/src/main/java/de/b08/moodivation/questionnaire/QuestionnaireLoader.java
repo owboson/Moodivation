@@ -59,7 +59,7 @@ public class QuestionnaireLoader {
                     e.printStackTrace();
                 }
             });
-            if (questionnaireMap.values().stream().map(q -> q.getId()).distinct().count() > 1)
+            if (questionnaireMap.values().stream().map(Questionnaire::getId).distinct().count() > 1)
                 throw new Exception("multiple questionnaires with same id");
 
             if (!questionnaireMap.values().isEmpty()) {

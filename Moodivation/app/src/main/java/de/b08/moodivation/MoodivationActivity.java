@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.color.DynamicColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.b08.moodivation.utils.ExportUtils;
@@ -41,9 +40,7 @@ public class MoodivationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moodivation_activity);
 
-        interventionFileChooser = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), result -> {
-            result.forEach(u -> InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext()));
-        });
+        interventionFileChooser = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), result -> result.forEach(u -> InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext())));
 
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
@@ -88,31 +85,25 @@ public class MoodivationActivity extends AppCompatActivity {
                     }
                     Pair<Boolean, Integer> result = ExportUtils.exportDatabases(this, id);
                     if (!result.first) {
-                        runOnUiThread(() -> {
-                            new MaterialAlertDialogBuilder(this)
-                                    .setTitle(R.string.dataUploadTitle)
-                                    .setMessage(R.string.dataUploadError)
-                                    .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
-                                    .show();
-                        });
-                    } else {
-                        runOnUiThread(() -> {
-                            new MaterialAlertDialogBuilder(this)
-                                    .setTitle(R.string.dataUploadTitle)
-                                    .setMessage(R.string.dataUploadSuccess)
-                                    .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
-                                    .show();
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> {
-                        new MaterialAlertDialogBuilder(this)
+                        runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
                                 .setTitle(R.string.dataUploadTitle)
                                 .setMessage(R.string.dataUploadError)
                                 .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
-                                .show();
-                    });
+                                .show());
+                    } else {
+                        runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+                                .setTitle(R.string.dataUploadTitle)
+                                .setMessage(R.string.dataUploadSuccess)
+                                .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
+                                .show());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+                            .setTitle(R.string.dataUploadTitle)
+                            .setMessage(R.string.dataUploadError)
+                            .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
+                            .show());
                 }
             });
         } else if (item.getItemId() == R.id.settingsItemId) {

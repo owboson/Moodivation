@@ -20,7 +20,7 @@ public class RandomTimeGenerator {
     public RandomTimeGenerator() {
         this.lastGeneratedDateMorning = null;
         this.cachedTimestampMorning = null;
-        this.random = new Random();
+        random = new Random();
 
     }
 
@@ -56,8 +56,6 @@ public class RandomTimeGenerator {
         }
         return cachedTimestampEvening;
     }
-
-    public static void main(String[] args) {}
 
     private static LocalTime getRandomTime(String start, String end) {
         LocalTime startTime = LocalTime.parse(formatTimestamp(start.concat(":00")));

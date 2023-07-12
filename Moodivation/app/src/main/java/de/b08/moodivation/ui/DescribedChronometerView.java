@@ -8,8 +8,6 @@ import android.widget.Chronometer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.color.MaterialColors;
-
 import de.b08.moodivation.R;
 
 public class DescribedChronometerView extends DescribedValueView {

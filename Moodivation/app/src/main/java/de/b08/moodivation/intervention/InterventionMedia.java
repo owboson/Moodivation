@@ -23,11 +23,11 @@ public class InterventionMedia implements Serializable {
     /**
      * Internal interventions are stored in assets and loaded differently.
      */
-    private boolean internalIntervention;
+    private final boolean internalIntervention;
 
-    private List<String> imagePaths;
+    private final List<String> imagePaths;
 
-    private String videoPath;
+    private final String videoPath;
 
     public InterventionMedia(@Nullable String videoPath, @Nullable List<String> imagePaths, boolean internalIntervention) {
         this.imagePaths = imagePaths == null ? null : Collections.unmodifiableList(imagePaths);

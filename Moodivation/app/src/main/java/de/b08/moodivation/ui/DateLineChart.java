@@ -29,11 +29,11 @@ import de.b08.moodivation.R;
 
 public abstract class DateLineChart extends LinearLayout {
 
-    private LineChart chart;
+    private final LineChart chart;
 
-    private TextView chartTitle;
+    private final TextView chartTitle;
 
-    private LinearLayout additionalComponentsPanel;
+    private final LinearLayout additionalComponentsPanel;
 
     private boolean resetMin = true;
     private boolean resetMax = true;

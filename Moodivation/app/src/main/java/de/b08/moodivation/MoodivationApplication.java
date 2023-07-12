@@ -12,8 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
-import com.google.android.material.color.DynamicColors;
-
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Map;

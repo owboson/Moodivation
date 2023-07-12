@@ -68,7 +68,7 @@ class BarEntryValue {
 
 public class ChartDataClass {
 
-    private BarChart barChart;
+    private final BarChart barChart;
     List<BarEntryValue> barEntryValues = new ArrayList<>();
 
 
@@ -229,12 +229,7 @@ public class ChartDataClass {
         BarDataSet dataSet = new BarDataSet(entries, "Activity Count");
 
 
-        dataSet.setValueFormatter(new IValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return String.valueOf((int) value);
-            }
-        });
+        dataSet.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> String.valueOf((int) value));
 
         dataSet.setBarBorderWidth(1f);
 

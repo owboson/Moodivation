@@ -31,6 +31,7 @@ import de.b08.moodivation.ui.DescribedValueView;
 /**
  * Activity for an ongoing intervention.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class InterventionActivity extends AppCompatActivity {
 
     public static final String INTERVENTION_EXTRA_KEY = "intervention";
@@ -96,10 +97,6 @@ public class InterventionActivity extends AppCompatActivity {
         startTime = new Date();
         if (stopWatchValueView != null)
             stopWatchValueView.start();
-    }
-
-    public void resume() {
-        // TODO: implement
     }
 
     private void reset() {
@@ -182,9 +179,7 @@ public class InterventionActivity extends AppCompatActivity {
 
                     finish();
                 })
-                .setNeutralButton(R.string.interventionDialogSkipBtn, (dialog, which) -> {
-                    finish();
-                })
+                .setNeutralButton(R.string.interventionDialogSkipBtn, (dialog, which) -> finish())
                 .create()
                 .show();
     }

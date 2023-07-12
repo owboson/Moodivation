@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
@@ -81,7 +82,11 @@ public class QuestionnaireActivity extends AppCompatActivity {
         String questionnaireName = getIntent().hasExtra("name") ? getIntent().getStringExtra("name") : "main";
         try {
             QuestionnaireBundle questionnaireBundle = QuestionnaireLoader.loadQuestionnaires(getApplicationContext()).get(questionnaireName);
-            questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(Locale.getDefault().getLanguage()));
+            if (questionnaireBundle != null) {
+                questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(Locale.getDefault().getLanguage()));
+            } else {
+                Logger.getLogger("QuestionnaireActivity").info(String.format("questionnaire %s not found", questionnaireName));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +118,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
             Date dateDayTo = dateFormat.parse(to);
             Date dateNow = dateFormat.parse(dateFormat.format(now));
 
-            return dateNow.equals(dateDayTo) ||dateNow.equals(dateDayFrom) || dateNow.after(dateDayFrom) && dateNow.before(dateDayTo);
+            return dateNow != null && dateDayTo != null && (dateNow.equals(dateDayTo) ||dateNow.equals(dateDayFrom) || dateNow.after(dateDayFrom) && dateNow.before(dateDayTo));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
