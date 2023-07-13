@@ -1,9 +1,6 @@
 package de.b08.moodivation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,14 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.DigitSpanTaskResEntity;
@@ -169,9 +166,9 @@ public class DigitSpanTask extends AppCompatActivity {
 
         if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 0) {
             new MaterialAlertDialogBuilder(DigitSpanTask.this)
-                    .setTitle("Settings")
-                    .setMessage("Allow data collection in the settings to save results.")
-                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                    .setTitle(R.string.settings)
+                    .setMessage(R.string.allowDataCollectionToStoreResults)
+                    .setPositiveButton(R.string.OK, (dialogInterface, i) -> {
                         // Perform action when "Discard" button is clicked
                     })
                     .show();

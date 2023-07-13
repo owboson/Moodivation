@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.AnswerEntity;
+import de.b08.moodivation.database.questionnaire.entities.InterventionTriggeredAfterQuestionnaireEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionNotesEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionnaireNotesEntity;
 import de.b08.moodivation.intervention.InterventionLoader;
@@ -56,14 +57,19 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
             String day_from = sharedPreferences.getString("day_from", "12:0");
             String day_to = sharedPreferences.getString("day_to", "14:0");
+
+            boolean shouldPresentIntervention = WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers());
+            AsyncTask.execute(() -> QuestionnaireDatabase.getInstance(getApplicationContext())
+                    .interventionTriggeredAfterQuestionnaireDao().insert(
+                            new InterventionTriggeredAfterQuestionnaireEntity(questionnaireView.getQuestionnaireId(), now)));
             if (isNoonQuestionnaire(now, day_from, day_to)) {
                 Intent digitSpanTask = new Intent(this, DigitSpanTask.class);
                 digitSpanTask.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 digitSpanTask.putExtra("afterNoonQuestionnaire", true);
-                digitSpanTask.putExtra("presentIntervention", WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers()));
+                digitSpanTask.putExtra("presentIntervention", shouldPresentIntervention);
                 digitSpanTask.putExtra("questionnaireAnswerId", now.getTime());
                 startActivity(digitSpanTask);
-            } else if (WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers())) {
+            } else if (shouldPresentIntervention) {
                 Intent interventionIntent = new Intent(this, InterventionActivity.class);
                 interventionIntent.putExtra("questionnaireAnswerId", now.getTime());
                 interventionIntent.putExtra("afterQuestionnaire", true);
@@ -135,12 +141,12 @@ public class QuestionnaireActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
                 .setView(questionnaireNotesView)
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(R.string.OK, (dialog, which) -> {
                     note = questionnaireNotesView.getText().toString();
                     if (note.trim().isEmpty())
                         note = null;
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {})
+                .setNegativeButton(R.string.Cancel, (dialog, which) -> {})
                 .show();
     }
 

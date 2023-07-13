@@ -285,7 +285,7 @@ public class Rewards extends Fragment {
 
             shareButton.setEnabled(enabled);
             shareButton.setVisibility(enabled ? View.VISIBLE : View.GONE);
-            shareButton.getShareBtn().setOnClickListener(v -> ShareUtils.shareTextIntent(shareMessage, getActivity()));
+            shareButton.getShareBtn().setOnClickListener(v -> ShareUtils.shareTextIntent(shareMessage, view.getContext()));
 
             frameLayout.addView(shareButton);
 

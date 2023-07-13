@@ -69,7 +69,7 @@
     <string name="digitSpanMemorizeInstruction">Try to memorize the numbers!</string>
     <string name="digitSpanStartBtn">Start</string>
 
-    <string name="questionnaireSaveBtn">Start</string>
+    <string name="questionnaireSaveBtn">Save</string>
     <string name="questionnaireAddNoteBtn">Add Note</string>
 
     <string name="recordDeleteBtn">Delete</string>
@@ -81,6 +81,9 @@
     <string name="dayInterval">Day Interval</string>
     <string name="eveningInterval">Evening Interval</string>
     <string name="allowDataCollection">Allow data collection</string>
+    <string name="allowDataCollectionToStoreResults">Allow data collection in the settings to save results.</string>
+    <string name="OK">OK</string>
+    <string name="Cancel">Cancel</string>
     <string name="questionnaire">Questionnaire</string>
     <string name="timesPerDay">Times per day</string>
     <string name="periodicity">Periodicity</string>

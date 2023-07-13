@@ -24,6 +24,6 @@ public class DevelopmentVisualization extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ChartDataClass data = new ChartDataClass(view.findViewById(R.id.barChart), getContext());
+        new ChartDataClass(view.findViewById(R.id.barChart), getContext());
     }
 }

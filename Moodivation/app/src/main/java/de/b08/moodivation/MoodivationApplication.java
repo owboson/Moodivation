@@ -67,11 +67,13 @@ public class MoodivationApplication extends Application {
         SensorConstants.presetSensorSharedPreferencesIfRequired(getApplicationContext());
         startService(new Intent(getApplicationContext(), SensorService.class));
 
-        try {
-            QuestionnaireLoader.loadQuestionnaires(getApplicationContext());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        AsyncTask.execute(() -> {
+            try {
+                QuestionnaireLoader.loadQuestionnaires(getApplicationContext());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         AsyncTask.execute(() -> startForegroundService(new Intent(getApplicationContext(), LocationService.class)));
     }

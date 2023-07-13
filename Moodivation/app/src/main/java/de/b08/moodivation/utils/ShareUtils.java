@@ -1,17 +1,17 @@
 package de.b08.moodivation.utils;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 public class ShareUtils {
 
-    public static void shareTextIntent(String message, Activity activity) {
+    public static void shareTextIntent(String message, Context context) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
-        activity.startActivity(Intent.createChooser(intent, null));
+        context.startActivity(Intent.createChooser(intent, null));
     }
 
 }

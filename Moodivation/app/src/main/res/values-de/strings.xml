@@ -89,6 +89,8 @@
     <string name="dataUploadError">Etwas ist schief gelaufen.</string>
     <string name="dataUploadSuccess">Das Hochladen war erfolgreich.</string>
     <string name="dataUploadOk">OK</string>
+    <string name="OK">OK</string>
+    <string name="Cancel">Abbrechen</string>
     <string name="settingsSuccess">Einstellungen gespeichert</string>
     <string name="settingSavedMessage">Alle Einstellungen wurden gespeichert.</string>
     <string name="questionnaireNotificationTitle">Questionnaire Erinnerung</string>
@@ -96,7 +98,7 @@
     <string name="noonQuestionnaireNotification">Bitte füllen Sie den Fragebogen für den Nachmittag aus</string>
     <string name="eveningQuestionnaireNotification">Bitte füllen Sie den Fragebogen für den Abend aus</string>
     <string name="allowQuestionnaireDataCollection">Ermöglichen Sie die Datenerhebung, um den Fragebogen ausfüllen zu können</string>
-
+    <string name="allowDataCollectionToStoreResults">Erlauben Sie die Datenerfassung in den Einstellungen, um die Ergebnisse zu speichern.</string>
     <string name="noRecordsAvailable">Sie haben noch keine Aufzeichnungen.</string>
     <string name="noDataAvailable">Es sind keine Daten verfügbar.</string>
 </resources>

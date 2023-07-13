@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +25,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.b08.moodivation.database.interventions.InterventionDatabase;
-import de.b08.moodivation.database.interventions.dao.InterventionRecordDao;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.InterventionBundle;
@@ -36,11 +34,6 @@ import de.b08.moodivation.intervention.InterventionLoader;
 public class RecordsPage extends Fragment {
 
     InterventionDatabase interventionDatabase;
-    InterventionRecordDao recordDao;
-
-    private RecyclerView recyclerView;
-//    private RecordAdapter recordAdapter;
-    private List<InterventionRecordEntity> recordList;
 
     LayoutInflater inflater;
     LinearLayout parentView;
@@ -113,7 +106,7 @@ public class RecordsPage extends Fragment {
                     if (interventionBundle.isPresent()) {
                         InterventionBundle bundle = interventionBundle.get();
                         // Access the intervention or intervention map from the bundle
-                        Intervention intervention = bundle.getInterventionMap().values().stream().findFirst().orElse(null);
+                        Intervention intervention = InterventionLoader.getLocalizedIntervention(bundle);
                         if (intervention != null) {
                             title_val = intervention.getTitle();
                         }
@@ -123,8 +116,8 @@ public class RecordsPage extends Fragment {
                     SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm:ss", Locale.US);
 
                     try {
-                        String fromLabelText = "From: ";
-                        String toLabelText = "To: ";
+                        String fromLabelText = getString(R.string.from) + ": ";
+                        String toLabelText = getString(R.string.to) + ": ";
 
                         Date date = inputFormat.parse(String.valueOf(record.startTimestamp));
                         Date date2 = inputFormat.parse(String.valueOf(record.endTimestamp));

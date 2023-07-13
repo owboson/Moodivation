@@ -687,8 +687,8 @@ public class SettingsPage extends AppCompatActivity {
         builder.setTitle(R.string.locationBackgroundPermissionDialogTitle);
         builder.setMessage(R.string.locationBackgroundPermissionDialogText);
 
-        builder.setPositiveButton("OK", (dialog, which) -> requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_REQUEST_ID));
-        builder.setNegativeButton("Cancel", (dialog, which) -> {});
+        builder.setPositiveButton(R.string.OK, (dialog, which) -> requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_REQUEST_ID));
+        builder.setNegativeButton(R.string.Cancel, (dialog, which) -> {});
 
         builder.create().show();
     }
