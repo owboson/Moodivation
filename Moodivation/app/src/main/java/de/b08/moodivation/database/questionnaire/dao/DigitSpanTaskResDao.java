@@ -2,6 +2,7 @@ package de.b08.moodivation.database.questionnaire.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.Query;
 
 import java.util.List;
 
@@ -15,5 +16,8 @@ public interface DigitSpanTaskResDao {
 
     @Insert
     void insertAll(List<DigitSpanTaskResEntity> entities);
+
+    @Query("SELECT * FROM DigitSpanTaskResEntity")
+    List<DigitSpanTaskResEntity> getAllResEntities();
 
 }

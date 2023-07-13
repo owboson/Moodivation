@@ -16,8 +16,11 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.DigitSpanTaskResEntity;
@@ -25,6 +28,11 @@ import de.b08.moodivation.intervention.InterventionLoader;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class DigitSpanTask extends AppCompatActivity {
+
+    public static final int INITIAL_UPPER_BOUND = 2;
+
+    private int delayMillis = 1000;
+
 //   text field that shows the number on the screnn
     private TextView numberField;
 //    text field that shows instructions, congratulation/wrong number prompt
@@ -35,7 +43,7 @@ public class DigitSpanTask extends AppCompatActivity {
     private int userMax = 0;
 //    current upper bound of numbers to be shown one after another;
 //    after each correct answer is increased by 1
-    private int upperBound = 2;
+    private int upperBound = INITIAL_UPPER_BOUND;
 
     private int mCount = 0;
     Random rand = new Random();
@@ -74,9 +82,9 @@ public class DigitSpanTask extends AppCompatActivity {
                         numberField.setVisibility(View.VISIBLE);
                         mHandler.postDelayed(() -> {
                             numberField.setVisibility(View.INVISIBLE);
-                            mHandler.postDelayed(mRunnable, 1000);
-                        }, 1000);
-                    }, 1000);
+                            mHandler.postDelayed(mRunnable, delayMillis);
+                        }, delayMillis);
+                    }, delayMillis);
             } else {
                 // Show message that user should start entering numbers
                 instructionField.setText(R.string.digitSpanEnterNumbersInstruction);
@@ -213,7 +221,7 @@ public class DigitSpanTask extends AppCompatActivity {
             instructionField.setText(R.string.digitSpanMemorizeInstruction);
             mCount = 0; // Reset the count
             mNumbers = new int[upperBound]; // reset the array of shown numbers
-            mHandler.postDelayed(mRunnable, 1000); // Start the countdown
+            mHandler.postDelayed(mRunnable, delayMillis); // Start the countdown
         });
 
 
@@ -226,5 +234,19 @@ public class DigitSpanTask extends AppCompatActivity {
         mHandler.removeCallbacks(mRunnable); // Stop the countdown when the activity is destroyed
     }
 
+    public List<Integer> getNumbers() {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (int mNumber : mNumbers) {
+            numbers.add(mNumber);
+        }
+        return numbers;
+    }
 
+    public int getUserMax() {
+        return userMax;
+    }
+
+    public void setDelayMillis(int delayMillis) {
+        this.delayMillis = delayMillis;
+    }
 }
