@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="material_icons" pattern="src[Moodivation.app.main]:drawable.baseline*||drawable.round*||drawable.moodivation_icon*.png||drawable.moodivation_icon_fore*||mipmap*." />
+</component>
