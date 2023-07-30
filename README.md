@@ -8,6 +8,8 @@
 
 ## Getting Started
 
+The implementation of the wellbeing algorithm can be found [here](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/SimpleWellbeingAlgorithm.java). If you want to add an entirely different algorithm without losing the old one, consider adding a new class that implements [`WellbeingAlgorithm.java`](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/WellbeingAlgorithm.java) and set the singleton in [`WellbeingAlgorithm.java`](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/WellbeingAlgorithm.java) accordingly.
+
 ## License
 
 The following files (in the folder `Moodivation/app/src/main/res`) are Google Material Icons (https://github.com/google/material-design-icons) licensed under Apache-2.0 (http://www.apache.org/licenses/LICENSE-2.0):
