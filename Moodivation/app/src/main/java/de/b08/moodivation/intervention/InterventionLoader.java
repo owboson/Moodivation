@@ -94,11 +94,7 @@ public class InterventionLoader {
             ex.printStackTrace();
         }
 
-        interventions = null;
-        interventions = getAllInterventions(context);
-
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        mainHandler.post(() -> interventionListUpdateHandlers.forEach(Runnable::run));
+        getAllInterventions(context, true);
     }
 
     private static List<Runnable> interventionListUpdateHandlers = new ArrayList<>();
@@ -118,9 +114,16 @@ public class InterventionLoader {
     }
 
     public static List<InterventionBundle> getAllInterventions(Context context) {
-        if (interventions == null) {
+        return getAllInterventions(context, false);
+    }
+
+    public static List<InterventionBundle> getAllInterventions(Context context, boolean forceReload) {
+        if (interventions == null || forceReload) {
             interventions = loadFromAssets(context);
             interventions.addAll(loadFromExternalFiles(context));
+
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(() -> interventionListUpdateHandlers.forEach(Runnable::run));
         }
 
         return interventions;

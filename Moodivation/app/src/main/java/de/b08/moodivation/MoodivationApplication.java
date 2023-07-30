@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
+import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.notifications.NotificationReceiver;
 import de.b08.moodivation.notifications.RandomTimeGenerator;
 import de.b08.moodivation.questionnaire.QuestionnaireLoader;
@@ -94,6 +95,7 @@ public class MoodivationApplication extends Application {
         AsyncTask.execute(() -> {
             try {
                 QuestionnaireLoader.loadQuestionnaires(getApplicationContext());
+                InterventionLoader.getAllInterventions(getApplicationContext());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

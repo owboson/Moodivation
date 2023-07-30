@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteConstraintException;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -45,8 +46,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import de.b08.moodivation.R;
 import de.b08.moodivation.database.location.LocationDatabase;
@@ -204,8 +209,18 @@ public class LocationService extends Service implements LocationListener,
             if (observationsCopy.isEmpty())
                 return;
 
-            LocationDatabase.getInstance(getApplicationContext()).locationHistoryDao()
-                    .insertAll(LocationHistoryEntity.from(observationsCopy));
+            // group locations by date and select location with smallest horizontal accuracy
+            List<Location> locations = observationsCopy.stream().collect(Collectors.groupingBy(Location::getTime))
+                    .entrySet().stream()
+                    .flatMap(e -> Stream.of(e.getValue().stream().min(Comparator.comparing(Location::getAccuracy)).get()))
+                    .collect(Collectors.toList());
+
+            try {
+                LocationDatabase.getInstance(getApplicationContext()).locationHistoryDao()
+                        .insertAll(LocationHistoryEntity.from(locations));
+            } catch (SQLiteConstraintException ex) {
+                ex.printStackTrace();
+            }
         });
     }
 

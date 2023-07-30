@@ -36,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.b08.moodivation.intervention.InterventionBundle;
@@ -67,64 +68,76 @@ public class InterventionOverviewActivity extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<InterventionBundle> interventionBundleList = InterventionLoader.getAllInterventions(view.getContext());
-
         ListView interventionListView = view.findViewById(R.id.interventionListView);
         interventionListView.setDivider(null);
-        BaseAdapter baseAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return interventionBundleList.size();
-            }
 
-            @Override
-            public InterventionBundle getItem(int position) {
-                return interventionBundleList.get(position);
-            }
+        InterventionBaseAdapter interventionBaseAdapter = new InterventionBaseAdapter();
 
-            @Override
-            public long getItemId(int position) {
-                return -1;
-            }
+        interventionListView.setAdapter(interventionBaseAdapter);
+        interventionBaseAdapter.updateList(InterventionLoader.getAllInterventions(view.getContext()));
 
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                InterventionBundle intervention = getItem(position);
-                if (convertView == null) {
-                    InterventionCardView interventionView = new InterventionCardView(view.getContext(), null);
+        updateRunnable = InterventionLoader.addInterventionListUpdateHandler(() ->
+                interventionBaseAdapter.updateList(InterventionLoader.getAllInterventions(getContext())));
+    }
 
-                    interventionView.getInterventionView().setContentViewAllowed(false);
-                    interventionView.setIntervention(InterventionLoader.getLocalizedIntervention(intervention));
+    public final class InterventionBaseAdapter extends BaseAdapter {
 
-                    interventionView.setOnClickListener(v -> {
-                        Intent startInterventionIntent = new Intent(view.getContext(), InterventionActivity.class);
-                        startInterventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
-                                InterventionLoader.getLocalizedIntervention(intervention));
+        ArrayList<InterventionBundle> interventionBundles = new ArrayList<>();
 
-                        startActivity(startInterventionIntent);
-                    });
+        public void updateList(List<InterventionBundle> interventionBundles) {
+            this.interventionBundles.clear();
+            this.interventionBundles.addAll(interventionBundles);
+            notifyDataSetChanged();
+        }
 
-                    return interventionView;
-                }
+        @Override
+        public int getCount() {
+            return interventionBundles.size();
+        }
 
-                InterventionCardView interventionView = (InterventionCardView) convertView;
+        @Override
+        public InterventionBundle getItem(int position) {
+            return interventionBundles.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return -1;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            InterventionBundle intervention = getItem(position);
+            if (convertView == null) {
+                InterventionCardView interventionView = new InterventionCardView(getContext(), null);
+
                 interventionView.getInterventionView().setContentViewAllowed(false);
                 interventionView.setIntervention(InterventionLoader.getLocalizedIntervention(intervention));
 
                 interventionView.setOnClickListener(v -> {
-                    Intent startInterventionIntent = new Intent(view.getContext(), InterventionActivity.class);
+                    Intent startInterventionIntent = new Intent(getContext(), InterventionActivity.class);
                     startInterventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
                             InterventionLoader.getLocalizedIntervention(intervention));
 
                     startActivity(startInterventionIntent);
                 });
+
                 return interventionView;
             }
-        };
 
-        interventionListView.setAdapter(baseAdapter);
+            InterventionCardView interventionView = (InterventionCardView) convertView;
+            interventionView.getInterventionView().setContentViewAllowed(false);
+            interventionView.setIntervention(InterventionLoader.getLocalizedIntervention(intervention));
 
-        updateRunnable = InterventionLoader.addInterventionListUpdateHandler(baseAdapter::notifyDataSetChanged);
+            interventionView.setOnClickListener(v -> {
+                Intent startInterventionIntent = new Intent(getContext(), InterventionActivity.class);
+                startInterventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
+                        InterventionLoader.getLocalizedIntervention(intervention));
+
+                startActivity(startInterventionIntent);
+            });
+            return interventionView;
+        }
     }
 
 }
