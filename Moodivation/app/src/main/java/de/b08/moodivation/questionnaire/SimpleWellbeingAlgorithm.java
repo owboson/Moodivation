@@ -27,6 +27,7 @@ package de.b08.moodivation.questionnaire;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import de.b08.moodivation.questionnaire.answer.Answer;
 import de.b08.moodivation.questionnaire.answer.NumberAnswer;
@@ -50,7 +51,7 @@ public class SimpleWellbeingAlgorithm implements WellbeingAlgorithm {
 
     @Override
     public boolean shouldPresentIntervention(List<Answer<?>> questionnaireAnswers) {
-        return calculateWellbeing(questionnaireAnswers) >= 0;
+        return calculateWellbeing(questionnaireAnswers) <= 0.5 && new Random().nextBoolean();
     }
 
 }
