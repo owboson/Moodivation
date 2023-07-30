@@ -31,26 +31,28 @@ drawable/round_home_24.xml
 drawable/round_settings_24.xml
 ```
 
-The following files contain Google Material Icons (in the folder `Moodivation/app/src/main/res`):
+The following files contain Google Material Icons (in the folder `Moodivation/app/src/main/`):
 
 ```
-mipmap-anydpi-v26/moodivation_icon.xml
-mipmap-anydpi-v26/moodivation_icon_round.xml
+moodivation_icon-playstore.png
 
-mipmap-hdpi/moodivation_icon.png
-mipmap-hdpi/moodivation_icon_round.png
+res/mipmap-anydpi-v26/moodivation_icon.xml
+res/mipmap-anydpi-v26/moodivation_icon_round.xml
 
-mipmap-mdpi/moodivation_icon.png
-mipmap-mdpi/moodivation_icon_round.png
+res/mipmap-hdpi/moodivation_icon.png
+res/mipmap-hdpi/moodivation_icon_round.png
 
-mipmap-xhdpi/moodivation_icon.png
-mipmap-xhdpi/moodivation_icon_round.png
+res/mipmap-mdpi/moodivation_icon.png
+res/mipmap-mdpi/moodivation_icon_round.png
 
-mipmap-xxhdpi/moodivation_icon.png
-mipmap-xxhdpi/moodivation_icon_round.png
+res/mipmap-xhdpi/moodivation_icon.png
+res/mipmap-xhdpi/moodivation_icon_round.png
 
-mipmap-xxxhdpi/moodivation_icon.png
-mipmap-xxxhdpi/moodivation_icon_round.png
+res/mipmap-xxhdpi/moodivation_icon.png
+res/mipmap-xxhdpi/moodivation_icon_round.png
+
+res/mipmap-xxxhdpi/moodivation_icon.png
+res/mipmap-xxxhdpi/moodivation_icon_round.png
 ```
 
 All other code files are licensed under MIT License:
