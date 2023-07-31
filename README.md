@@ -3,12 +3,23 @@
 * [Getting Started](#getting-started)
 * [Server Setup](server/setup.md)
 * [How to specify questionnaires?](questionnaire_specification.md)
+* [How to add questions to the main questionnaire?](#how-to-add-questions-to-the-main-questionnaire)
 * [How to create custom interventions?](intervention.md)
 * [License](#license)
 
 ## Getting Started
 
+The bottom bar contains the home page, interventions/activities, rewards, and the data page. Clicking on the three dots in the top right corner will open a menu that allows you to go to the settings, upload your data, or add a custom intervention.
+
+<img src="screenshot1.png" width="300px"/>
+
+Note: This screenshot contains Google Material Icons (see license below).
+
 The implementation of the wellbeing algorithm can be found [here](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/SimpleWellbeingAlgorithm.java). If you want to add an entirely different algorithm without losing the old one, consider adding a new class that implements [`WellbeingAlgorithm.java`](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/WellbeingAlgorithm.java) and set the singleton in [`WellbeingAlgorithm.java`](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/WellbeingAlgorithm.java) accordingly.
+
+## How to add questions to the main questionnaire?
+
+To add questions to the main questionnaire, modify the questionnaire files at https://github.com/RUB-SE-LAB/23B08/tree/main/Moodivation/app/src/main/assets/questionnaires.
 
 ## License
 
