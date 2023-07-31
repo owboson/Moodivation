@@ -27,6 +27,9 @@ package de.b08.moodivation.intervention;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Stores the configuration of an intervention
+ */
 public class InterventionOptions implements Serializable {
 
     private final boolean showOptionalImages;

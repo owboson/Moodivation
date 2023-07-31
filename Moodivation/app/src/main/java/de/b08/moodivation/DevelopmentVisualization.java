@@ -35,7 +35,9 @@ import androidx.fragment.app.Fragment;
 
 import de.b08.moodivation.services.ChartDataClass;
 
-
+/**
+ * Displays various charts in the charts tab of the data fragment
+ */
 public class DevelopmentVisualization extends Fragment {
 
 

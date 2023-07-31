@@ -26,6 +26,9 @@ package de.b08.moodivation.questionnaire;
 
 import java.util.Objects;
 
+/**
+ * Class for any kind of questionnaire element specified in a questionnaire file
+ */
 public class QuestionnaireElement {
 
     private final String title;

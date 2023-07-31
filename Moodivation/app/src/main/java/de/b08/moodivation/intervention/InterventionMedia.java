@@ -42,6 +42,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Stores all media related information of interventions
+ */
 public class InterventionMedia implements Serializable {
 
     /**
@@ -63,6 +66,11 @@ public class InterventionMedia implements Serializable {
         return internalIntervention;
     }
 
+    /**
+     * Returns the drawable for the intervention images
+     * @param context the current context
+     * @return Returns the drawable for the intervention images
+     */
     public @Nullable List<Drawable> getDrawableImages(Context context) {
         if (imagePaths == null)
             return null;
@@ -77,6 +85,10 @@ public class InterventionMedia implements Serializable {
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
+    /**
+     * Returns the media item of the intervention video
+     * @return Returns the media item of the intervention video
+     */
     public @Nullable MediaItem getVideoMediaItem() {
         if (videoPath == null)
             return null;

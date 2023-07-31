@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Bundles questionnaire of different languages
+ */
 public class QuestionnaireBundle {
 
     private final String name;
@@ -38,6 +41,11 @@ public class QuestionnaireBundle {
         this.questionnaires = questionnaires;
     }
 
+    /**
+     * Returns the questionnaire in the given language if available.
+     * @param lang the preferred language
+     * @return Returns the questionnaire in the given language if available or the english questionnaire if available or null.
+     */
     public Questionnaire getQuestionnaire(String lang) {
         if (questionnaires.containsKey(lang))
             return questionnaires.get(lang);

@@ -48,6 +48,9 @@ import de.b08.moodivation.R;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.ui.MoodivationPlayerView;
 
+/**
+ * View for displaying interventions and their media
+ */
 public class InterventionView extends LinearLayout {
 
     private final int COLUMN_COUNT = 3;

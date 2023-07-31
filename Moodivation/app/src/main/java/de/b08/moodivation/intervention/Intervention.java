@@ -32,6 +32,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class for an intervention
+ */
 public class Intervention implements Serializable {
 
     public enum DataType {
@@ -53,6 +56,9 @@ public class Intervention implements Serializable {
     @NonNull
     private final InterventionOptions options;
 
+    /**
+     * The data types that should be displayed in the UI
+     */
     @Nullable
     private final List<DataType> collectedDataTypes;
 

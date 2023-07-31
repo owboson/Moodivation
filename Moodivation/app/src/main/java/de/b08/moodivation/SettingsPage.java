@@ -60,6 +60,9 @@ import de.b08.moodivation.services.SensorService;
 import de.b08.moodivation.ui.CustomPickerAdapter;
 import de.b08.moodivation.ui.SensorSettingsView;
 
+/**
+ * The in-app settings
+ */
 public class SettingsPage extends AppCompatActivity {
 
     private final int LOCATION_PERMISSION_REQUEST_ID = 13;

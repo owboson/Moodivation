@@ -35,6 +35,9 @@ import android.widget.TextView;
 import de.b08.moodivation.database.interventions.InterventionDatabase;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 
+/**
+ * Displays a record and allows to delete the record
+ */
 public class RecordPage extends AppCompatActivity {
 
     TextView title;

@@ -42,6 +42,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.b08.moodivation.ui.WellbeingChart;
 
+/**
+ * The home fragment of the app.
+ */
 public class MainPage extends Fragment {
 
     protected SharedPreferences sharedPreferences;

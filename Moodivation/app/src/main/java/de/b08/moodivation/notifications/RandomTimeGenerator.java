@@ -30,7 +30,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Random;
 
-
+/**
+ * Random time generator used to issue notifications in specified time intervals
+ */
 public class RandomTimeGenerator {
     private static Random random = new Random();
     private LocalDate lastGeneratedDateMorning;

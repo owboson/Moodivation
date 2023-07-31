@@ -48,6 +48,9 @@ import de.b08.moodivation.sensors.SingleSensorObserver;
 import de.b08.moodivation.sensors.SingleTriggerSensorObserver;
 import de.b08.moodivation.utils.DateUtils;
 
+/**
+ * Handles all sensors for which data is being stored in the database
+ */
 public class SensorService extends Service implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String LOG_TAG = "SensorService";

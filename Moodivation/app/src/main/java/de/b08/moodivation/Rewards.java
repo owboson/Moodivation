@@ -69,6 +69,9 @@ import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.ui.ShareButton;
 import de.b08.moodivation.utils.ShareUtils;
 
+/**
+ * The rewards page
+ */
 public class Rewards extends Fragment {
 
     InterventionDatabase db;

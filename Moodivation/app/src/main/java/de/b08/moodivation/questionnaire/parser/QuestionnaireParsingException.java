@@ -28,6 +28,9 @@ import androidx.annotation.Nullable;
 
 import org.w3c.dom.Node;
 
+/**
+ * Exception thrown in the questionnaire parser
+ */
 public class QuestionnaireParsingException extends Exception {
 
     public enum Reason {

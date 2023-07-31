@@ -32,6 +32,9 @@ import java.util.stream.Collectors;
 
 import de.b08.moodivation.questionnaire.constraints.Constraint;
 
+/**
+ * Class representing a questionnaire (file)
+ */
 public class Questionnaire {
 
     private final List<QuestionnaireElement> questionnaireElements;

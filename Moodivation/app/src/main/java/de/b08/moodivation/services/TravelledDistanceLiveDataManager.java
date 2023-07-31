@@ -29,6 +29,9 @@ import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Allows to create multiple travelled distance live data objects each having its own reference value
+ */
 public class TravelledDistanceLiveDataManager {
 
     private static TravelledDistanceLiveDataManager instance;

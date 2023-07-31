@@ -27,6 +27,9 @@ package de.b08.moodivation.services;
 import de.b08.moodivation.sensors.Observation;
 import de.b08.moodivation.sensors.ObservationLiveData;
 
+/**
+ * Live count for the number of steps
+ */
 public class StepLiveData extends ObservationLiveData<Integer> {
 
     private static StepLiveData instance;

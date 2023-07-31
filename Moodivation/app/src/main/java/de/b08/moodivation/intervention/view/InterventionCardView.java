@@ -35,6 +35,9 @@ import androidx.cardview.widget.CardView;
 
 import de.b08.moodivation.intervention.Intervention;
 
+/**
+ * An intervention view wrapped in a card view
+ */
 public class InterventionCardView extends LinearLayout {
 
     private final InterventionView interventionView;

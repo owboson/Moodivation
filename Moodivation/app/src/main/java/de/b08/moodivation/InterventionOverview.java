@@ -43,6 +43,9 @@ import de.b08.moodivation.intervention.InterventionBundle;
 import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.intervention.view.InterventionCardView;
 
+/**
+ * Displays a list of all available interventions
+ */
 public class InterventionOverview extends Fragment {
 
     Runnable updateRunnable;

@@ -51,8 +51,17 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * Loader for questionnaire files
+ */
 public class InterventionLoader {
 
+    /**
+     * Loads an intervention from the given URI and stores it in external storage
+     * @param source the source of the intervention
+     * @param context the current context
+     * @return Returns true if loading was successful and false otherwise
+     */
     public static boolean loadAndStoreExternalFile(Uri source, Context context) {
         if (context.getFilesDir() == null)
             return false;
@@ -103,11 +112,20 @@ public class InterventionLoader {
 
     private static List<InterventionBundle> interventions;
 
+    /**
+     * Adds an update handler, which is executed whenever a new intervention was added
+     * @param runnable the update procedure
+     * @return Returns the given runnable
+     */
     public static Runnable addInterventionListUpdateHandler(Runnable runnable) {
         interventionListUpdateHandlers.add(runnable);
         return runnable;
     }
 
+    /**
+     * Removes the given runnable from the list of update handlers
+     * @param runnable the update handler to remove
+     */
     public static void removeInterventionListUpdateHandler(Runnable runnable) {
         if (runnable == null)
             return;
@@ -115,10 +133,21 @@ public class InterventionLoader {
         interventionListUpdateHandlers.remove(runnable);
     }
 
+    /**
+     * Loads all interventions
+     * @param context the current context
+     * @return the list of interventions
+     */
     public static List<InterventionBundle> getAllInterventions(Context context) {
         return getAllInterventions(context, false);
     }
 
+    /**
+     * Loads all interventions
+     * @param context the current context
+     * @param forceReload specifies whether interventions should be reloaded independent from whether they are already loaded
+     * @return the list of interventions
+     */
     public static List<InterventionBundle> getAllInterventions(Context context, boolean forceReload) {
         if (interventions == null || forceReload) {
             interventions = loadFromAssets(context);
@@ -131,16 +160,32 @@ public class InterventionLoader {
         return interventions;
     }
 
+    /**
+     * Returns the intervention with the given id. If interventions weren't loaded, it also loads the interventions.
+     * @param id the id to search
+     * @param context the current context
+     * @return an optional that contains the intervention bundle
+     */
     public static Optional<InterventionBundle> getInterventionWithId(String id, Context context) {
         return getAllInterventions(context).stream().filter(i -> Objects.equals(i.getId(), id)).findFirst();
     }
 
+    /**
+     * Returns the localized intervention from an intervention bundle
+     * @param bundle the bundle to use
+     * @return the localized intervention
+     */
     public static Intervention getLocalizedIntervention(InterventionBundle bundle) {
         if (bundle == null)
             return null;
         return bundle.getInterventionMap().entrySet().stream().filter(e -> e.getKey().equals(Locale.getDefault().getLanguage())).map(Map.Entry::getValue).findFirst().orElse(bundle.getInterventionMap().values().stream().findAny().get());
     }
 
+    /**
+     * Returns a random intervention bundle and loads the interventions if necessary.
+     * @param context the current context
+     * @return a random intervention bundle
+     */
     public static InterventionBundle getRandomIntervention(Context context) {
         List<InterventionBundle> interventionBundles = getAllInterventions(context);
         int index = new Random().nextInt(interventionBundles.size());
@@ -174,6 +219,11 @@ public class InterventionLoader {
         boolean showOptionalVideo;
     }
 
+    /**
+     * Loads all interventions from external storage
+     * @param context the current context
+     * @return the list of interventions
+     */
     public static List<InterventionBundle> loadFromExternalFiles(Context context) {
         List<InterventionBundle> interventionBundles = new ArrayList<>();
         String[] paths = new File(context.getFilesDir().getPath() + "/interventions").list();
@@ -191,6 +241,11 @@ public class InterventionLoader {
         return interventionBundles;
     }
 
+    /**
+     * Loads all interventions from internal storage
+     * @param context the current context
+     * @return the list of interventions
+     */
     public static List<InterventionBundle> loadFromAssets(Context context) {
         try {
             List<InterventionBundle> interventionBundles = new ArrayList<>();
@@ -209,6 +264,13 @@ public class InterventionLoader {
         }
     }
 
+    /**
+     * Loads an intervention
+     * @param context the current context
+     * @param path the path to the file
+     * @param internal whether the intervention is internal or external
+     * @return an optional containing the intervention bundle
+     */
     public static Optional<InterventionBundle> load(Context context, String path, boolean internal) {
         try {
             Map<String, Intervention> interventionMap = new HashMap<>();
@@ -232,6 +294,14 @@ public class InterventionLoader {
         }
     }
 
+    /**
+     * Loads the intervention using the bundle data
+     * @param context the current context
+     * @param path the path to the file
+     * @param bundleData the bundle data to use for loading
+     * @param internal whether the intervention is internal or external
+     * @return an optional containing the intervention bundle
+     */
     private static Optional<Intervention> loadIntervention(Context context, String path, InterventionBundleData bundleData, boolean internal) {
         try {
             Gson gson = new Gson();

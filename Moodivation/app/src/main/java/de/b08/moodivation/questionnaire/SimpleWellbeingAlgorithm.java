@@ -32,8 +32,14 @@ import java.util.Random;
 import de.b08.moodivation.questionnaire.answer.Answer;
 import de.b08.moodivation.questionnaire.answer.NumberAnswer;
 
+/**
+ * Wellbeing algorithm that just takes into account the well/unwell question (id 1.3)
+ */
 public class SimpleWellbeingAlgorithm implements WellbeingAlgorithm {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double calculateWellbeing(List<? extends Answer<?>> questionnaireAnswers) {
         // only takes well/unwell question into account (question id 1.3 of questionnaire 1)
@@ -49,6 +55,9 @@ public class SimpleWellbeingAlgorithm implements WellbeingAlgorithm {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean shouldPresentIntervention(List<Answer<?>> questionnaireAnswers) {
         return calculateWellbeing(questionnaireAnswers) <= 0.5 && new Random().nextBoolean();

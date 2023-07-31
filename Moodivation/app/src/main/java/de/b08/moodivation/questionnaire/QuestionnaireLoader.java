@@ -47,10 +47,19 @@ import de.b08.moodivation.database.questionnaire.entities.QuestionnaireEntity;
 import de.b08.moodivation.questionnaire.parser.QuestionnaireParser;
 import de.b08.moodivation.questionnaire.parser.QuestionnaireParsingException;
 
+/**
+ * Loader for questionnaires
+ */
 public class QuestionnaireLoader {
 
     private static Map<String, QuestionnaireBundle> questionnaires;
 
+    /**
+     * Loads the questionnaires from assets
+     * @param context the current context
+     * @return a map with the keys being the questionnaire names and the values being the corresponding questionnaire bundles
+     * @throws Exception if there are multiple questionnaires with the same id
+     */
     public static Map<String, QuestionnaireBundle> loadQuestionnaires(Context context) throws Exception {
         if (questionnaires == null) {
             questionnaires = loadFromAssets(context);
@@ -58,10 +67,23 @@ public class QuestionnaireLoader {
         return questionnaires;
     }
 
+    /**
+     * Loads the questionnaires from assets
+     * @param context the current context
+     * @return a map with the keys being the questionnaire names and the values being the corresponding questionnaire bundles
+     * @throws Exception if there are multiple questionnaires with the same id
+     */
     public static Map<String, QuestionnaireBundle> loadFromAssets(Context context) throws Exception {
         return loadFromAssets(context, true);
     }
 
+    /**
+     * Loads the questionnaires from assets
+     * @param context the current context
+     * @param storeInDatabase specifies whether the questionnaire ids should be stored in the database
+     * @return a map with the keys being the questionnaire names and the values being the corresponding questionnaire bundles
+     * @throws Exception if there are multiple questionnaires with the same id
+     */
     public static Map<String, QuestionnaireBundle> loadFromAssets(Context context, boolean storeInDatabase) throws Exception {
         String[] paths = context.getAssets().list("questionnaires/");
         Set<String> names = Arrays.stream(paths).map(s -> s.split("\\.")[0])
@@ -95,6 +117,11 @@ public class QuestionnaireLoader {
         return questionnaires;
     }
 
+    /**
+     * Adds a questionnaire to the database
+     * @param questionnaire the questionnaire to add
+     * @param context the current context
+     */
     public static void addToDatabase(Questionnaire questionnaire, Context context) {
         QuestionnaireDatabase questionnaireDatabase = QuestionnaireDatabase.getInstance(context);
         AsyncTask.execute(() -> {

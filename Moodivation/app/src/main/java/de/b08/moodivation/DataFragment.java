@@ -42,6 +42,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Used to delete intervention records or see aggregated sensor/questionnaire/intervention data
+ */
 public class DataFragment extends Fragment {
 
     ViewPager2 pager;

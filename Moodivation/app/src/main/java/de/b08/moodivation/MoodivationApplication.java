@@ -50,6 +50,11 @@ import de.b08.moodivation.sensors.SensorConstants;
 import de.b08.moodivation.services.LocationService;
 import de.b08.moodivation.services.SensorService;
 
+/**
+ * Application logic:
+ * - setting up notifications
+ * - presetting shared preferences
+ */
 public class MoodivationApplication extends Application {
 
     private static MoodivationApplication application;

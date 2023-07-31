@@ -49,6 +49,9 @@ import de.b08.moodivation.questionnaire.question.FreeTextQuestion;
 import de.b08.moodivation.questionnaire.question.NumberQuestion;
 import de.b08.moodivation.questionnaire.QuestionnaireElement;
 
+/**
+ * View for a questionnaire
+ */
 public class QuestionnaireView extends LinearLayout {
 
     private Questionnaire questionnaire;
@@ -76,6 +79,10 @@ public class QuestionnaireView extends LinearLayout {
         this.updateHandlers.add(r);
     }
 
+    /**
+     * Adds the views for all questions
+     * @param questionnaire the questionnaire to use
+     */
     public void setQuestionnaire(Questionnaire questionnaire) {
         this.questionnaire = questionnaire;
 
@@ -124,10 +131,18 @@ public class QuestionnaireView extends LinearLayout {
         updateHandlers.forEach(Runnable::run);
     }
 
+    /**
+     * Checks whether the questionnaire is fully answered
+     */
     private void checkQuestionnaireAnswered() {
         answered = questionViewMap.values().stream().allMatch(QuestionView::isAnswered);
     }
 
+    /**
+     * Checks the constraints of the questionnaire and if necessary enables/disables questions
+     * @param observedId the question for which the answer changed
+     * @param view the view of the question for which the answer changed
+     */
     private void checkConstraints(String observedId, QuestionView<?,?> view) {
         List<Constraint> affectedConstraints = questionnaire.getConstraintsForObservedId(observedId);
 
@@ -158,6 +173,10 @@ public class QuestionnaireView extends LinearLayout {
         return answered;
     }
 
+    /**
+     * Returns all answer objects
+     * @return Returns all answer objects
+     */
     public List<Answer<?>> getAllAnswers() {
         if (!isAnswered())
             return Collections.emptyList();
@@ -167,6 +186,10 @@ public class QuestionnaireView extends LinearLayout {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns all notes
+     * @return Returns all notes
+     */
     public List<Note> getAllNotes() {
         if (!isAnswered())
             return Collections.emptyList();

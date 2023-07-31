@@ -26,6 +26,9 @@ package de.b08.moodivation.questionnaire.constraints;
 
 import java.util.Objects;
 
+/**
+ * General class for a constraint in a questionnaire
+ */
 public class Constraint {
 
     private final String constrainedQuestionId;
@@ -36,10 +39,18 @@ public class Constraint {
         this.observedQuestionId =observedQuestionId;
     }
 
+    /**
+     * Returns the id of the question that can be restricted by this constraint
+     * @return Returns the id of the question that can be restricted by this constraint
+     */
     public String getConstrainedQuestionId() {
         return constrainedQuestionId;
     }
 
+    /**
+     * Returns the id of the question that causes the constrained question to get enabled/disabled
+     * @return Returns the id of the question that causes the constrained question to get enabled/disabled
+     */
     public String getObservedQuestionId() {
         return observedQuestionId;
     }

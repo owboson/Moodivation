@@ -29,6 +29,9 @@ import android.location.Location;
 
 import androidx.lifecycle.LiveData;
 
+/**
+ * Live data for locations
+ */
 public class LocationLiveData extends LiveData<Location> {
 
     private static LocationLiveData instance;

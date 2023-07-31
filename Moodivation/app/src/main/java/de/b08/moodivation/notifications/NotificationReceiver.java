@@ -35,6 +35,10 @@ import androidx.core.app.NotificationCompat;
 
 import de.b08.moodivation.QuestionnaireActivity;
 import de.b08.moodivation.R;
+
+/**
+ * Constructs notifications
+ */
 public class NotificationReceiver extends BroadcastReceiver {
     Notification notification;
     @Override

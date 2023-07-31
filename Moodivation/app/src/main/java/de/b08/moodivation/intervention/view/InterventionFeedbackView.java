@@ -35,6 +35,9 @@ import androidx.annotation.Nullable;
 
 import de.b08.moodivation.R;
 
+/**
+ * View for giving feedback to an intervention
+ */
 public class InterventionFeedbackView extends LinearLayout {
 
     TextView interventionRatingLabel;

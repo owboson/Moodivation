@@ -45,6 +45,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.b08.moodivation.utils.ExportUtils;
 import de.b08.moodivation.intervention.InterventionLoader;
 
+/**
+ * The start activity of the app. Displays a bottom bar and handles clicks on menu items.
+ */
 public class MoodivationActivity extends AppCompatActivity {
 
     protected SharedPreferences sharedPreferences;

@@ -24,6 +24,9 @@
 
 package de.b08.moodivation.questionnaire;
 
+/**
+ * Category (currently not displayed in UI, but parsed by the questionnaire parser)
+ */
 public class Category extends QuestionnaireElement {
 
     public Category(String title, String id) {

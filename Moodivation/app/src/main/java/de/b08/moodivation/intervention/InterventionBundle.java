@@ -28,6 +28,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Stores an intervention in different languages
+ */
 public class InterventionBundle {
 
     private final Map<String, Intervention> interventionMap;

@@ -54,7 +54,9 @@ import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.InterventionBundle;
 import de.b08.moodivation.intervention.InterventionLoader;
 
-
+/**
+ * List of all stored intervention records
+ */
 public class RecordsPage extends Fragment {
 
     InterventionDatabase interventionDatabase;

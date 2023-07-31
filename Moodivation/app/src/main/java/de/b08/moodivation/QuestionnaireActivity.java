@@ -58,6 +58,12 @@ import de.b08.moodivation.questionnaire.answer.Answer;
 import de.b08.moodivation.questionnaire.view.QuestionnaireNotesView;
 import de.b08.moodivation.questionnaire.view.QuestionnaireView;
 
+/**
+ * Displays a questionnaire and possibly starts an intervention or the digit span task
+ *
+ * Note: The name of the questionnaire that should be displayed is expected to be set in the extra "name".
+ * If this extra is not set the default "main" questionnaire is displayed.
+ */
 public class QuestionnaireActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;

@@ -30,10 +30,23 @@ import de.b08.moodivation.questionnaire.answer.Answer;
 
 public interface WellbeingAlgorithm {
 
+    /**
+     * The algorithm used to calculate the wellbeing.
+     */
     WellbeingAlgorithm INSTANCE = new SimpleWellbeingAlgorithm();
 
+    /**
+     * Calculates the wellbeing based on a list of answers for a questionnaire
+     * @param questionnaireAnswers the list of answers
+     * @return Returns the wellbeing score
+     */
     double calculateWellbeing(List<? extends Answer<?>> questionnaireAnswers);
 
+    /**
+     * Checks whether an intervention should be displayed after answering a questionnaire
+     * @param questionnaireAnswers the list of answers
+     * @return Returns whether to display an intervention
+     */
     boolean shouldPresentIntervention(List<Answer<?>> questionnaireAnswers);
 
 }

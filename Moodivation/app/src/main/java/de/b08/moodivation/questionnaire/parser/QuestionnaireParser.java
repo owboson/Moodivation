@@ -59,6 +59,9 @@ import de.b08.moodivation.questionnaire.QuestionnaireElement;
 import de.b08.moodivation.questionnaire.Questionnaire;
 import de.b08.moodivation.questionnaire.question.NumberQuestion;
 
+/**
+ * Parser for questionnaire files
+ */
 @SuppressWarnings("IOStreamConstructor")
 public class QuestionnaireParser {
 
@@ -85,6 +88,11 @@ public class QuestionnaireParser {
     private static final String OBSERVED_QUESTION_ID_ATTR = "observedQuestionId";
     private static final String ALLOWED_SELECTION_ITEM_TAG_NAME = "AllowedItem";
 
+    /**
+     * Parses a questionnaire represented as a string
+     * @param s the questionnaire as a string
+     * @return Returns the questionnaire element
+     */
     public static Questionnaire parse(String s) throws QuestionnaireParsingException,
             IOException, ParserConfigurationException, SAXException {
 
@@ -93,6 +101,11 @@ public class QuestionnaireParser {
         return parse(source);
     }
 
+    /**
+     * Parses a questionnaire from an input source
+     * @param source the questionnaire as a source
+     * @return Returns the questionnaire element
+     */
     public static Questionnaire parse(InputSource source) throws QuestionnaireParsingException,
             IOException, SAXException, ParserConfigurationException {
 
@@ -103,6 +116,11 @@ public class QuestionnaireParser {
         return parse(document);
     }
 
+    /**
+     * Parses a questionnaire in a file
+     * @param f the questionnaire file
+     * @return Returns the questionnaire element
+     */
     public static Questionnaire parse(File f) throws IOException,
             QuestionnaireParsingException, ParserConfigurationException, SAXException {
 

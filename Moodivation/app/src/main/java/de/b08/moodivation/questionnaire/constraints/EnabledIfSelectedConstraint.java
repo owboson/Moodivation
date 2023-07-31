@@ -27,6 +27,10 @@ package de.b08.moodivation.questionnaire.constraints;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Constraint that enables/disables constrained questions based on which selection was made in the
+ * observed question (must be a choice question).
+ */
 public class EnabledIfSelectedConstraint extends Constraint {
 
     private final List<String> allowedSelectionIds;
@@ -36,6 +40,10 @@ public class EnabledIfSelectedConstraint extends Constraint {
         this.allowedSelectionIds = allowedSelectionIds;
     }
 
+    /**
+     * Returns a list containing all ids of the items that cause the constrained question to be enabled.
+     * @return Returns a list containing all ids of the items that cause the constrained question to be enabled.
+     */
     public List<String> getAllowedSelectionIds() {
         return allowedSelectionIds;
     }

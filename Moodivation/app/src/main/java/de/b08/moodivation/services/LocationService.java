@@ -57,6 +57,9 @@ import de.b08.moodivation.R;
 import de.b08.moodivation.database.location.LocationDatabase;
 import de.b08.moodivation.database.location.entities.LocationHistoryEntity;
 
+/**
+ * Queries the location and stores the results in the database
+ */
 public class LocationService extends Service implements LocationListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
