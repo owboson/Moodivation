@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
 import android.content.Context;
@@ -16,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.color.DynamicColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.b08.moodivation.utils.ExportUtils;
@@ -41,9 +64,18 @@ public class MoodivationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moodivation_activity);
 
-        interventionFileChooser = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), result -> {
-            result.forEach(u -> InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext()));
-        });
+        interventionFileChooser = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), result -> result.forEach(u -> {
+            AsyncTask.execute(() -> {
+                boolean success = InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext());
+                if (!success) {
+                    runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+                            .setTitle(R.string.addInterventionItem)
+                            .setMessage(R.string.dataUploadError)
+                            .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
+                            .show());
+                }
+            });
+        }));
 
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
@@ -88,31 +120,25 @@ public class MoodivationActivity extends AppCompatActivity {
                     }
                     Pair<Boolean, Integer> result = ExportUtils.exportDatabases(this, id);
                     if (!result.first) {
-                        runOnUiThread(() -> {
-                            new MaterialAlertDialogBuilder(this)
-                                    .setTitle(R.string.dataUploadTitle)
-                                    .setMessage(R.string.dataUploadError)
-                                    .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
-                                    .show();
-                        });
-                    } else {
-                        runOnUiThread(() -> {
-                            new MaterialAlertDialogBuilder(this)
-                                    .setTitle(R.string.dataUploadTitle)
-                                    .setMessage(R.string.dataUploadSuccess)
-                                    .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
-                                    .show();
-                        });
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> {
-                        new MaterialAlertDialogBuilder(this)
+                        runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
                                 .setTitle(R.string.dataUploadTitle)
                                 .setMessage(R.string.dataUploadError)
                                 .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
-                                .show();
-                    });
+                                .show());
+                    } else {
+                        runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+                                .setTitle(R.string.dataUploadTitle)
+                                .setMessage(R.string.dataUploadSuccess)
+                                .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
+                                .show());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+                            .setTitle(R.string.dataUploadTitle)
+                            .setMessage(R.string.dataUploadError)
+                            .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
+                            .show());
                 }
             });
         } else if (item.getItemId() == R.id.settingsItemId) {

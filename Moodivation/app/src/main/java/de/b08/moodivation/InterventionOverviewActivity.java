@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
 import android.content.Intent;
@@ -12,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.b08.moodivation.intervention.InterventionBundle;
@@ -19,6 +44,8 @@ import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.intervention.view.InterventionCardView;
 
 public class InterventionOverviewActivity extends Fragment {
+
+    Runnable updateRunnable;
 
     @Nullable
     @Override
@@ -32,63 +59,85 @@ public class InterventionOverviewActivity extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        InterventionLoader.removeInterventionListUpdateHandler(updateRunnable);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<InterventionBundle> interventionBundleList = InterventionLoader.getAllInterventions(view.getContext());
-
         ListView interventionListView = view.findViewById(R.id.interventionListView);
         interventionListView.setDivider(null);
-        interventionListView.setAdapter(new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return interventionBundleList.size();
-            }
 
-            @Override
-            public InterventionBundle getItem(int position) {
-                return interventionBundleList.get(position);
-            }
+        InterventionBaseAdapter interventionBaseAdapter = new InterventionBaseAdapter();
 
-            @Override
-            public long getItemId(int position) {
-                return -1;
-            }
+        interventionListView.setAdapter(interventionBaseAdapter);
+        interventionBaseAdapter.updateList(InterventionLoader.getAllInterventions(view.getContext()));
 
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                InterventionBundle intervention = getItem(position);
-                if (convertView == null) {
-                    InterventionCardView interventionView = new InterventionCardView(view.getContext(), null);
+        updateRunnable = InterventionLoader.addInterventionListUpdateHandler(() ->
+                interventionBaseAdapter.updateList(InterventionLoader.getAllInterventions(getContext())));
+    }
 
-                    interventionView.getInterventionView().setContentViewAllowed(false);
-                    interventionView.setIntervention(InterventionLoader.getLocalizedIntervention(intervention));
+    public final class InterventionBaseAdapter extends BaseAdapter {
 
-                    interventionView.setOnClickListener(v -> {
-                        Intent startInterventionIntent = new Intent(view.getContext(), InterventionActivity.class);
-                        startInterventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
-                                InterventionLoader.getLocalizedIntervention(intervention));
+        ArrayList<InterventionBundle> interventionBundles = new ArrayList<>();
 
-                        startActivity(startInterventionIntent);
-                    });
+        public void updateList(List<InterventionBundle> interventionBundles) {
+            this.interventionBundles.clear();
+            this.interventionBundles.addAll(interventionBundles);
+            notifyDataSetChanged();
+        }
 
-                    return interventionView;
-                }
+        @Override
+        public int getCount() {
+            return interventionBundles.size();
+        }
 
-                InterventionCardView interventionView = (InterventionCardView) convertView;
+        @Override
+        public InterventionBundle getItem(int position) {
+            return interventionBundles.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return -1;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            InterventionBundle intervention = getItem(position);
+            if (convertView == null) {
+                InterventionCardView interventionView = new InterventionCardView(getContext(), null);
+
                 interventionView.getInterventionView().setContentViewAllowed(false);
                 interventionView.setIntervention(InterventionLoader.getLocalizedIntervention(intervention));
 
                 interventionView.setOnClickListener(v -> {
-                    Intent startInterventionIntent = new Intent(view.getContext(), InterventionActivity.class);
+                    Intent startInterventionIntent = new Intent(getContext(), InterventionActivity.class);
                     startInterventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
                             InterventionLoader.getLocalizedIntervention(intervention));
 
                     startActivity(startInterventionIntent);
                 });
+
                 return interventionView;
             }
-        });
+
+            InterventionCardView interventionView = (InterventionCardView) convertView;
+            interventionView.getInterventionView().setContentViewAllowed(false);
+            interventionView.setIntervention(InterventionLoader.getLocalizedIntervention(intervention));
+
+            interventionView.setOnClickListener(v -> {
+                Intent startInterventionIntent = new Intent(getContext(), InterventionActivity.class);
+                startInterventionIntent.putExtra(InterventionActivity.INTERVENTION_EXTRA_KEY,
+                        InterventionLoader.getLocalizedIntervention(intervention));
+
+                startActivity(startInterventionIntent);
+            });
+            return interventionView;
+        }
     }
 
 }

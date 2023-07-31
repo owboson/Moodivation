@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "4b8f9a49d72499e9d499c01e5f0fa0ce",
+    "identityHash": "9790ed5838b14619e362988f1caf98a1",
     "entities": [
       {
         "tableName": "AnswerEntity",
@@ -219,12 +219,39 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "InterventionTriggeredAfterQuestionnaireEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`questionnaireId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`questionnaireId`, `timestamp`))",
+        "fields": [
+          {
+            "fieldPath": "questionnaireId",
+            "columnName": "questionnaireId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "questionnaireId",
+            "timestamp"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b8f9a49d72499e9d499c01e5f0fa0ce')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9790ed5838b14619e362988f1caf98a1')"
     ]
   }
 }

@@ -2,7 +2,7 @@
   "description":"How about a bike ride?",
   "displayedDataTypes":["ELAPSED_TIME","TRAVELLED_DISTANCE", "SPEED"],
   "interventionMediaData": {
-    "imagePaths":["../bike1.jpg", "../bike1.jpg", "../bike1.jpg"]
+    "imagePaths":["../bike1.jpg"]
   },
   "interventionOptionsData": {
     "showOptionalImages":true,

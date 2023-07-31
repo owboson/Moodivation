@@ -1,7 +1,33 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation.intervention;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.google.gson.Gson;
 
@@ -27,16 +53,16 @@ import java.util.zip.ZipInputStream;
 
 public class InterventionLoader {
 
-    public static void loadAndStoreExternalFile(Uri source, Context context) {
+    public static boolean loadAndStoreExternalFile(Uri source, Context context) {
         if (context.getFilesDir() == null)
-            return;
+            return false;
         File[] files = context.getFilesDir().listFiles();
         if (files == null)
-            return;
+            return false;
 
         if (Arrays.stream(files).noneMatch(f -> f.isDirectory() && f.getName().equals("interventions")))
            if (!new File(context.getFilesDir().getPath() + "/interventions/").mkdirs())
-               return;
+               return false;
 
         File destDir = new File(context.getFilesDir().getPath() + "/interventions/");
 
@@ -51,7 +77,7 @@ public class InterventionLoader {
                 File entryDest = new File(destDir, zipEntry.getName());
                 if (zipEntry.isDirectory()) {
                     if (!entryDest.mkdirs())
-                        return;
+                        return false;
                 } else {
                     FileOutputStream fileOut = new FileOutputStream(entryDest);
 
@@ -66,18 +92,40 @@ public class InterventionLoader {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+            return false;
         }
 
-        interventions = null;
-        interventions = getAllInterventions(context);
+        getAllInterventions(context, true);
+        return true;
     }
+
+    private static List<Runnable> interventionListUpdateHandlers = new ArrayList<>();
 
     private static List<InterventionBundle> interventions;
 
+    public static Runnable addInterventionListUpdateHandler(Runnable runnable) {
+        interventionListUpdateHandlers.add(runnable);
+        return runnable;
+    }
+
+    public static void removeInterventionListUpdateHandler(Runnable runnable) {
+        if (runnable == null)
+            return;
+
+        interventionListUpdateHandlers.remove(runnable);
+    }
+
     public static List<InterventionBundle> getAllInterventions(Context context) {
-        if (interventions == null) {
+        return getAllInterventions(context, false);
+    }
+
+    public static List<InterventionBundle> getAllInterventions(Context context, boolean forceReload) {
+        if (interventions == null || forceReload) {
             interventions = loadFromAssets(context);
             interventions.addAll(loadFromExternalFiles(context));
+
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(() -> interventionListUpdateHandlers.forEach(Runnable::run));
         }
 
         return interventions;
@@ -88,7 +136,6 @@ public class InterventionLoader {
     }
 
     public static Intervention getLocalizedIntervention(InterventionBundle bundle) {
-        // TODO: implement
         if (bundle == null)
             return null;
         return bundle.getInterventionMap().entrySet().stream().filter(e -> e.getKey().equals(Locale.getDefault().getLanguage())).map(Map.Entry::getValue).findFirst().orElse(bundle.getInterventionMap().values().stream().findAny().get());

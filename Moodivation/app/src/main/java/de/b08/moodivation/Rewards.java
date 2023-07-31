@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
 import androidx.annotation.NonNull;
@@ -66,81 +90,78 @@ public class Rewards extends Fragment {
 
         db = InterventionDatabase.getInstance(getContext());
 
-        AsyncTask.execute(new Runnable() {
-                  @Override
-                  public void run() {
+        AsyncTask.execute(() -> {
 
-                      List<Integer> imageList = new ArrayList<>();
-                      List<String> textList = new ArrayList<>();
-                      List<String> shareMessages = new ArrayList<>();
+            List<Integer> imageList = new ArrayList<>();
+            List<String> textList = new ArrayList<>();
+            List<String> shareMessages = new ArrayList<>();
 
-                      // get streak, running and cycling data of this month
-                      int[] data = getData(getContext());
+            // get streak, running and cycling data of this month
+            int[] data = getData(getContext());
 
-                      // add streak reward to list (if exists)
-                      int streak = data[0];
-                      if (streak == 0) {
-                          imageList.add(R.drawable.streak_reward_img_grey);
-                          textList.add(getResources().getString(R.string.notWorkoutStreak));
-                          shareMessages.add(null);
-                      } else if (streak >= 1){
-                          imageList.add(R.drawable.streak_reward_img);
-                          if (streak == 1) {
-                              shareMessages.add(getResources().getString(R.string.workoutStreakSharedMessage));
-                              textList.add(getResources().getString(R.string.workoutStreak).replace("%NUM%", Integer.toString(streak)));
-                          } else {
-                              shareMessages.add(getResources().getString(R.string.workoutsStreakSharedMessage).replace("%NUM%", "" + streak));
-                              textList.add(getResources().getString(R.string.workoutStreakPlural).replace("%NUM%", Integer.toString(streak)));
-                          }
-                      }
+            // add streak reward to list (if exists)
+            int streak = data[0];
+            if (streak == 0) {
+                imageList.add(R.drawable.baseline_star_24_grey);
+                textList.add(getResources().getString(R.string.notWorkoutStreak));
+                shareMessages.add(null);
+            } else if (streak >= 1){
+                imageList.add(R.drawable.baseline_star_24_achieved);
+                if (streak == 1) {
+                    shareMessages.add(getResources().getString(R.string.workoutStreakSharedMessage));
+                    textList.add(getResources().getString(R.string.workoutStreak).replace("%NUM%", Integer.toString(streak)));
+                } else {
+                    shareMessages.add(getResources().getString(R.string.workoutsStreakSharedMessage).replace("%NUM%", "" + streak));
+                    textList.add(getResources().getString(R.string.workoutStreakPlural).replace("%NUM%", Integer.toString(streak)));
+                }
+            }
 
-                      int steps = get5000Steps(getContext());
-                      if (steps >= 5000) {
-                          shareMessages.add(getResources().getString(R.string.moreStepsSharedMessage).replace("%NUM%", "" + 5000));
-                          imageList.add(R.drawable.steps_reward_img);
-                          textList.add(getResources().getString(R.string.walkedSteps).replace("%NUM%", Integer.toString(steps)));
-                      } else {
-                          if (steps != 0)
-                              shareMessages.add(getResources().getString(R.string.stepsSharedMessage).replace("%NUM%", "" + steps));
-                          else
-                              shareMessages.add(null);
-                          imageList.add(R.drawable.steps_reward_img_grey);
-                          textList.add(getResources().getString(R.string.notEnoughSteps));
-                      }
+            int steps = get5000Steps(getContext());
+            if (steps >= 5000) {
+                shareMessages.add(getResources().getString(R.string.moreStepsSharedMessage).replace("%NUM%", "" + 5000));
+                imageList.add(R.drawable.baseline_5k_plus_24_black);
+                textList.add(getResources().getString(R.string.walkedSteps).replace("%NUM%", Integer.toString(steps)));
+            } else {
+                if (steps != 0)
+                    shareMessages.add(getResources().getString(R.string.stepsSharedMessage).replace("%NUM%", "" + steps));
+                else
+                    shareMessages.add(null);
+                imageList.add(R.drawable.baseline_5k_plus_24_grey);
+                textList.add(getResources().getString(R.string.notEnoughSteps));
+            }
 
-                      int running = data[1];
-                      if (running >= 10) {
-                          shareMessages.add(getResources().getString(R.string.moreRunsSharedMessage).replace("%NUM%", "" + 10));
-                          imageList.add(R.drawable.running_reward_img);
-                          textList.add(getResources().getString(R.string.moreRuns));
-                      } else {
-                          if (running != 0)
-                              shareMessages.add(getResources().getString(R.string.runsSharedMessage).replace("%NUM%", "" + running));
-                          else
-                              shareMessages.add(null);
-                          imageList.add(R.drawable.running_reward_img_grey);
-                          textList.add(running + getResources().getText(R.string.runsLeft).toString().replace("%NUM%", Integer.toString(10 - running)));
-                      }
+            int running = data[1];
+            if (running >= 10) {
+                shareMessages.add(getResources().getString(R.string.moreRunsSharedMessage).replace("%NUM%", "" + 10));
+                imageList.add(R.drawable.baseline_directions_run_24_achieved);
+                textList.add(getResources().getString(R.string.moreRuns));
+            } else {
+                if (running != 0)
+                    shareMessages.add(getResources().getString(R.string.runsSharedMessage).replace("%NUM%", "" + running));
+                else
+                    shareMessages.add(null);
+                imageList.add(R.drawable.baseline_directions_run_24_grey);
+                textList.add(running + getResources().getText(R.string.runsLeft).toString().replace("%NUM%", Integer.toString(10 - running)));
+            }
 
-                      int cycling = data[2];
-                      if (cycling >= 10) {
-                          shareMessages.add(getResources().getString(R.string.moreBikeRidesSharedMessage).replace("%NUM%", "" + 10));
-                          imageList.add(R.drawable.cycling_reward_img);
-                          textList.add(getResources().getString(R.string.moreRides));
-                      } else {
-                          if (cycling != 0)
-                              shareMessages.add(getResources().getString(R.string.bikeRidesSharedMessage).replace("%NUM%", "" + cycling));
-                          else
-                              shareMessages.add(null);
+            int cycling = data[2];
+            if (cycling >= 10) {
+                shareMessages.add(getResources().getString(R.string.moreBikeRidesSharedMessage).replace("%NUM%", "" + 10));
+                imageList.add(R.drawable.baseline_directions_bike_24_achieved);
+                textList.add(getResources().getString(R.string.moreRides));
+            } else {
+                if (cycling != 0)
+                    shareMessages.add(getResources().getString(R.string.bikeRidesSharedMessage).replace("%NUM%", "" + cycling));
+                else
+                    shareMessages.add(null);
 
-                          imageList.add(R.drawable.cycling_reward_img_grey);
-                          textList.add(cycling+ getResources().getText(R.string.workoutsLeft).toString().replace("%NUM%", Integer.toString(10 - cycling)));
-                      }
+                imageList.add(R.drawable.baseline_directions_bike_24_grey);
+                textList.add(cycling+ getResources().getText(R.string.workoutsLeft).toString().replace("%NUM%", Integer.toString(10 - cycling)));
+            }
 
-                      Handler handler = new Handler(Looper.getMainLooper());
-                      handler.post(() -> create_view(imageList, textList, shareMessages, getContext(), view));
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> create_view(imageList, textList, shareMessages, getContext(), view));
 
-                  }
         });
     }
 
@@ -288,9 +309,7 @@ public class Rewards extends Fragment {
 
             shareButton.setEnabled(enabled);
             shareButton.setVisibility(enabled ? View.VISIBLE : View.GONE);
-            shareButton.getShareBtn().setOnClickListener(v -> {
-                ShareUtils.shareTextIntent(shareMessage, getActivity());
-            });
+            shareButton.getShareBtn().setOnClickListener(v -> ShareUtils.shareTextIntent(shareMessage, view.getContext()));
 
             frameLayout.addView(shareButton);
 

@@ -1,9 +1,30 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,10 +34,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
@@ -25,6 +49,11 @@ import de.b08.moodivation.intervention.InterventionLoader;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class DigitSpanTask extends AppCompatActivity {
+
+    public static final int INITIAL_UPPER_BOUND = 2;
+
+    private int delayMillis = 1000;
+
 //   text field that shows the number on the screnn
     private TextView numberField;
 //    text field that shows instructions, congratulation/wrong number prompt
@@ -35,7 +64,7 @@ public class DigitSpanTask extends AppCompatActivity {
     private int userMax = 0;
 //    current upper bound of numbers to be shown one after another;
 //    after each correct answer is increased by 1
-    private int upperBound = 2;
+    private int upperBound = INITIAL_UPPER_BOUND;
 
     private int mCount = 0;
     Random rand = new Random();
@@ -59,8 +88,8 @@ public class DigitSpanTask extends AppCompatActivity {
 
     protected SharedPreferences sharedPreferences;
 
-    private Handler mHandler = new Handler();
-    private Runnable mRunnable = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
 //  show numbers one by one on the screen with a pause of 1 second between each number
@@ -70,16 +99,13 @@ public class DigitSpanTask extends AppCompatActivity {
                 System.out.println("random "+randomNumber);
                 mNumbers[mCount-1] = randomNumber;
                 numberField.setText(String.valueOf(randomNumber));
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            numberField.setVisibility(View.VISIBLE);
-                            mHandler.postDelayed(() -> {
-                                numberField.setVisibility(View.INVISIBLE);
-                                mHandler.postDelayed(mRunnable, 1000);
-                            }, 1000);
-                        }
-                    }, 1000);
+                    mHandler.postDelayed(() -> {
+                        numberField.setVisibility(View.VISIBLE);
+                        mHandler.postDelayed(() -> {
+                            numberField.setVisibility(View.INVISIBLE);
+                            mHandler.postDelayed(mRunnable, delayMillis);
+                        }, delayMillis);
+                    }, delayMillis);
             } else {
                 // Show message that user should start entering numbers
                 instructionField.setText(R.string.digitSpanEnterNumbersInstruction);
@@ -137,17 +163,13 @@ public class DigitSpanTask extends AppCompatActivity {
 
         long questionnaireAnswerId = getIntent().getLongExtra("questionnaireAnswerId", -1);
         if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 1) {
-            boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") ?
-                    getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false) : false;
-            AsyncTask.execute(() -> {
-                QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
-                        .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax,
-                                questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId)));
-            });
+            boolean afterNoonQuestionnaire = getIntent().hasExtra("afterNoonQuestionnaire") && getIntent().getExtras().getBoolean("afterNoonQuestionnaire", false);
+            AsyncTask.execute(() -> QuestionnaireDatabase.getInstance(getApplicationContext()).digitSpanTaskResDao()
+                    .insert(new DigitSpanTaskResEntity(new Date(), afterNoonQuestionnaire, userMax,
+                            questionnaireAnswerId == -1 ? null : new Date(questionnaireAnswerId))));
         }
 
-        boolean presentIntervention = getIntent().hasExtra("presentIntervention") ?
-                getIntent().getExtras().getBoolean("presentIntervention") : false;
+        boolean presentIntervention = getIntent().hasExtra("presentIntervention") && getIntent().getExtras().getBoolean("presentIntervention");
         if (presentIntervention) {
             Intent interventionIntent = new Intent(this, InterventionActivity.class);
             if (questionnaireAnswerId != -1)
@@ -168,13 +190,10 @@ public class DigitSpanTask extends AppCompatActivity {
 
         if (sharedPreferences.getInt("allow_digit_span_collection", 1) == 0) {
             new MaterialAlertDialogBuilder(DigitSpanTask.this)
-                    .setTitle("Settings")
-                    .setMessage("Allow data collection in the settings to save results.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // Perform action when "Discard" button is clicked
-                        }
+                    .setTitle(R.string.settings)
+                    .setMessage(R.string.allowDataCollectionToStoreResults)
+                    .setPositiveButton(R.string.OK, (dialogInterface, i) -> {
+                        // Perform action when "Discard" button is clicked
                     })
                     .show();
         }
@@ -219,14 +238,11 @@ public class DigitSpanTask extends AppCompatActivity {
 
         disableButtons();
 
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                instructionField.setText(R.string.digitSpanMemorizeInstruction);
-                mCount = 0; // Reset the count
-                mNumbers = new int[upperBound]; // reset the array of shown numbers
-                mHandler.postDelayed(mRunnable, 1000); // Start the countdown
-            }
+        startBtn.setOnClickListener(v -> {
+            instructionField.setText(R.string.digitSpanMemorizeInstruction);
+            mCount = 0; // Reset the count
+            mNumbers = new int[upperBound]; // reset the array of shown numbers
+            mHandler.postDelayed(mRunnable, delayMillis); // Start the countdown
         });
 
 
@@ -239,5 +255,19 @@ public class DigitSpanTask extends AppCompatActivity {
         mHandler.removeCallbacks(mRunnable); // Stop the countdown when the activity is destroyed
     }
 
+    public List<Integer> getNumbers() {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (int mNumber : mNumbers) {
+            numbers.add(mNumber);
+        }
+        return numbers;
+    }
 
+    public int getUserMax() {
+        return userMax;
+    }
+
+    public void setDelayMillis(int delayMillis) {
+        this.delayMillis = delayMillis;
+    }
 }

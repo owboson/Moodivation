@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation.ui;
 
 import android.content.Context;
@@ -50,34 +74,6 @@ public class StepsBarChart extends IntervalDateBarChart {
 
                 return dates.get(i-1);
             });
-
-            /*
-            Date d1 = new Date();
-            Date d2 = new Date(d1.getTime() - 1000*60*60*24);
-            Date d3 = new Date(d1.getTime() - 1000*60*60*24*2);
-            Date d4 = new Date(d1.getTime() - 1000*60*60*24*3);
-            Date d5 = new Date(d1.getTime() - 1000*60*60*24*4);
-            Date d6 = new Date(d1.getTime() - 1000*60*60*24*5);
-            Date d7 = new Date(d1.getTime() - 1000*60*60*24*6);
-            Date d8 = new Date(d1.getTime() - 1000*60*60*24*7);
-            Date d9 = new Date(d1.getTime() - 1000*60*60*24*8);
-
-            List<Pair<Date, Integer>> data = Arrays.asList(new Pair<>(d1, 2000), new Pair<>(d2, 3000), new Pair<>(d3, 6000), new Pair<>(d4, 1000),
-                    new Pair<>(d5, 2000), new Pair<>(d6, 3000), new Pair<>(d7, 6000), new Pair<>(d8, 1000), new Pair<>(d9, 1000));
-
-            data.sort(Comparator.comparing(o -> o.first));
-
-            for (int i = 0; i < data.size(); i++) {
-                entries.add(new BarEntry(i+1, data.get(i).second));
-            }
-
-            setIndexDateMapper(i -> {
-                if (i == 0 || i == data.size() + 1)
-                    return null;
-
-                return data.get(i-1).first;
-            });
-            */
 
             setData(entries);
         });

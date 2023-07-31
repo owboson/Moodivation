@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
 import android.content.Intent;
@@ -15,7 +39,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +49,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.b08.moodivation.database.interventions.InterventionDatabase;
-import de.b08.moodivation.database.interventions.dao.InterventionRecordDao;
 import de.b08.moodivation.database.interventions.entities.InterventionRecordEntity;
 import de.b08.moodivation.intervention.Intervention;
 import de.b08.moodivation.intervention.InterventionBundle;
@@ -36,11 +58,6 @@ import de.b08.moodivation.intervention.InterventionLoader;
 public class RecordsPage extends Fragment {
 
     InterventionDatabase interventionDatabase;
-    InterventionRecordDao recordDao;
-
-    private RecyclerView recyclerView;
-//    private RecordAdapter recordAdapter;
-    private List<InterventionRecordEntity> recordList;
 
     LayoutInflater inflater;
     LinearLayout parentView;
@@ -60,7 +77,7 @@ public class RecordsPage extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inflater = LayoutInflater.from(getContext());
-        parentView = getView().findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
+        parentView = view.findViewById(R.id.parentLayout); // Assuming you have a LinearLayout as the parent layout
 
         interventionDatabase = InterventionDatabase.getInstance(getContext());
 
@@ -113,10 +130,9 @@ public class RecordsPage extends Fragment {
                     if (interventionBundle.isPresent()) {
                         InterventionBundle bundle = interventionBundle.get();
                         // Access the intervention or intervention map from the bundle
-                        Intervention intervention = bundle.getInterventionMap().values().stream().findFirst().orElse(null);
+                        Intervention intervention = InterventionLoader.getLocalizedIntervention(bundle);
                         if (intervention != null) {
-                            String title = intervention.getTitle();
-                            title_val = title;
+                            title_val = intervention.getTitle();
                         }
                     }
 
@@ -124,8 +140,8 @@ public class RecordsPage extends Fragment {
                     SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm:ss", Locale.US);
 
                     try {
-                        String fromLabelText = "From: ";
-                        String toLabelText = "To: ";
+                        String fromLabelText = getString(R.string.from) + ": ";
+                        String toLabelText = getString(R.string.to) + ": ";
 
                         Date date = inputFormat.parse(String.valueOf(record.startTimestamp));
                         Date date2 = inputFormat.parse(String.valueOf(record.endTimestamp));

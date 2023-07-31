@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
 import android.content.Context;
@@ -17,10 +41,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.AnswerEntity;
+import de.b08.moodivation.database.questionnaire.entities.InterventionTriggeredAfterQuestionnaireEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionNotesEntity;
 import de.b08.moodivation.database.questionnaire.entities.QuestionnaireNotesEntity;
 import de.b08.moodivation.intervention.InterventionLoader;
@@ -55,14 +81,19 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
             String day_from = sharedPreferences.getString("day_from", "12:0");
             String day_to = sharedPreferences.getString("day_to", "14:0");
+
+            boolean shouldPresentIntervention = WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers());
+            AsyncTask.execute(() -> QuestionnaireDatabase.getInstance(getApplicationContext())
+                    .interventionTriggeredAfterQuestionnaireDao().insert(
+                            new InterventionTriggeredAfterQuestionnaireEntity(questionnaireView.getQuestionnaireId(), now)));
             if (isNoonQuestionnaire(now, day_from, day_to)) {
                 Intent digitSpanTask = new Intent(this, DigitSpanTask.class);
                 digitSpanTask.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 digitSpanTask.putExtra("afterNoonQuestionnaire", true);
-                digitSpanTask.putExtra("presentIntervention", WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers()));
+                digitSpanTask.putExtra("presentIntervention", shouldPresentIntervention);
                 digitSpanTask.putExtra("questionnaireAnswerId", now.getTime());
                 startActivity(digitSpanTask);
-            } else if (WellbeingAlgorithm.INSTANCE.shouldPresentIntervention(questionnaireView.getAllAnswers())) {
+            } else if (shouldPresentIntervention) {
                 Intent interventionIntent = new Intent(this, InterventionActivity.class);
                 interventionIntent.putExtra("questionnaireAnswerId", now.getTime());
                 interventionIntent.putExtra("afterQuestionnaire", true);
@@ -81,7 +112,11 @@ public class QuestionnaireActivity extends AppCompatActivity {
         String questionnaireName = getIntent().hasExtra("name") ? getIntent().getStringExtra("name") : "main";
         try {
             QuestionnaireBundle questionnaireBundle = QuestionnaireLoader.loadQuestionnaires(getApplicationContext()).get(questionnaireName);
-            questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(Locale.getDefault().getLanguage()));
+            if (questionnaireBundle != null) {
+                questionnaireView.setQuestionnaire(questionnaireBundle.getQuestionnaire(Locale.getDefault().getLanguage()));
+            } else {
+                Logger.getLogger("QuestionnaireActivity").info(String.format("questionnaire %s not found", questionnaireName));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +148,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
             Date dateDayTo = dateFormat.parse(to);
             Date dateNow = dateFormat.parse(dateFormat.format(now));
 
-            return dateNow.equals(dateDayTo) ||dateNow.equals(dateDayFrom) || dateNow.after(dateDayFrom) && dateNow.before(dateDayTo);
+            return dateNow != null && dateDayTo != null && (dateNow.equals(dateDayTo) ||dateNow.equals(dateDayFrom) || dateNow.after(dateDayFrom) && dateNow.before(dateDayTo));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -130,12 +165,12 @@ public class QuestionnaireActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(getResources().getString(R.string.addQuestionNoteAlertTitle))
                 .setView(questionnaireNotesView)
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(R.string.OK, (dialog, which) -> {
                     note = questionnaireNotesView.getText().toString();
                     if (note.trim().isEmpty())
                         note = null;
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {})
+                .setNegativeButton(R.string.Cancel, (dialog, which) -> {})
                 .show();
     }
 

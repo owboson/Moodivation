@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 RUB-SE-LAB
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package de.b08.moodivation;
 
 import android.app.AlarmManager;
@@ -12,14 +36,13 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
-import com.google.android.material.color.DynamicColors;
-
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.TimeZone;
 
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
+import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.notifications.NotificationReceiver;
 import de.b08.moodivation.notifications.RandomTimeGenerator;
 import de.b08.moodivation.questionnaire.QuestionnaireLoader;
@@ -69,11 +92,14 @@ public class MoodivationApplication extends Application {
         SensorConstants.presetSensorSharedPreferencesIfRequired(getApplicationContext());
         startService(new Intent(getApplicationContext(), SensorService.class));
 
-        try {
-            QuestionnaireLoader.loadQuestionnaires(getApplicationContext());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        AsyncTask.execute(() -> {
+            try {
+                QuestionnaireLoader.loadQuestionnaires(getApplicationContext());
+                InterventionLoader.getAllInterventions(getApplicationContext());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         AsyncTask.execute(() -> startForegroundService(new Intent(getApplicationContext(), LocationService.class)));
     }
