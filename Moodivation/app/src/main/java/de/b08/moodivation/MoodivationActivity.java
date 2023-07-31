@@ -84,11 +84,11 @@ public class MoodivationActivity extends AppCompatActivity {
         navigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.activitiesItem) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainerView2, InterventionOverviewActivity.class, null)
+                        .replace(R.id.fragmentContainerView2, InterventionOverview.class, null)
                         .commit();
             } else if (item.getItemId() == R.id.homeItem) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainerView2, MainActivity.class, null)
+                        .replace(R.id.fragmentContainerView2, MainPage.class, null)
                         .commit();
             } else if (item.getItemId() == R.id.rewardsItem) {
                 getSupportFragmentManager().beginTransaction()

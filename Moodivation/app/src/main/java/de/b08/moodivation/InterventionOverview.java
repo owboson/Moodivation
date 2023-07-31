@@ -43,7 +43,7 @@ import de.b08.moodivation.intervention.InterventionBundle;
 import de.b08.moodivation.intervention.InterventionLoader;
 import de.b08.moodivation.intervention.view.InterventionCardView;
 
-public class InterventionOverviewActivity extends Fragment {
+public class InterventionOverview extends Fragment {
 
     Runnable updateRunnable;
 

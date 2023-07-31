@@ -42,7 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.b08.moodivation.ui.WellbeingChart;
 
-public class MainActivity extends Fragment {
+public class MainPage extends Fragment {
 
     protected SharedPreferences sharedPreferences;
 
@@ -64,7 +64,7 @@ public class MainActivity extends Fragment {
         sharedPreferences = view.getContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);
 
         Button digitSpanTaskPreviewBtn = view.findViewById(R.id.digitSpanTaskPreviewButton);
-        digitSpanTaskPreviewBtn.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(getActivity(), DigitSpanTask.class)));
+        digitSpanTaskPreviewBtn.setOnClickListener(v -> MainPage.this.startActivity(new Intent(getActivity(), DigitSpanTask.class)));
 
         Button questionnairePreviewBtn = view.findViewById(R.id.questionnairePreviewButton);
 
@@ -72,7 +72,7 @@ public class MainActivity extends Fragment {
             if (sharedPreferences.getInt("allow_questionnaire_data_collection", 0) == 1) {
                 Intent questionnaireIntent = new Intent(getActivity(), QuestionnaireActivity.class);
                 questionnaireIntent.putExtra("name", "main");
-                MainActivity.this.startActivity(questionnaireIntent);
+                MainPage.this.startActivity(questionnaireIntent);
             } else {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(view.getContext());
                 builder.setMessage(R.string.allowQuestionnaireDataCollection)

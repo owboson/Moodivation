@@ -53,13 +53,7 @@
         android:theme="@style/Moodivation"
         tools:targetApi="31">
         <activity
-            android:name=".Rewards"
-            android:exported="false" />
-        <activity
             android:name=".RecordPage"
-            android:exported="false" />
-        <activity
-            android:name=".DevelopmentVisualization"
             android:exported="false" />
 
         <receiver android:name=".notifications.NotificationReceiver" />
@@ -89,18 +83,6 @@
             android:name=".InterventionActivity"
             android:exported="true"
             android:label="Intervention" />
-        <activity
-            android:name=".InterventionOverviewActivity"
-            android:exported="true"
-            android:label="Intervention List" />
-        <activity
-            android:name=".RecordsPage"
-            android:exported="true"
-            android:label="Records" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-        </activity>
         <activity
             android:name=".MoodivationActivity"
             android:exported="true">
