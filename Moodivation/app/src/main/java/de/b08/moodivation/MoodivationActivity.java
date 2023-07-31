@@ -65,7 +65,16 @@ public class MoodivationActivity extends AppCompatActivity {
         setContentView(R.layout.moodivation_activity);
 
         interventionFileChooser = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), result -> result.forEach(u -> {
-            AsyncTask.execute(() -> InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext()));
+            AsyncTask.execute(() -> {
+                boolean success = InterventionLoader.loadAndStoreExternalFile(u, getApplicationContext());
+                if (!success) {
+                    runOnUiThread(() -> new MaterialAlertDialogBuilder(this)
+                            .setTitle(R.string.addInterventionItem)
+                            .setMessage(R.string.dataUploadError)
+                            .setPositiveButton(R.string.dataUploadOk, (dialog, which) -> {})
+                            .show());
+                }
+            });
         }));
 
         sharedPreferences = getApplicationContext().getSharedPreferences("TimeSettings", Context.MODE_PRIVATE);

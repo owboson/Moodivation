@@ -42,7 +42,7 @@ public class InterventionLoaderTest {
     @Test
     public void testRunningIntervention() {
         List<InterventionBundle> interventionBundles = InterventionLoader.
-                getAllInterventions(InstrumentationRegistry.getInstrumentation().getContext());
+                loadFromAssets(InstrumentationRegistry.getInstrumentation().getContext());
 
         Intervention runningEN = new Intervention("RunningIntervention_Internal", "Running",
                 "How about going for a run?", null,

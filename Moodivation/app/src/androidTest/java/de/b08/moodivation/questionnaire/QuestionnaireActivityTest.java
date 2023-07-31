@@ -47,6 +47,7 @@ import de.b08.moodivation.R;
 import de.b08.moodivation.database.questionnaire.QuestionnaireDatabase;
 import de.b08.moodivation.database.questionnaire.entities.AnswerEntity;
 import de.b08.moodivation.questionnaire.answer.ChoiceAnswer;
+import de.b08.moodivation.questionnaire.question.ChoiceQuestion;
 import de.b08.moodivation.questionnaire.question.ChoiceQuestionItem;
 import de.b08.moodivation.questionnaire.view.ChoiceQuestionView;
 import de.b08.moodivation.questionnaire.view.NumberQuestionView;
@@ -65,6 +66,7 @@ import android.widget.RadioButton;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
@@ -102,7 +104,7 @@ public class QuestionnaireActivityTest {
     }
 
     @Test
-    public void testDatabase() {
+    public void testDatabase() throws Exception {
         database.clearAllTables();
 
         float question13SliderValue = 60;
@@ -120,7 +122,7 @@ public class QuestionnaireActivityTest {
 
         // set custom answer to modifiable choice question item
         onView(withQuestionId("5.1")).perform(setChoiceAction("7", true));
-        onView(allOf(withParent(withParent(withParent(withParent(withQuestionId("5.1"))))), radioButtonWithText("Other")))
+        onView(allOf(withParent(withParent(withParent(withParent(withQuestionId("5.1"))))), radioButtonWithId(7)))
                 .perform(replaceRadioButtonText(question51OtherPlace));
 
         // add note to 1.3
@@ -152,15 +154,21 @@ public class QuestionnaireActivityTest {
         assertEquals(1, database.answerDao().getAllDates().size());
         Date saveDate = database.answerDao().getAllDates().get(0);
 
+        QuestionnaireBundle bundle = QuestionnaireLoader.loadQuestionnaires(InstrumentationRegistry.getInstrumentation().getContext()).get("main");
+        Questionnaire questionnaire = bundle.getQuestionnaire(Locale.getDefault().getLanguage());
+
+        ChoiceQuestion c21 = (ChoiceQuestion) questionnaire.getQuestionnaireElements().stream().filter(el -> Objects.equals(el.getId(), "2.1")).findFirst().get();
+        ChoiceQuestion c31 = (ChoiceQuestion) questionnaire.getQuestionnaireElements().stream().filter(el -> Objects.equals(el.getId(), "3.1")).findFirst().get();
+
         List<AnswerEntity> answerEntities = database.answerDao().getAllAnswerEntitiesWithTimestamp(saveDate.getTime());
         assertTrue(answerEntities.stream().allMatch(e -> {
             switch (e.questionId) {
                 case "1.3":
                     return e.answer.equals(Float.toString(question13SliderValue));
                 case "2.1":
-                    return AnswerEntity.from(new ChoiceAnswer("2.1", "1", Collections.singletonList(new ChoiceQuestionItem("No", "1"))), saveDate).equals(e);
+                    return AnswerEntity.from(new ChoiceAnswer("2.1", "1", Collections.singletonList(new ChoiceQuestionItem(c21.getItems().stream().filter(i -> Objects.equals(i.getId(), "1")).findFirst().get().getValue(), "1"))), saveDate).equals(e);
                 case "3.1":
-                    return AnswerEntity.from(new ChoiceAnswer("3.1", "1", Collections.singletonList(new ChoiceQuestionItem("Yes", "0"))), saveDate).equals(e);
+                    return AnswerEntity.from(new ChoiceAnswer("3.1", "1", Collections.singletonList(new ChoiceQuestionItem(c31.getItems().stream().filter(i -> Objects.equals(i.getId(), "0")).findFirst().get().getValue(), "0"))), saveDate).equals(e);
                 case "5.1":
                     return AnswerEntity.from(new ChoiceAnswer("5.1", "1", Collections.singletonList(new ChoiceQuestionItem(question51OtherPlace, "7"))), saveDate).equals(e);
             }
@@ -240,6 +248,24 @@ public class QuestionnaireActivityTest {
             @Override
             public void describeTo(Description description) {
                 description.appendText("matches radio buttons with text " + text);
+            }
+        };
+    }
+
+    public BaseMatcher<View> radioButtonWithId(int id) {
+        return new BaseMatcher<View>() {
+            @Override
+            public boolean matches(Object actual) {
+                if (!(actual instanceof RadioButton))
+                    return false;
+
+                RadioButton radioButton = (RadioButton) actual;
+                return radioButton.getId() == id;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("matches radio buttons with id " + id);
             }
         };
     }

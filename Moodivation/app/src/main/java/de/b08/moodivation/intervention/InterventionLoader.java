@@ -53,16 +53,16 @@ import java.util.zip.ZipInputStream;
 
 public class InterventionLoader {
 
-    public static void loadAndStoreExternalFile(Uri source, Context context) {
+    public static boolean loadAndStoreExternalFile(Uri source, Context context) {
         if (context.getFilesDir() == null)
-            return;
+            return false;
         File[] files = context.getFilesDir().listFiles();
         if (files == null)
-            return;
+            return false;
 
         if (Arrays.stream(files).noneMatch(f -> f.isDirectory() && f.getName().equals("interventions")))
            if (!new File(context.getFilesDir().getPath() + "/interventions/").mkdirs())
-               return;
+               return false;
 
         File destDir = new File(context.getFilesDir().getPath() + "/interventions/");
 
@@ -77,7 +77,7 @@ public class InterventionLoader {
                 File entryDest = new File(destDir, zipEntry.getName());
                 if (zipEntry.isDirectory()) {
                     if (!entryDest.mkdirs())
-                        return;
+                        return false;
                 } else {
                     FileOutputStream fileOut = new FileOutputStream(entryDest);
 
@@ -92,9 +92,11 @@ public class InterventionLoader {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+            return false;
         }
 
         getAllInterventions(context, true);
+        return true;
     }
 
     private static List<Runnable> interventionListUpdateHandlers = new ArrayList<>();
