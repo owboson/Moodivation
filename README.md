@@ -8,6 +8,8 @@
 
 ## Getting Started
 
+The implementation of the wellbeing algorithm can be found [here](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/SimpleWellbeingAlgorithm.java). If you want to add an entirely different algorithm without losing the old one, consider adding a new class that implements [`WellbeingAlgorithm.java`](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/WellbeingAlgorithm.java) and set the singleton in [`WellbeingAlgorithm.java`](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/questionnaire/WellbeingAlgorithm.java) accordingly.
+
 ## License
 
 The following files (in the folder `Moodivation/app/src/main/res`) are Google Material Icons (https://github.com/google/material-design-icons) licensed under Apache-2.0 (http://www.apache.org/licenses/LICENSE-2.0):
@@ -29,26 +31,28 @@ drawable/round_home_24.xml
 drawable/round_settings_24.xml
 ```
 
-The following files contain Google Material Icons (in the folder `Moodivation/app/src/main/res`):
+The following files contain Google Material Icons (in the folder `Moodivation/app/src/main/`):
 
 ```
-mipmap-anydpi-v26/moodivation_icon.xml
-mipmap-anydpi-v26/moodivation_icon_round.xml
+moodivation_icon-playstore.png
 
-mipmap-hdpi/moodivation_icon.png
-mipmap-hdpi/moodivation_icon_round.png
+res/mipmap-anydpi-v26/moodivation_icon.xml
+res/mipmap-anydpi-v26/moodivation_icon_round.xml
 
-mipmap-mdpi/moodivation_icon.png
-mipmap-mdpi/moodivation_icon_round.png
+res/mipmap-hdpi/moodivation_icon.png
+res/mipmap-hdpi/moodivation_icon_round.png
 
-mipmap-xhdpi/moodivation_icon.png
-mipmap-xhdpi/moodivation_icon_round.png
+res/mipmap-mdpi/moodivation_icon.png
+res/mipmap-mdpi/moodivation_icon_round.png
 
-mipmap-xxhdpi/moodivation_icon.png
-mipmap-xxhdpi/moodivation_icon_round.png
+res/mipmap-xhdpi/moodivation_icon.png
+res/mipmap-xhdpi/moodivation_icon_round.png
 
-mipmap-xxxhdpi/moodivation_icon.png
-mipmap-xxxhdpi/moodivation_icon_round.png
+res/mipmap-xxhdpi/moodivation_icon.png
+res/mipmap-xxhdpi/moodivation_icon_round.png
+
+res/mipmap-xxxhdpi/moodivation_icon.png
+res/mipmap-xxxhdpi/moodivation_icon_round.png
 ```
 
 All other code files are licensed under MIT License:
