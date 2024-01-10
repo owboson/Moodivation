@@ -52,7 +52,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             notification = new NotificationCompat.Builder(context, "channelId")
                     .setContentTitle(context.getResources().getString(R.string.questionnaireNotificationTitle))
                     .setContentText(context.getResources().getString(R.string.morningQuestionnaireNotification))
-                    .setSmallIcon(R.drawable.moodivation_icon_foreground)
+                    .setSmallIcon(R.drawable.baseline_self_improvement_24)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .build();
@@ -60,7 +60,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             notification = new NotificationCompat.Builder(context, "channelId")
                     .setContentTitle(context.getResources().getString(R.string.questionnaireNotificationTitle))
                     .setContentText(context.getResources().getString(R.string.noonQuestionnaireNotification))
-                    .setSmallIcon(R.drawable.moodivation_icon_foreground)
+                    .setSmallIcon(R.drawable.baseline_self_improvement_24)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .build();
@@ -68,7 +68,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             notification = new NotificationCompat.Builder(context, "channelId")
                     .setContentTitle(context.getResources().getString(R.string.questionnaireNotificationTitle))
                     .setContentText(context.getResources().getString(R.string.eveningQuestionnaireNotification))
-                    .setSmallIcon(R.drawable.moodivation_icon_foreground)
+                    .setSmallIcon(R.drawable.baseline_self_improvement_24)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .build();

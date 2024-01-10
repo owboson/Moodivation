@@ -45,6 +45,6 @@ With `displayedDataTypes` you can specify which values are displayed to the user
 
 ## Where to store the interventions?
 
-If you want the intervention to be delivered together with the app, you need to put the intervention (may not be compressed) into `Moodivation/app/src/main/assets/interventions` ([link](https://github.com/RUB-SE-LAB/23B08/tree/main/Moodivation/app/src/main/assets/interventions)).
+If you want the intervention to be delivered together with the app, you need to put the intervention (may not be compressed) into [`Moodivation/app/src/main/assets/interventions`](../Moodivation/app/src/main/assets/interventions).
 
 Otherwise, create a ZIP file of your intervention folder, upload it somewhere and provide users with a download link.

@@ -15,4 +15,4 @@ $user = "postgres";
 $password = "";
 ```
 
-Additionally, you need to update the URLs [here](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/java/de/b08/moodivation/utils/ExportUtils.java#L34) and [here](https://github.com/RUB-SE-LAB/23B08/blob/19efeede2592a5724dae619ec86b4587d27404ff/Moodivation/app/src/main/java/de/b08/moodivation/utils/ExportUtils.java#L64).
+Additionally, you need to update the URLs [here](../../Moodivation/app/src/main/java/de/b08/moodivation/utils/ExportUtils.java#L58) and [here](../../Moodivation/app/src/main/java/de/b08/moodivation/utils/ExportUtils.java#L88).

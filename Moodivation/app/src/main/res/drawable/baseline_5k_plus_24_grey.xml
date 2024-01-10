@@ -205,7 +205,7 @@
   -->
 
 <!-- Google Material Icons https://github.com/google/material-design-icons -->
-
+<!-- CHANGED color to #5E5E5E -->
 <vector android:height="24dp" android:tint="#5E5E5E"
     android:viewportHeight="24" android:viewportWidth="24"
     android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">

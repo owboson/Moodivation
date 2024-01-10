@@ -71,4 +71,4 @@ The question that should be constrained must be specified using the `constrained
 
 ## Example questionnaire
 
-An example can be found [here](https://github.com/RUB-SE-LAB/23B08/blob/main/Moodivation/app/src/main/assets/questionnaires/main.en.questionnaire.xml).
+An example can be found [here](../Moodivation/app/src/main/assets/questionnaires/main.en.questionnaire.xml).
